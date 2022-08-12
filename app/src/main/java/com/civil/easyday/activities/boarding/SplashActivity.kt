@@ -1,14 +1,17 @@
 package com.civil.easyday.activities.boarding
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.civil.easyday.R
+import com.civil.easyday.activities.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SplashActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+class SplashActivity : BaseActivity<SplashViewModel>() {
+
+    override fun getContentView() = R.layout.activity_splash
+
+    override fun setupUi() {
+    }
+
+    override fun setupObservers() {
     }
 }

@@ -14,11 +14,6 @@ import java.lang.reflect.ParameterizedType
 
 abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
 
-    companion object {
-        var instance: Context? = null
-        var sManager: FragmentManager? = null
-    }
-
     lateinit var viewModel: VM
 
 
@@ -34,16 +29,8 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
         setupObservers()
         viewModel.onActivityCreated()
 
-        sManager = supportFragmentManager
-
-
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        instance = this
-    }
 
     abstract fun getContentView(): Int
     abstract fun setupUi()
