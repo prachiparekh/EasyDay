@@ -1,7 +1,7 @@
-package com.civil.easyday.activities.boarding
+package com.civil.easyday.screens.activities.boarding
 
 import com.civil.easyday.R
-import com.civil.easyday.activities.base.BaseActivity
+import com.civil.easyday.screens.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

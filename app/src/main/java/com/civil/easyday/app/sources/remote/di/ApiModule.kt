@@ -1,8 +1,8 @@
-package ro.westaco.carhome.di
+package com.civil.easyday.app.sources.remote.di
 
 import com.civil.easyday.BuildConfig
-import com.civil.easyday.data.HeaderInterceptor
-import com.civil.easyday.data.apis.EasyDayApi
+import com.civil.easyday.app.sources.remote.HeaderInterceptor
+import com.civil.easyday.app.sources.remote.apis.EasyDayApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

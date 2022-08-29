@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/activity_auth.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/activity_on_boarding.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/activity_splash.xml" value="0.35260416666666666" />
       </map>
     </option>

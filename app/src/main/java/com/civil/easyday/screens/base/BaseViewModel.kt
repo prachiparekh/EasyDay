@@ -1,4 +1,4 @@
-package com.civil.easyday.activities.base
+package com.civil.easyday.screens.base
 
 import androidx.lifecycle.ViewModel
 import com.civil.easyday.navigation.SingleLiveEvent

@@ -1,9 +1,7 @@
-package com.civil.easyday.activities.base
+package com.civil.easyday.screens.base
 
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.civil.easyday.dialogs.DialogUtils.Companion.showErrorInfo
 import com.civil.easyday.navigation.NavAttribs

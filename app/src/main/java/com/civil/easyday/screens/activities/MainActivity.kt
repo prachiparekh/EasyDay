@@ -1,4 +1,4 @@
-package com.civil.easyday.activities
+package com.civil.easyday.screens.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

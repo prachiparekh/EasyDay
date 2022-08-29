@@ -1,4 +1,4 @@
-package com.civil.easyday.activities.base
+package com.civil.easyday.screens.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

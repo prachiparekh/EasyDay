@@ -7,8 +7,8 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.view.inputmethod.InputMethodManager
-import com.civil.easyday.activities.auth.AuthActivity
-import com.civil.easyday.activities.boarding.SplashActivity
+import com.civil.easyday.screens.activities.auth.AuthActivity
+import com.civil.easyday.screens.activities.boarding.SplashActivity
 
 object DeviceUtils {
 
