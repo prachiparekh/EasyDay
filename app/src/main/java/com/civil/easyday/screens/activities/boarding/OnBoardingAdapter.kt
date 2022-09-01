@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.civil.easyday.R
-import ro.westaco.carhome.presentation.screens.onboarding.OnboardingItem
+import com.civil.easyday.app.sources.local.model.OnboardingItem
 
 class OnBoardingAdapter(
     private var items: List<OnboardingItem> = arrayListOf()

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.activities.auth.OTPFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_20sdp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:fontFamily="@font/dm_sans_700"
+        android:text="@string/verify_number"
+        android:textColor="@color/navy_blue"
+        android:textSize="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="@id/back"
+        app:layout_constraintTop_toBottomOf="@id/back" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/dm_sans_regular"
+        android:text="@string/enter_otp"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="@id/title1"
+        app:layout_constraintTop_toBottomOf="@id/title1" />
+
+    <TextView
+        android:id="@+id/phoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/dm_sans_regular"
+        android:textColor="@color/navy_blue"
+        android:textStyle="bold"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintStart_toStartOf="@id/title2"
+        app:layout_constraintTop_toBottomOf="@id/title2" />
+
+    <TextView
+        android:id="@+id/change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:fontFamily="@font/dm_sans_400"
+        android:text="@string/change"
+        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/green"
+        app:layout_constraintBottom_toBottomOf="@id/phoneNumber"
+        app:layout_constraintStart_toEndOf="@id/phoneNumber"
+        app:layout_constraintTop_toTopOf="@id/phoneNumber" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/otpEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:visibility="gone"
+        android:maxLength="6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/change" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="6"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phoneNumber">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/ic_square"
+            android:fontFamily="@font/dm_sans_400"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/dash"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:textColor="@color/navy_blue" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/ic_square"
+            android:fontFamily="@font/dm_sans_400"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/dash"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:textColor="@color/navy_blue" />
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/ic_square"
+            android:fontFamily="@font/dm_sans_400"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/dash"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:textColor="@color/navy_blue" />
+
+        <TextView
+            android:id="@+id/tv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/ic_square"
+            android:fontFamily="@font/dm_sans_400"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/dash"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:textColor="@color/navy_blue" />
+
+        <TextView
+            android:id="@+id/tv5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/ic_square"
+            android:fontFamily="@font/dm_sans_400"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/dash"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:textColor="@color/navy_blue" />
+
+        <TextView
+            android:id="@+id/tv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/ic_square"
+            android:fontFamily="@font/dm_sans_400"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/dash"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:textColor="@color/navy_blue" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/resend_code_in"
+        android:fontFamily="@font/dm_sans_400"
+        android:textColor="@color/gray"
+        android:layout_marginBottom="@dimen/_30sdp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

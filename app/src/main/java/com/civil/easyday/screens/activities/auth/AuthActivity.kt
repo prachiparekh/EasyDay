@@ -8,9 +8,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class AuthActivity : BaseActivity<AuthViewModel>() {
 
 
-    override fun getContentView()=R.layout.activity_auth
+    override fun getContentView() = R.layout.activity_auth
 
     override fun setupUi() {
+
     }
 
     override fun setupObservers() {

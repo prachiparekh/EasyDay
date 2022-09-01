@@ -1,4 +1,4 @@
-package ro.westaco.carhome.presentation.screens.onboarding
+package com.civil.easyday.app.sources.local.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

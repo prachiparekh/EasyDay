@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id "androidx.navigation.safeargs"
 }
 
 android {
@@ -110,7 +111,15 @@ dependencies {
      shared preferences helper
      * */
     implementation "com.pixplicity.easyprefs:library:1.9.0"
+    /**
+     * Navigation
+     * */
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
 
-
+    /**
+     * LifeCycle
+     * */
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
 }

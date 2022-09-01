@@ -2,15 +2,23 @@
     <string name="app_name">Easyday</string>
     <string name="next">Next</string>
     <string name="get_started">Get started</string>
-    <string name="boarding_title1">Quick task \n management</string>
-    <string name="boarding_title2">Save your \n money and time</string>
-    <string name="boarding_title3">Team work \n more effectively</string>
+    <string name="boarding_title1">Quick task \nmanagement</string>
+    <string name="boarding_title2">Save your \nmoney and time</string>
+    <string name="boarding_title3">Team work \nmore effectively</string>
     <string name="boarding_text">Create documents and manage all your \n data intelligently and quickly</string>
     <string name="hello_there">Hello there,</string>
+
     <string name="lets_make">Let’s make \nyour day easy</string>
     <string name="get_otp">Enter your mobile number to get OTP</string>
     <string name="country_code">Country code</string>
     <string name="romania_flag">us</string>
     <string name="phone_number">Phone Number</string>
+    <string name="verify_number">Verify Your \nPhone Number</string>
+    <string name="enter_otp">Enter the OTP sent to</string>
+    <string name="change">Change</string>
+    <string name="dash">-</string>
+
+    <string name="resend_code_in">Resend code in %s</string>
+    <string name="number_requires">Phone number requires to LogIn.</string>
 
 </resources>
