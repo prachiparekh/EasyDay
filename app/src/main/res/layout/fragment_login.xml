@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".screens.activities.auth.LoginFragment">
 
@@ -160,12 +161,11 @@
             android:hint="@string/phone_number"
             android:textColor="@color/dark_blue"
             android:theme="@style/TextInputLayoutAppearance"
-            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundColor="@color/bg_white"
             app:boxCornerRadiusBottomEnd="0dp"
             app:boxCornerRadiusBottomStart="0dp"
             app:boxCornerRadiusTopEnd="0dp"
             app:boxCornerRadiusTopStart="0dp"
-            app:boxStrokeColor="#FFF"
             app:boxStrokeWidth="0dp"
             app:hintTextAppearance="@style/TextLabel"
             app:hintTextColor="@color/gray"
@@ -182,7 +182,6 @@
                 android:textSize="@dimen/_12sdp" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
 
     </LinearLayout>
 

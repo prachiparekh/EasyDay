@@ -8,6 +8,7 @@ import com.civil.easyday.app.sources.local.model.PhoneCodeModel
 import com.civil.easyday.screens.base.BaseFragment
 import com.civil.easyday.screens.dialogs.CodeDialog
 import com.civil.easyday.utils.CountryCityUtils
+import com.civil.easyday.utils.DeviceUtils
 import com.civil.easyday.utils.FileUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -21,12 +22,14 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
     override fun getContentView() = R.layout.fragment_login
     private var countryCode: String? = null
 
+
     override fun initUi() {
 
         setPhoneCountryData()
 
         cta.setOnClickListener {
 
+            DeviceUtils.hideKeyboard(requireContext())
             if (phone.text?.isNotEmpty() == true && countryCode?.isNotEmpty() == true) {
                 val fullNumber=countryCode + phone.text
                 val action = LoginFragmentDirections.loginToOtp()

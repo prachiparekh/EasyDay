@@ -49,7 +49,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     abstract fun initUi()
     abstract fun setObservers()
 
-    open fun getStatusBarColor() = ContextCompat.getColor(requireContext(), R.color.white)
+    open fun getStatusBarColor() = ContextCompat.getColor(requireContext(), R.color.bg_white)
 
     private fun getViewModelClass(): Class<VM> {
         val type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]

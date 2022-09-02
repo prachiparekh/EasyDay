@@ -1,11 +1,22 @@
 package com.civil.easyday.screens.base
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.civil.easyday.R
 import com.civil.easyday.dialogs.DialogUtils.Companion.showErrorInfo
 import com.civil.easyday.navigation.UiEvent
 import com.civil.easyday.utils.DeviceUtils
+import com.civil.easyday.utils.IntentUtil.Companion.PICK_IMAGE_CHOOSER_REQUEST_CODE
+import com.civil.easyday.utils.IntentUtil.Companion.getImagePath
+import com.theartofdev.edmodo.cropper.CropImage
+import java.io.File
 import java.lang.reflect.ParameterizedType
 
 
@@ -13,6 +24,14 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
 
     lateinit var viewModel: VM
 
+    companion object{
+        var profileLogoListener: OnProfileLogoChangeListener? = null
+    }
+
+    interface OnProfileLogoChangeListener {
+        fun onCropLogo(uri: Uri)
+        fun onChangeLogo(uri: Uri)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +76,59 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
 
     private fun showToast(message: String) {
         showErrorInfo(this, message)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val uri = getPickImageResultUri(baseContext, data)
+            if (uri != null) {
+                profileLogoListener?.onCropLogo(uri)
+            }
+        }
+
+        // handle result of CropImageActivity
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == RESULT_OK) {
+                if (result != null) {
+                    profileLogoListener?.onChangeLogo(result.uri)
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(
+                    this,
+                    baseContext.getString(R.string.crop_fail) + result.error,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    open fun getPickImageResultUri(context: Context, data: Intent?): Uri? {
+        var isCamera = true
+        if (data != null && data.data != null) {
+            val action = data.action
+            isCamera = action != null && action == MediaStore.ACTION_IMAGE_CAPTURE
+        }
+        return if (isCamera || data?.data == null) {
+//            --------1---------
+//            getCaptureImageOutputUri(context)
+//            --------2---------
+            /* val photo = data?.extras?.get("data") as Bitmap?
+             getImageUri(context, photo)*/
+//            --------3---------
+            Uri.fromFile(getImagePath())
+        } else data.data
+    }
+
+    open fun getCaptureImageOutputUri(context: Context): Uri? {
+        var outputFileUri: Uri? = null
+        val getImage = context.externalCacheDir
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(File(getImage.path, "pickImageResult.jpeg"))
+        }
+        return outputFileUri
     }
 
 }
