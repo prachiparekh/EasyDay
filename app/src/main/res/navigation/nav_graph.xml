@@ -39,7 +39,11 @@
             app:popEnterAnim="@anim/slide_in_from_the_left"
             app:popExitAnim="@anim/slide_out_to_the_right"
             >
-
+            <argument
+                android:name="phoneNumber"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
         </action>
     </fragment>
     <fragment

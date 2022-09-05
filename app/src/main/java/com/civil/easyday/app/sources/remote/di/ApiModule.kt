@@ -20,7 +20,7 @@ import javax.inject.Singleton
 class ApiModule {
 
     companion object {
-        var BASE_URL_RESOURCES = "https://carhome-build.westaco.com"
+        var BASE_URL_RESOURCES = "http://3.87.58.210:3000/api/v1/"
     }
 
     /*

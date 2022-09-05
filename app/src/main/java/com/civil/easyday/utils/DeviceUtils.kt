@@ -9,8 +9,12 @@ import android.net.NetworkInfo
 import android.view.inputmethod.InputMethodManager
 import com.civil.easyday.screens.activities.auth.AuthActivity
 import com.civil.easyday.screens.activities.boarding.SplashActivity
+import com.civil.easyday.views.Progressbar
 
 object DeviceUtils {
+
+    var progressbar: Progressbar? = null
+
 
     fun hideKeyboard(context: Context) {
         try {
@@ -22,6 +26,18 @@ object DeviceUtils {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun initProgress(context: Context){
+        progressbar = Progressbar(context)
+    }
+
+    fun showProgress(){
+        progressbar?.showPopup()
+    }
+
+    fun dismissProgress(){
+        progressbar?.dismissPopup()
     }
 
 

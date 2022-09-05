@@ -3,9 +3,17 @@ package com.civil.easyday.screens.activities.auth
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DecodeFormat
@@ -16,25 +24,28 @@ import com.civil.easyday.screens.base.BaseActivity.Companion.profileLogoListener
 import com.civil.easyday.screens.base.BaseFragment
 import com.civil.easyday.utils.FileUtil
 import com.civil.easyday.utils.IntentUtil
+import com.google.android.material.textfield.TextInputEditText
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.karumi.dexter.listener.single.PermissionListener
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageActivity
 import com.theartofdev.edmodo.cropper.CropImageOptions
 import com.theartofdev.edmodo.cropper.CropImageView
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_profile.*
 
+
+@AndroidEntryPoint
 class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfileLogoChangeListener {
 
     override fun getContentView() = R.layout.fragment_profile
 
     override fun initUi() {
+
+        val mPhoneNumber = arguments?.getString("phoneNumber")
 
         camera.setOnClickListener {
             profileLogoListener = this
@@ -57,15 +68,105 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                 }
             }
         }
+
+        cta.setOnClickListener {
+            if (fullName.text.isNullOrEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().resources.getString(R.string.name_constarin),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            if (profession.text.isNullOrEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().resources.getString(R.string.profession_constarin),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            if (mPhoneNumber != null) {
+                viewModel.createUser(
+                    fullName.text.toString(),
+                    profession.text.toString(),
+                    mPhoneNumber
+                )
+            }
+        }
+
+        fullName.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                if(s.isNotEmpty()){
+                    setTextViewDrawableColor(fullName,R.color.green)
+                }else{
+                    setTextViewDrawableColor(fullName,R.color.gray)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+            }
+        })
+
+        profession.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                if(s.isNotEmpty()){
+                    setTextViewDrawableColor(profession,R.color.green)
+                }else{
+                    setTextViewDrawableColor(profession,R.color.gray)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+            }
+        })
+
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener { v, keyCode, event ->
+            event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK
+        }
+    }
+
+    private fun setTextViewDrawableColor(editText: TextInputEditText, color: Int) {
+        for (drawable in editText.compoundDrawables) {
+            if (drawable != null) {
+                drawable.colorFilter =
+                    PorterDuffColorFilter(
+                        ContextCompat.getColor(editText.context, color),
+                        PorterDuff.Mode.SRC_IN
+                    )
+            }
+        }
     }
 
     private fun onPermission() {
 
         Dexter.withContext(requireContext())
-            .withPermissions(Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .withPermissions(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
             .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {
-                    if(p0?.areAllPermissionsGranted() == true)
+                    if (p0?.areAllPermissionsGranted() == true)
                         openIntent()
                 }
 

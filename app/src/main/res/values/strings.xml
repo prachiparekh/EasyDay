@@ -28,5 +28,8 @@
     <string name="ur_profession">Your profession <font color='#FB4079'>*</font></string>
     <string name="crop_fail">Cropping failed:</string>
 
+    <string name="name_constarin">Full name is required !</string>
+    <string name="profession_constarin">Profession is required !</string>
+
 
 </resources>

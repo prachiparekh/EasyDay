@@ -1,5 +1,6 @@
 package com.civil.easyday.screens.activities.auth
 
+import android.util.Log
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -24,20 +25,15 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
 
 
     override fun initUi() {
+        DeviceUtils.initProgress(requireContext())
 
         setPhoneCountryData()
-
         cta.setOnClickListener {
 
             DeviceUtils.hideKeyboard(requireContext())
             if (phone.text?.isNotEmpty() == true && countryCode?.isNotEmpty() == true) {
-                val fullNumber=countryCode + phone.text
-                val action = LoginFragmentDirections.loginToOtp()
-                action.phoneNumber=fullNumber
-                val nav: NavController = Navigation.findNavController(cta)
-                if (nav.currentDestination != null && nav.currentDestination?.id == R.id.loginFragment) {
-                    nav.navigate(action)
-                }
+                val fullNumber = countryCode + phone.text
+                viewModel.sendOTP(fullNumber)
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -79,6 +75,21 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
     }
 
     override fun setObservers() {
+        viewModel.actionStream.observe(viewLifecycleOwner) {
+            when (it) {
+                is LoginViewModel.ACTION.GetOTPMsg -> {
+                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
+                    val fullNumber = countryCode + phone.text.toString()
+                    val action = LoginFragmentDirections.loginToOtp()
+                    action.phoneNumber = fullNumber
+                    val nav: NavController = Navigation.findNavController(cta)
+                    if (nav.currentDestination != null && nav.currentDestination?.id == R.id.loginFragment) {
+                        nav.navigate(action)
+                    }
+
+                }
+            }
+        }
     }
 
     override fun pickCountry(countries: PhoneCodeModel) {
