@@ -44,6 +44,12 @@
                 android:defaultValue="@null"
                 app:argType="string"
                 app:nullable="true" />
+
+            <argument
+                android:name="isNewUser"
+                android:defaultValue="true"
+                app:argType="boolean"
+              />
         </action>
     </fragment>
     <fragment

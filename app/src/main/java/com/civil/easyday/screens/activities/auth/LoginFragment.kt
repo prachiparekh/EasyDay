@@ -32,6 +32,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
 
             DeviceUtils.hideKeyboard(requireContext())
             if (phone.text?.isNotEmpty() == true && countryCode?.isNotEmpty() == true) {
+                countryCode=countryCode?.drop(2)
                 val fullNumber = countryCode + phone.text
                 viewModel.sendOTP(fullNumber)
             } else {

@@ -141,16 +141,19 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
                         Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
                 }
                 is OTPViewModel.ACTION.IsNewUser -> {
-                    if (it.model.isNewUser == false) {
-                        AppPreferencesDelegates.get().token = it.model.token.toString()
-                    }
-
                     timer.cancel()
+
                     val action =
                         OTPFragmentDirections
                             .otpToProfile()
+                    if (it.model.isNewUser == false) {
+                        AppPreferencesDelegates.get().token = it.model.token.toString()
+                        action.isNewUser = false
+                    }else{
+                        action.isNewUser = true
+                    }
                     action.phoneNumber = mPhoneNumber
-                    Navigation.findNavController(resendCode).navigate(action)
+                    Navigation.findNavController(requireView()).navigate(action)
                 }
                 is OTPViewModel.ACTION.GetOTPMsg -> {
                     Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()

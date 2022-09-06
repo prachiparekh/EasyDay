@@ -1,19 +1,18 @@
 package com.civil.easyday.screens.activities.auth
 
+import android.os.Bundle
+import android.os.PersistableBundle
+import androidx.appcompat.app.AppCompatActivity
 import com.civil.easyday.R
 import com.civil.easyday.screens.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AuthActivity : BaseActivity<AuthViewModel>() {
+class AuthActivity : AppCompatActivity() {
 
-
-    override fun getContentView() = R.layout.activity_auth
-
-    override fun setupUi() {
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_auth)
     }
 
-    override fun setupObservers() {
-    }
 }

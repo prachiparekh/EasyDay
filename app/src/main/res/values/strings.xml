@@ -30,6 +30,16 @@
 
     <string name="name_constarin">Full name is required !</string>
     <string name="profession_constarin">Profession is required !</string>
+    <string name="home">Home</string>
+    <string name="inbox">Inbox</string>
+    <string name="reports">Reports</string>
+    <string name="more">More</string>
+    <string name="u_have_catch">You have catch up with all tasks</string>
+    <string name="create_task">Create task</string>
+    <string name="create_new">+ Create new</string>
+
+    <string name="done">Done</string>
+    <string name="u_can_add">You can add more project using</string>
 
 
 </resources>

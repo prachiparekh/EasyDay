@@ -29,5 +29,8 @@ data class UserModel(
 	val fullname: String? = null,
 
 	@field:SerializedName("updatedAt")
-	val updatedAt: String? = null
+	val updatedAt: String? = null,
+
+	@field:SerializedName("token")
+	val token: String? = null
 )

@@ -16,4 +16,8 @@
     <color name="dark_blue">#162651</color>
     <color name="red">#FF745F</color>
     <color name="bg_white">#E5E5E5</color>
+
+    <color name="tab_gray">#A1B3C9</color>
+    <color name="accent_blue">#0A0045</color>
+    <color name="show_color">#B3243A5A</color>
 </resources>

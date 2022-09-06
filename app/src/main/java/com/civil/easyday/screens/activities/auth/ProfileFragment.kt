@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,6 +18,8 @@ import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.civil.easyday.R
+import com.civil.easyday.app.sources.local.prefrences.AppPreferencesDelegates
+import com.civil.easyday.screens.activities.main.MainActivity
 import com.civil.easyday.screens.base.BaseActivity
 import com.civil.easyday.screens.base.BaseActivity.Companion.profileLogoListener
 import com.civil.easyday.screens.base.BaseFragment
@@ -42,10 +43,15 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfileLogoChangeListener {
 
     override fun getContentView() = R.layout.fragment_profile
+    var isNewUser: Boolean? = null
 
     override fun initUi() {
 
         val mPhoneNumber = arguments?.getString("phoneNumber")
+        isNewUser = arguments?.getBoolean("isNewUser", true)
+        if (isNewUser == false) {
+            viewModel.getProfile()
+        }
 
         camera.setOnClickListener {
             profileLogoListener = this
@@ -70,49 +76,59 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
         }
 
         cta.setOnClickListener {
-            if (fullName.text.isNullOrEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    requireContext().resources.getString(R.string.name_constarin),
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
+            if (isNewUser == true) {
+                if (fullName.text.isNullOrEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().resources.getString(R.string.name_constarin),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
 
-            if (profession.text.isNullOrEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    requireContext().resources.getString(R.string.profession_constarin),
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
+                if (profession.text.isNullOrEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().resources.getString(R.string.profession_constarin),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
 
-            if (mPhoneNumber != null) {
-                viewModel.createUser(
-                    fullName.text.toString(),
-                    profession.text.toString(),
-                    mPhoneNumber
-                )
+                if (mPhoneNumber != null) {
+                    viewModel.createUser(
+                        fullName.text.toString(),
+                        profession.text.toString(),
+                        mPhoneNumber
+                    )
+                }
+            } else {
+
+                //update API
             }
         }
 
         fullName.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-                if(s.isNotEmpty()){
-                    setTextViewDrawableColor(fullName,R.color.green)
-                }else{
-                    setTextViewDrawableColor(fullName,R.color.gray)
+                if (s.isNotEmpty()) {
+                    setTextViewDrawableColor(fullName, R.color.green)
+                } else {
+                    setTextViewDrawableColor(fullName, R.color.gray)
                 }
+                checkData()
             }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
 
             }
         })
@@ -120,19 +136,24 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
         profession.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-                if(s.isNotEmpty()){
-                    setTextViewDrawableColor(profession,R.color.green)
-                }else{
-                    setTextViewDrawableColor(profession,R.color.gray)
+                if (s.isNotEmpty()) {
+                    setTextViewDrawableColor(profession, R.color.green)
+                } else {
+                    setTextViewDrawableColor(profession, R.color.gray)
                 }
+                checkData()
             }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
 
             }
         })
@@ -153,6 +174,16 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                         PorterDuff.Mode.SRC_IN
                     )
             }
+        }
+    }
+
+    fun checkData() {
+        if (!fullName.text.isNullOrEmpty() && !profession.text.isNullOrEmpty()) {
+            cta.isEnabled = true
+            cta.alpha = 1F
+        } else {
+            cta.isEnabled = false
+            cta.alpha = 0.5F
         }
     }
 
@@ -204,6 +235,36 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
     }
 
     override fun setObservers() {
+        viewModel.userData.observe(viewLifecycleOwner) { userData ->
+            fullName.setText(userData?.fullname)
+            profession.setText(userData?.profession)
+
+            if (userData?.profileImage != null) {
+                val options = RequestOptions()
+                avatar.clipToOutline = true
+                Glide.with(requireContext())
+                    .load(userData.profileImage)
+                    .apply(
+                        options.centerCrop()
+                            .skipMemoryCache(true)
+                            .priority(Priority.HIGH)
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                    )
+                    .into(avatar)
+            }
+
+            if (isNewUser == true)
+                AppPreferencesDelegates.get().token = userData?.token.toString()
+        }
+
+        viewModel.actionStream.observe(viewLifecycleOwner){
+            when(it){
+                is ProfileViewModel.ACTION.onAddUpdateUser->{
+                    val intent = Intent (requireActivity(), MainActivity::class.java)
+                    requireActivity().startActivity(intent)
+                }
+            }
+        }
     }
 
     override fun onCropLogo(uri: Uri) {

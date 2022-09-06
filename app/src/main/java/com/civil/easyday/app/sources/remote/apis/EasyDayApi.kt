@@ -6,6 +6,7 @@ import com.civil.easyday.app.sources.remote.model.UserModel
 import com.civil.easyday.app.sources.remote.model.VerifyOTPRespModel
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 import rx.Observable
 
@@ -29,4 +30,7 @@ interface EasyDayApi {
         @Field("profession") profession: String,
         @Field("phone_number") phone_number: String
     ): Observable<ApiResponse<UserModel>>
+
+    @GET("user/get-profile")
+    fun getProfile(): Observable<ApiResponse<UserModel>>
 }

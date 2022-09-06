@@ -16,7 +16,7 @@
         android:fontFamily="@font/dm_sans_700"
         android:text="@string/create_profile"
         android:textColor="@color/navy_blue"
-        android:textSize="@dimen/_18sdp"
+        android:textSize="@dimen/_20sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +29,7 @@
         android:fontFamily="@font/dm_sans_400"
         android:text="@string/enter_details"
         android:textColor="@color/gray"
-        android:textSize="@dimen/_12sdp"
+        android:textSize="@dimen/_13sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title1" />
 
@@ -151,6 +151,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp"
         android:alpha="0.5"
+        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
