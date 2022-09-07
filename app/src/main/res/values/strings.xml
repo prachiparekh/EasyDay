@@ -40,6 +40,9 @@
 
     <string name="done">Done</string>
     <string name="u_can_add">You can add more project using</string>
+    <string name="see_all">See all your project here</string>
+    <string name="guys_task">Guy\'s task</string>
+    <string name="skip">Skip</string>
 
 
 </resources>

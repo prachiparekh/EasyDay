@@ -47,5 +47,12 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
     }
 
     override fun setObservers() {
+        viewModel.actionStream.observe(viewLifecycleOwner) {
+            when (it) {
+                is DashboardViewModel.ACTION.OpenChildFragment -> {
+                    openChildFragment(it.fragment, it.tag)
+                }
+            }
+        }
     }
 }
