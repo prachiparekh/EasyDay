@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         activity?.window?.statusBarColor = getStatusBarColor()
     }
 
@@ -49,7 +51,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     abstract fun initUi()
     abstract fun setObservers()
 
-    open fun getStatusBarColor() = ContextCompat.getColor(requireContext(), R.color.bg_white)
+    open fun getStatusBarColor() = ContextCompat.getColor(requireContext(), R.color.navy_blue)
 
     private fun getViewModelClass(): Class<VM> {
         val type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]

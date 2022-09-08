@@ -2,6 +2,7 @@ package com.civil.easyday.screens.activities.auth
 
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.civil.easyday.R
@@ -23,6 +24,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
     override fun getContentView() = R.layout.fragment_login
     private var countryCode: String? = null
 
+    override fun getStatusBarColor()= ContextCompat.getColor(requireContext(), R.color.bg_white)
 
     override fun initUi() {
         DeviceUtils.initProgress(requireContext())

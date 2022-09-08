@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ActivityNavigator
 import com.civil.easyday.R
@@ -23,10 +24,11 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
+        window?.statusBarColor =resources.getColor(R.color.green)
         val activityNavigator = ActivityNavigator(baseContext)
 
         Handler(Looper.getMainLooper()).postDelayed({
+            Log.e("wasOnboardingSeen", appPreferences.wasOnboardingSeen.toString())
             if (appPreferences.wasOnboardingSeen) {
 
                 activityNavigator.navigate(

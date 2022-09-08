@@ -2,11 +2,13 @@ package com.civil.easyday.screens.activities.boarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ActivityNavigator
 import com.civil.easyday.R
-import com.civil.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.civil.easyday.app.sources.local.model.OnboardingItem
+import com.civil.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.civil.easyday.screens.activities.auth.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_on_boarding.*
@@ -24,7 +26,14 @@ class OnBoardingActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        );
         setContentView(R.layout.activity_on_boarding)
+
         adapter = OnBoardingAdapter()
         pager.adapter = adapter
         adapter.setData(items, this)

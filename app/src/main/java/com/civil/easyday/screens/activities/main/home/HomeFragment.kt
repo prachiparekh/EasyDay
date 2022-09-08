@@ -6,8 +6,11 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import com.civil.easyday.R
+import com.civil.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.civil.easyday.screens.base.BaseFragment
+import com.civil.easyday.screens.dialogs.ProjectListDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_home.*
 import me.toptas.fancyshowcase.FancyShowCaseQueue
 import me.toptas.fancyshowcase.FancyShowCaseView
 import me.toptas.fancyshowcase.listener.OnViewInflateListener
@@ -20,17 +23,18 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         const val TAG = "HomeFragment"
     }
 
-    var showCaseDone = false
     private lateinit var queue: FancyShowCaseQueue
     private lateinit var fancyView2: FancyShowCaseView
     private lateinit var fancyView1: FancyShowCaseView
+    var fragment = ProjectListDialog()
 
     override fun getContentView() = R.layout.fragment_home
+
 
     override fun initUi() {
 
 
-        if (!showCaseDone) {
+        if (!AppPreferencesDelegates.get().showcaseSeen) {
 
             fancyView2 = FancyShowCaseView.Builder(requireActivity())
                 .customView(R.layout.showcaseview2, object : OnViewInflateListener {
@@ -38,6 +42,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                         setAnimatedContent(view, fancyView2)
                     }
                 })
+                .closeOnTouch(false)
                 .build()
 
             fancyView1 = FancyShowCaseView.Builder(requireActivity())
@@ -46,6 +51,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                         setAnimatedContent(view, fancyView1)
                     }
                 })
+                .closeOnTouch(false)
                 .build()
 
             queue = FancyShowCaseQueue().apply {
@@ -53,6 +59,10 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                 add(fancyView1)
                 show()
             }
+        }
+
+        activeProject.setOnClickListener {
+            childFragmentManager.let { fragment.show(it, "projects") }
         }
 
     }
@@ -75,7 +85,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                 val skip = view.findViewById<View>(R.id.skip) as TextView
                 ctaNext.setOnClickListener { fancyShowCaseView.hide() }
                 skip.setOnClickListener {
-                    showCaseDone = true
+                    AppPreferencesDelegates.get().showcaseSeen = true
                     queue.cancel(true)
                 }
                 text2.startAnimation(mainAnimation)
@@ -83,7 +93,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                 val done = view.findViewById<View>(R.id.done) as TextView
                 val text1 = view.findViewById<View>(R.id.text1) as TextView
                 done.setOnClickListener {
-                    showCaseDone = true
+                    AppPreferencesDelegates.get().showcaseSeen = true
                     queue.cancel(true)
                 }
                 Handler().postDelayed({ text1.startAnimation(subAnimation) }, 80)

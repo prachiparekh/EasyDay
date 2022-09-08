@@ -43,6 +43,9 @@
     <string name="see_all">See all your project here</string>
     <string name="guys_task">Guy\'s task</string>
     <string name="skip">Skip</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="filter_task">Filter tasks</string>
+    <string name="ur_projects">Your Projects</string>
 
 
 </resources>

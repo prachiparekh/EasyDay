@@ -11,7 +11,7 @@ class TokenDelegate : ReadWriteProperty<AppPreferencesDelegates, String> {
     }
 
     override fun getValue(thisRef: AppPreferencesDelegates, property: KProperty<*>): String =
-        Prefs.getString(PREF_KEY_TOKEN,null)
+        Prefs.getString(PREF_KEY_TOKEN,"")
 
 
     override fun setValue(

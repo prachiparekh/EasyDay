@@ -10,11 +10,11 @@
         <item name="colorSecondaryVariant">@color/green</item>
         <item name="colorOnSecondary">@color/bg_white</item>
         <!-- Status bar color. -->
-       <!-- <item name="android:statusBarColor" >@color/bg_white</item>
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>-->
+        <item name="android:statusBarColor">@color/bg_white</item>
+        <!--    <item name="windowNoTitle">true</item>
+            <item name="windowActionBar">false</item>
+            <item name="android:windowFullscreen">true</item>
+            <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>-->
         <!-- Customize your theme here. -->
     </style>
 
@@ -29,12 +29,6 @@
 
     <style name="FullScreenTheme.EasyDay" parent="DefaultDayNightTheme.EasyDay">
         <item name="android:windowFullscreen">true</item>
-    </style>
-
-    <style name="SplashScreenTheme.EasyDay" parent="FullScreenTheme.EasyDay">
-        <item name="android:windowBackground">@color/green</item>
-        <item name="android:windowBackgroundFallback" tools:targetApi="n">@color/green</item>
-        <item name="android:statusBarColor">@color/green</item>
     </style>
 
     <style name="TextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">

@@ -1,18 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg_white"
     tools:context=".screens.activities.main.dashboard.DashboardFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topCL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/navy_blue"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/t1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans_700"
+            android:text="@string/dashboard"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/iconLL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/search"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/ic_search" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/ic_bell" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/profile"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/bg_circle_white"
+                android:padding="@dimen/_5sdp" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/childContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/topCL" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -22,13 +82,13 @@
         android:background="@color/white"
         app:itemBackground="@color/white"
         app:itemIconSize="@dimen/_22sdp"
+        app:itemIconTint="@drawable/bottom_nav_text_color"
         app:itemTextAppearanceActive="@style/BottomNavigationViewActive"
         app:itemTextAppearanceInactive="@style/BottomNavigationView"
         app:itemTextColor="@drawable/bottom_nav_text_color"
-        app:itemIconTint="@drawable/bottom_nav_text_color"
         app:labelVisibilityMode="labeled"
-        app:layout_constraintTop_toTopOf="@id/add"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/add"
         app:menu="@menu/bottom_nav_menu" />
 
     <androidx.appcompat.widget.AppCompatImageView

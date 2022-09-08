@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -28,6 +29,7 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
     }
 
     override fun getContentView() = R.layout.fragment_o_t_p
+    override fun getStatusBarColor()= ContextCompat.getColor(requireContext(), R.color.bg_white)
 
     private val timer = object : CountDownTimer(1000 * 60 * 2, 1000) {
         override fun onTick(millisUntilFinished: Long) {

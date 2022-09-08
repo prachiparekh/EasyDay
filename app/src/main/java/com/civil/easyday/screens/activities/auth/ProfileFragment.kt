@@ -45,6 +45,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
     override fun getContentView() = R.layout.fragment_profile
     var isNewUser: Boolean? = null
 
+    override fun getStatusBarColor()=ContextCompat.getColor(requireContext(), R.color.bg_white)
+
     override fun initUi() {
 
         val mPhoneNumber = arguments?.getString("phoneNumber")
@@ -105,6 +107,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
             } else {
 
                 //update API
+                val intent = Intent (requireActivity(), MainActivity::class.java)
+                requireActivity().startActivity(intent)
             }
         }
 
