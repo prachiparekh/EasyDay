@@ -1,25 +1,33 @@
 package com.civil.easyday.screens.dialogs
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.civil.easyday.R
+import com.civil.easyday.app.sources.local.interfaces.ProjectInterface
+import com.civil.easyday.app.sources.remote.model.ProjectRespModel
 import com.civil.easyday.databinding.ProjectListBdialogBinding
+import com.civil.easyday.screens.dialogs.adapters.ProjectAdapter
 import com.civil.easyday.views.Progressbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ProjectListDialog : BottomSheetDialogFragment() {
+class ProjectListDialog(
+    private val projectInterface: ProjectInterface,
+    var projectList: ArrayList<ProjectRespModel>
+) :
+    BottomSheetDialogFragment() {
     var binding: ProjectListBdialogBinding? = null
     var progressbar: Progressbar? = null
+    var adapter: ProjectAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,10 +37,25 @@ class ProjectListDialog : BottomSheetDialogFragment() {
         isCancelable = false
         progressbar = Progressbar(requireContext())
 
+        binding?.createNew?.setOnClickListener {
+            projectInterface.onClickProject(-1)
+        }
+
+        binding?.projectRV?.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        adapter = ProjectAdapter(
+            requireContext(),
+            projectList = projectList,
+            projectInterface
+        )
+        binding?.projectRV?.adapter = adapter
+//        adapter?.setItems(projectList)
 
         binding?.close?.setOnClickListener {
             dismiss()
         }
+
+        binding?.projectRV
         return binding?.root
     }
 
@@ -47,16 +70,6 @@ class ProjectListDialog : BottomSheetDialogFragment() {
             parentLayout?.let { it1 ->
                 val behaviour = BottomSheetBehavior.from(it1)
                 behaviour.state = BottomSheetBehavior.STATE_EXPANDED
-
-                behaviour.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                    override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
-
-                    }
-
-                    override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {
-                        // React to dragging events
-                    }
-                })
             }
         }
 

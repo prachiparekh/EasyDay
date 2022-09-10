@@ -2,12 +2,10 @@ package com.civil.easyday.app.sources.remote.apis
 
 import com.civil.easyday.app.sources.ApiResponse
 import com.civil.easyday.app.sources.remote.model.OTPRespModel
+import com.civil.easyday.app.sources.remote.model.ProjectRespModel
 import com.civil.easyday.app.sources.remote.model.UserModel
 import com.civil.easyday.app.sources.remote.model.VerifyOTPRespModel
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 import rx.Observable
 
 interface EasyDayApi {
@@ -33,4 +31,10 @@ interface EasyDayApi {
 
     @GET("user/get-profile")
     fun getProfile(): Observable<ApiResponse<UserModel>>
+
+    @GET("project/get-project")
+    fun getAllProject(): Observable<ApiResponse<ArrayList<ProjectRespModel>>>
+
+    @GET("project/get-project")
+    fun getProject(@Query("project_id") project_id : Int): Observable<ApiResponse<ProjectRespModel>?>
 }

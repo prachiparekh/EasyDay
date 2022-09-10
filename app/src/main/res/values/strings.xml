@@ -47,5 +47,13 @@
     <string name="filter_task">Filter tasks</string>
     <string name="ur_projects">Your Projects</string>
 
+    <string name="create_new_project">Create New Project</string>
+    <string name="project_name">Project name <font color='#FB4079'>*</font></string>
+    <string name="description">Description <font color='#FB4079'>*</font></string>
+    <string name="assign_color">Assign Color</string>
+    <string name="dex_length">0/110</string>
+    <string name="name_required">Project name requires !</string>
+    <string name="desc_required">Project description requires !</string>
+
 
 </resources>
