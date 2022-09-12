@@ -26,8 +26,8 @@ class IntentUtil {
             val allIntents: MutableList<Intent> = ArrayList()
             val packageManager = context.packageManager
 
-            // collect all camera intents if Camera permission is available
-            if (permission(activity)) {
+            // collect all camera intents if Camera cameraPermission is available
+            if (cameraPermission(activity)) {
                 val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri())
                 allIntents.add(captureIntent)
@@ -80,7 +80,7 @@ class IntentUtil {
             return intents
         }
 
-        private fun permission(activity: Activity): Boolean {
+        fun cameraPermission(activity: Activity): Boolean {
 
             return ActivityCompat.checkSelfPermission(
                 activity,
@@ -105,7 +105,32 @@ class IntentUtil {
             return imgPath
         }
 
+        fun readPermission(activity: Activity): Boolean {
 
+            return ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+
+        }
+
+        fun writePermission(activity: Activity): Boolean {
+
+            return ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+
+        }
+
+        fun contactPermission(activity: Activity): Boolean {
+
+            return ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.READ_CONTACTS
+            ) == PackageManager.PERMISSION_GRANTED
+
+        }
 
     }
 }

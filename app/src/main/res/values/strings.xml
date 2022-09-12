@@ -54,6 +54,8 @@
     <string name="dex_length">0/110</string>
     <string name="name_required">Project name requires !</string>
     <string name="desc_required">Project description requires !</string>
+    <string name="participants">Participants</string>
+    <string name="search">Search</string>
 
 
 </resources>

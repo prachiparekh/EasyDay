@@ -1,6 +1,7 @@
 package com.civil.easyday.app.sources.remote.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class AddProjectRequestModel(
 
@@ -15,5 +16,5 @@ data class AddProjectRequestModel(
 
     @field:SerializedName("participants")
     val participants: List<ProjectParticipantsModel?>? = null
-)
+) : Serializable
 

@@ -2,7 +2,6 @@ package com.civil.easyday.screens.activities.auth
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.net.Uri
@@ -11,7 +10,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
@@ -25,6 +23,9 @@ import com.civil.easyday.screens.base.BaseActivity.Companion.profileLogoListener
 import com.civil.easyday.screens.base.BaseFragment
 import com.civil.easyday.utils.FileUtil
 import com.civil.easyday.utils.IntentUtil
+import com.civil.easyday.utils.IntentUtil.Companion.cameraPermission
+import com.civil.easyday.utils.IntentUtil.Companion.readPermission
+import com.civil.easyday.utils.IntentUtil.Companion.writePermission
 import com.google.android.material.textfield.TextInputEditText
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -45,7 +46,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
     override fun getContentView() = R.layout.fragment_profile
     var isNewUser: Boolean? = null
 
-    override fun getStatusBarColor()=ContextCompat.getColor(requireContext(), R.color.bg_white)
+    override fun getStatusBarColor() = ContextCompat.getColor(requireContext(), R.color.bg_white)
 
     override fun initUi() {
 
@@ -57,24 +58,14 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
 
         camera.setOnClickListener {
             profileLogoListener = this
-            if ((ActivityCompat.checkSelfPermission(
-                    requireActivity(),
-                    Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(
-                    requireActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED) || (ActivityCompat.checkSelfPermission(
-                    requireActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED)
-            ) {
-                onPermission()
-            } else {
 
-                if (permission()) {
-                    openIntent()
-                }
-            }
+            if (cameraPermission(requireActivity()) && readPermission(requireActivity()) && writePermission(
+                    requireActivity()
+                )
+            )
+                openIntent()
+            else
+                onPermission()
         }
 
         cta.setOnClickListener {
@@ -107,7 +98,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
             } else {
 
                 //update API
-                val intent = Intent (requireActivity(), MainActivity::class.java)
+                val intent = Intent(requireActivity(), MainActivity::class.java)
                 requireActivity().startActivity(intent)
             }
         }
@@ -216,20 +207,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
             .check()
     }
 
-    private fun permission(): Boolean {
-
-        return ActivityCompat.checkSelfPermission(
-            requireActivity(),
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-            requireActivity(),
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-            requireActivity(),
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-
-    }
 
     private fun openIntent() {
         requireActivity().startActivityForResult(
@@ -261,10 +238,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                 AppPreferencesDelegates.get().token = userData?.token.toString()
         }
 
-        viewModel.actionStream.observe(viewLifecycleOwner){
-            when(it){
-                is ProfileViewModel.ACTION.onAddUpdateUser->{
-                    val intent = Intent (requireActivity(), MainActivity::class.java)
+        viewModel.actionStream.observe(viewLifecycleOwner) {
+            when (it) {
+                is ProfileViewModel.ACTION.onAddUpdateUser -> {
+                    val intent = Intent(requireActivity(), MainActivity::class.java)
                     requireActivity().startActivity(intent)
                 }
             }
