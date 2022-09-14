@@ -78,6 +78,12 @@ class AddParticipantsFragment : Fragment() {
         val model = arguments?.getSerializable("createProjectModel") as AddProjectRequestModel
         Log.e("model", model.toString())
 
+
+        return binding?.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         DeviceUtils.initProgress(requireContext())
         DeviceUtils.showProgress()
         if (contactPermission(requireActivity())) {
@@ -85,9 +91,6 @@ class AddParticipantsFragment : Fragment() {
         } else
             onPermission()
 
-
-
-        return binding?.root
     }
 
 
@@ -157,7 +160,7 @@ class AddParticipantsFragment : Fragment() {
                                     contactList.add(
                                         ContactModel(
                                             id,
-                                            name, "participant",
+                                            name, context.resources.getString(R.string.participant_role),
                                             lastnumber,
                                             mBitmapURI.toString()
                                         )

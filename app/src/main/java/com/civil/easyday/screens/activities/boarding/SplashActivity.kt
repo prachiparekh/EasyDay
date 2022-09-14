@@ -28,7 +28,7 @@ class SplashActivity : AppCompatActivity() {
         val activityNavigator = ActivityNavigator(baseContext)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            Log.e("wasOnboardingSeen", appPreferences.wasOnboardingSeen.toString())
+
             if (appPreferences.wasOnboardingSeen) {
 
                 activityNavigator.navigate(

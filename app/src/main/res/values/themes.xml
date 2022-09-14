@@ -55,6 +55,7 @@
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/_13sdp</item>
+        <item name="android:fontFamily">@font/mulish_700</item>
     </style>
     <style name="MySearchView" parent="Widget.AppCompat.SearchView">
         <item name="queryHint">@string/search</item>
@@ -64,7 +65,7 @@
 
     <style name="ThemeOverlay.SearchView" parent="">
         <item name="android:fontFamily">@font/dm_sans_400</item>
-        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:textSize">@dimen/_11sdp</item>
     </style>
 
 </resources>
