@@ -30,7 +30,7 @@
             app:enterAnim="@anim/slide_in_from_the_right"
             app:exitAnim="@anim/slide_out_to_the_left"
             app:popEnterAnim="@anim/slide_in_from_the_left"
-            app:popExitAnim="@anim/slide_out_to_the_right" >
+            app:popExitAnim="@anim/slide_out_to_the_right">
 
             <argument
                 android:name="createProjectModel"
@@ -43,5 +43,23 @@
         android:id="@+id/addParticipantsFragment"
         android:name="com.civil.easyday.screens.activities.main.home.project.AddParticipantsFragment"
         android:label="fragment_add_participants"
-        tools:layout="@layout/fragment_add_participants" />
+        tools:layout="@layout/fragment_add_participants">
+        <action
+            android:id="@+id/add_participant_to_add_admin"
+            app:destination="@id/addAdminFragment"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right"/>
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/addAdminFragment"
+        android:name="com.civil.easyday.screens.activities.main.home.project.AddAdminFragment"
+        android:label="fragment_add_admin"
+        tools:layout="@layout/fragment_add_admin">
+
+
+    </fragment>
 </navigation>

@@ -17,6 +17,7 @@ import com.civil.easyday.R
 import com.civil.easyday.app.sources.local.interfaces.ColorInterface
 import com.civil.easyday.app.sources.remote.model.AddProjectRequestModel
 import com.civil.easyday.databinding.FragmentAddProjectBinding
+import com.civil.easyday.screens.activities.main.home.project.adapter.ColorAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
