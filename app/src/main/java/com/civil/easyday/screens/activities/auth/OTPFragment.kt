@@ -31,7 +31,7 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
     override fun getContentView() = R.layout.fragment_o_t_p
     override fun getStatusBarColor()= ContextCompat.getColor(requireContext(), R.color.bg_white)
 
-    private val timer = object : CountDownTimer(1000 * 60 * 2, 1000) {
+    private val timer = object : CountDownTimer(1000 * 60 * 5, 1000) {
         override fun onTick(millisUntilFinished: Long) {
 
             val minutes = millisUntilFinished / 1000 / 60

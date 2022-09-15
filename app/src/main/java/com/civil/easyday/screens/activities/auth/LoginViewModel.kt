@@ -5,7 +5,11 @@ import com.civil.easyday.app.sources.remote.apis.EasyDayApi
 import com.civil.easyday.navigation.SingleLiveEvent
 import com.civil.easyday.screens.base.BaseViewModel
 import com.civil.easyday.utils.DeviceUtils
+import com.civil.easyday.utils.ErrorUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import org.json.JSONObject
+import retrofit2.adapter.rxjava.HttpException
+
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import javax.inject.Inject
@@ -19,6 +23,7 @@ class LoginViewModel @Inject constructor(
 
     sealed class ACTION {
         class GetOTPMsg(val msg: String) : ACTION()
+        class GetErrorMsg(val msg: String) : ACTION()
     }
 
     fun sendOTP(fullNumber: String) {
@@ -26,11 +31,12 @@ class LoginViewModel @Inject constructor(
 
         api.sendOTP(fullNumber)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe({resp->
-                actionStream.value=ACTION.GetOTPMsg(resp.message.toString())
+            .subscribe({ resp ->
+                actionStream.value = ACTION.GetOTPMsg(resp.message.toString())
                 DeviceUtils.dismissProgress()
-            },{
-
+            }, { throwable ->
+                actionStream.value = ErrorUtil.onError(throwable)
+                    ?.let { ACTION.GetErrorMsg(it) }
                 DeviceUtils.dismissProgress()
             })
     }

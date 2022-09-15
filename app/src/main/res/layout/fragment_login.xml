@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_white"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".screens.activities.auth.LoginFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -148,7 +148,7 @@
         <View
             android:layout_width="@dimen/_1sdp"
             android:layout_height="match_parent"
-            android:background="@color/stroke"/>
+            android:background="@color/stroke" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/phoneLabel"
@@ -185,7 +185,6 @@
 
     </LinearLayout>
 
-
     <View
         android:id="@+id/view3"
         android:layout_width="match_parent"
@@ -194,6 +193,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/numberLL" />
+
+    <TextView
+        android:id="@+id/errorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/dm_sans_400"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/view3" />
+
 
     <TextView
         android:id="@+id/cta"
@@ -210,6 +221,6 @@
         android:textSize="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view3" />
+        app:layout_constraintTop_toBottomOf="@id/errorText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

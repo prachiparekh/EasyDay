@@ -3,6 +3,7 @@ package com.civil.easyday.screens.activities.auth
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.civil.easyday.R
@@ -31,7 +32,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
 
         setPhoneCountryData()
         cta.setOnClickListener {
-
+            errorText.isVisible=false
             DeviceUtils.hideKeyboard(requireContext())
             if (phone.text?.isNotEmpty() == true && countryCode?.isNotEmpty() == true) {
                 countryCode=countryCode?.drop(2)
@@ -89,7 +90,10 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
                     if (nav.currentDestination != null && nav.currentDestination?.id == R.id.loginFragment) {
                         nav.navigate(action)
                     }
-
+                }
+                is LoginViewModel.ACTION.GetErrorMsg->{
+                    errorText.text=it.msg
+                    errorText.isVisible=true
                 }
             }
         }

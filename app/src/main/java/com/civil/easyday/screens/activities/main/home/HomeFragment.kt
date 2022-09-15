@@ -38,9 +38,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(), ProjectInterface {
 
     override fun initUi() {
 
-        AppPreferencesDelegates.get().token =
-            "40CbCrpB0LWI4euNF3C3u2XZETOqQvOB2dbR8gRYGV3AeVtHpSqzeV8dQPCi5Guxvxb9E0APt1HiHM8Z1tlgWtZvRLbtRw3DWWNQaP9Nc14H"
-
         if (!AppPreferencesDelegates.get().showcaseSeen) {
 
             fancyView2 = FancyShowCaseView.Builder(requireActivity())

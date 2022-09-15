@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -88,6 +89,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                     return@setOnClickListener
                 }
 
+                Log.e("mPhoneNumber", "L:$mPhoneNumber")
                 if (mPhoneNumber != null) {
                     viewModel.createUser(
                         fullName.text.toString(),
@@ -241,8 +243,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
         viewModel.actionStream.observe(viewLifecycleOwner) {
             when (it) {
                 is ProfileViewModel.ACTION.onAddUpdateUser -> {
-                    val intent = Intent(requireActivity(), MainActivity::class.java)
-                    requireActivity().startActivity(intent)
+                    requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
+                }
+                is ProfileViewModel.ACTION.onError->{
+                    Toast.makeText(requireContext(),it.msg,Toast.LENGTH_SHORT).show()
                 }
             }
         }
