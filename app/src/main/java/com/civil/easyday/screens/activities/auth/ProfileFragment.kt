@@ -158,7 +158,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
         requireView().isFocusableInTouchMode = true
         requireView().requestFocus()
         requireView().setOnKeyListener { v, keyCode, event ->
-            event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                requireActivity().finish()
+                true
+            } else false
         }
     }
 
@@ -243,10 +246,16 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
         viewModel.actionStream.observe(viewLifecycleOwner) {
             when (it) {
                 is ProfileViewModel.ACTION.onAddUpdateUser -> {
-                    requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
+                    requireActivity().startActivity(
+                        Intent(
+                            requireActivity(),
+                            MainActivity::class.java
+                        )
+                    )
                 }
-                is ProfileViewModel.ACTION.onError->{
-                    Toast.makeText(requireContext(),it.msg,Toast.LENGTH_SHORT).show()
+                is ProfileViewModel.ACTION.onError -> {
+                    if (it.msg != null)
+                        Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
                 }
             }
         }

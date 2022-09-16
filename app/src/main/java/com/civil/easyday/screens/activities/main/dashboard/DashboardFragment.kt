@@ -1,6 +1,12 @@
 package com.civil.easyday.screens.activities.main.dashboard
 
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.RequestOptions
 import com.civil.easyday.R
 import com.civil.easyday.screens.activities.main.home.HomeFragment
 import com.civil.easyday.screens.activities.main.inbox.InboxFragment
@@ -18,6 +24,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
 
     override fun initUi() {
 
+        openChildFragment(HomeFragment(), HomeFragment.TAG)
         bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
@@ -47,12 +54,21 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
     }
 
     override fun setObservers() {
-        viewModel.actionStream.observe(viewLifecycleOwner) {
-            when (it) {
-                is DashboardViewModel.ACTION.OpenChildFragment -> {
-                    openChildFragment(it.fragment, it.tag)
-                }
+        viewModel.userProfileData.observe(viewLifecycleOwner) { userData ->
+            if (userData?.profileImage != null) {
+                val options = RequestOptions()
+                profile.clipToOutline = true
+                Glide.with(requireContext())
+                    .load(userData.profileImage)
+                    .apply(
+                        options.centerCrop()
+                            .skipMemoryCache(true)
+                            .priority(Priority.HIGH)
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                    )
+                    .into(profile)
             }
         }
     }
+
 }

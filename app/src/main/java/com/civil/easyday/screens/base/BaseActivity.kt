@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.civil.easyday.R
-import com.civil.easyday.dialogs.DialogUtils.Companion.showErrorInfo
 import com.civil.easyday.navigation.UiEvent
 import com.civil.easyday.utils.DeviceUtils
 import com.civil.easyday.utils.IntentUtil.Companion.PICK_IMAGE_CHOOSER_REQUEST_CODE
@@ -75,7 +74,7 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
     }
 
     private fun showToast(message: String) {
-        showErrorInfo(this, message)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

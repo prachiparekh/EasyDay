@@ -12,11 +12,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_auth.*
 
 @AndroidEntryPoint
-class AuthActivity : AppCompatActivity() {
+class AuthActivity : BaseActivity<AuthViewModel>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
+
+    override fun getContentView()=R.layout.activity_auth
+
+    override fun setupUi() {
+    }
+
+    override fun setupObservers() {
     }
 
 

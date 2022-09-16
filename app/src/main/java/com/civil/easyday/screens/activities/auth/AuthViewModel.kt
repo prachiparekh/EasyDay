@@ -1,11 +1,11 @@
-package com.civil.easyday.screens.activities.main.home.filter
+package com.civil.easyday.screens.activities.auth
 
 import com.civil.easyday.screens.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class FilterViewModel @Inject constructor(
+class AuthViewModel @Inject constructor(
 
-):BaseViewModel() {
+):BaseViewModel(){
 }

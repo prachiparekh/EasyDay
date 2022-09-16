@@ -1,6 +1,7 @@
 package com.civil.easyday.app.sources.remote.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class UserModel(
 
@@ -33,7 +34,7 @@ data class UserModel(
 
 	@field:SerializedName("token")
 	val token: String? = null
-) {
+):Serializable {
 	override fun toString(): String {
 		return "UserModel(phoneNumber=$phoneNumber, fullname=$fullname, token=$token)"
 	}

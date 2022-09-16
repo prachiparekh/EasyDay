@@ -17,6 +17,7 @@
             app:exitAnim="@anim/slide_out_to_the_left"
             app:popEnterAnim="@anim/slide_in_from_the_left"
             app:popExitAnim="@anim/slide_out_to_the_right" />
+
     </fragment>
     <fragment
         android:id="@+id/addProjectFragment"
@@ -62,4 +63,5 @@
 
 
     </fragment>
+
 </navigation>

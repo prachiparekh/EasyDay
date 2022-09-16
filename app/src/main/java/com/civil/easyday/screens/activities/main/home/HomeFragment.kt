@@ -12,6 +12,7 @@ import com.civil.easyday.app.sources.local.interfaces.ProjectInterface
 import com.civil.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.civil.easyday.screens.activities.main.dashboard.DashboardFragmentDirections
 import com.civil.easyday.screens.base.BaseFragment
+import com.civil.easyday.screens.dialogs.FilterBottomSheetDialog
 import com.civil.easyday.screens.dialogs.ProjectListDialog
 import com.civil.easyday.utils.DeviceUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,8 @@ import me.toptas.fancyshowcase.listener.OnViewInflateListener
 
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<HomeViewModel>(), ProjectInterface {
+class HomeFragment : BaseFragment<HomeViewModel>(),
+    ProjectInterface {
 
     companion object {
         const val TAG = "HomeFragment"
@@ -31,6 +33,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), ProjectInterface {
     private lateinit var queue: FancyShowCaseQueue
     private lateinit var fancyView2: FancyShowCaseView
     private lateinit var fancyView1: FancyShowCaseView
+    private var filterDialog = FilterBottomSheetDialog()
 
 
     override fun getContentView() = R.layout.fragment_home
@@ -65,7 +68,12 @@ class HomeFragment : BaseFragment<HomeViewModel>(), ProjectInterface {
             }
         }
 
+        filterTV.setOnClickListener {
+            filterDialog.show(childFragmentManager, "filter")
+        }
+
     }
+
 
     override fun setObservers() {
         viewModel.projectList.observe(viewLifecycleOwner) { projectList ->
@@ -86,10 +94,12 @@ class HomeFragment : BaseFragment<HomeViewModel>(), ProjectInterface {
     private fun setAnimatedContent(view: View, fancyShowCaseView: FancyShowCaseView) {
         Handler().postDelayed({
 
-            val mainAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_left)
+            val mainAnimation =
+                AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_from_the_left)
             mainAnimation.fillAfter = true
 
-            val subAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_left)
+            val subAnimation =
+                AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_from_the_left)
             subAnimation.fillAfter = true
 
             if (fancyShowCaseView == fancyView2) {

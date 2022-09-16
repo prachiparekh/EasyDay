@@ -3,7 +3,6 @@ package com.civil.easyday.screens.activities.boarding
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.navigation.ActivityNavigator
 import com.civil.easyday.R
 import com.civil.easyday.app.sources.local.prefrences.AppPreferencesDelegates
@@ -24,10 +23,15 @@ class SplashActivity : BaseActivity<SplashViewModel>() {
     override fun getContentView() = R.layout.activity_splash
 
     override fun setupObservers() {
-        viewModel.userProfileData?.observe(this) { userData ->
-            Log.e("userData", userData.toString())
+        viewModel.userProfileData.observe(this) { userData ->
+
             if (userData != null) {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                startActivity(
+                    Intent(
+                        this@SplashActivity,
+                        MainActivity::class.java
+                    )
+                )
                 finish()
             } else {
                 val activityNavigator = ActivityNavigator(baseContext)

@@ -24,6 +24,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
 
     override fun getContentView() = R.layout.fragment_login
     private var countryCode: String? = null
+    private var fullNumber=""
 
     override fun getStatusBarColor()= ContextCompat.getColor(requireContext(), R.color.bg_white)
 
@@ -35,8 +36,8 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
             errorText.isVisible=false
             DeviceUtils.hideKeyboard(requireContext())
             if (phone.text?.isNotEmpty() == true && countryCode?.isNotEmpty() == true) {
-                countryCode=countryCode?.drop(2)
-                val fullNumber = countryCode + phone.text
+                fullNumber = countryCode + phone.text
+                fullNumber = fullNumber.replace("\\s+".toRegex(), "")
                 viewModel.sendOTP(fullNumber)
             } else {
                 Toast.makeText(
@@ -52,22 +53,27 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
         val phoneModelList: ArrayList<PhoneCodeModel> = ArrayList()
         val obj = FileUtil.loadJSONFromAsset(requireContext())?.let { JSONObject(it) }
 
+        var defaultCode:PhoneCodeModel?=null
         if (obj != null) {
             for (key in obj.keys()) {
                 val keyStr = key as String
                 val keyValue = obj[keyStr]
                 val code = PhoneCodeModel(keyStr, keyValue as String?)
                 phoneModelList.add(code)
+                if (code.key == "IN") {
+                    defaultCode=code
+                }
             }
         }
 
-        phoneCode.text = "+ ${phoneModelList[0].value}"
+
+        phoneCode.text = "+ ${defaultCode?.value}"
         countryCode = phoneCode.text.toString()
 
         phoneFlag.text =
             CountryCityUtils.getFlagId(
                 CountryCityUtils.firstTwo(
-                    phoneModelList[0].key?.lowercase(Locale.getDefault()).toString()
+                    defaultCode?.key?.lowercase(Locale.getDefault()).toString()
                 )
             )
 
@@ -83,7 +89,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
             when (it) {
                 is LoginViewModel.ACTION.GetOTPMsg -> {
                     Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
-                    val fullNumber = countryCode + phone.text.toString()
+
                     val action = LoginFragmentDirections.loginToOtp()
                     action.phoneNumber = fullNumber
                     val nav: NavController = Navigation.findNavController(requireView())

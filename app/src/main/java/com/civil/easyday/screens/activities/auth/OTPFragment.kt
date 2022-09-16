@@ -101,8 +101,8 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
     }
 
     private fun onBackPress() {
-        Navigation.findNavController(requireView()).popBackStack()
         timer.cancel()
+        Navigation.findNavController(requireView()).popBackStack()
     }
 
     override fun setObservers() {

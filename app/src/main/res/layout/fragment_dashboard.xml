@@ -44,6 +44,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:padding="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                app:tint="@color/white"
                 android:src="@drawable/ic_search" />
 
             <androidx.appcompat.widget.AppCompatImageView
