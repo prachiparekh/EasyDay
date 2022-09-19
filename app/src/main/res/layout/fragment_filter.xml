@@ -42,55 +42,62 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/mainLL"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/bg_white"
+        android:orientation="horizontal"
+        android:weightSum="2"
         app:layout_constraintBottom_toTopOf="@id/bottomRL"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topCL">
 
-        <LinearLayout
-            android:id="@+id/mainLL"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:weightSum="2">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/filterRV"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:background="@color/bg_white"
+            android:nestedScrollingEnabled="false"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_filter_type" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/filterRV"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:nestedScrollingEnabled="false"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_filter_type" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/stroke" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/stroke" />
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:background="@color/white"
+            android:scrollbars="none">
 
-            <include
-                android:id="@+id/dueDateLayout"
-                layout="@layout/due_date_filter_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
-                android:background="@color/white" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/otherLayout"
-                layout="@layout/other_filter_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
-                android:background="@color/white"
-                android:visibility="gone" />
+                <include
+                    android:id="@+id/dateRangeLayout"
+                    layout="@layout/date_range_filter_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible" />
 
-        </LinearLayout>
-    </ScrollView>
+                <include
+                    android:id="@+id/otherLayout"
+                    layout="@layout/other_filter_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </ScrollView>
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/bottomRL"

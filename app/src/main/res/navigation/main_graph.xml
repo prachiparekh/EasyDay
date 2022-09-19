@@ -18,6 +18,14 @@
             app:popEnterAnim="@anim/slide_in_from_the_left"
             app:popExitAnim="@anim/slide_out_to_the_right" />
 
+        <action
+            android:id="@+id/dashboard_to_create_task"
+            app:destination="@id/createTaskFragment"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right" />
+
     </fragment>
     <fragment
         android:id="@+id/addProjectFragment"
@@ -63,5 +71,10 @@
 
 
     </fragment>
+    <fragment
+        android:id="@+id/createTaskFragment"
+        android:name="com.civil.easyday.screens.activities.main.home.task.CreateTaskFragment"
+        android:label="fragment_create_task"
+        tools:layout="@layout/fragment_create_task" />
 
 </navigation>

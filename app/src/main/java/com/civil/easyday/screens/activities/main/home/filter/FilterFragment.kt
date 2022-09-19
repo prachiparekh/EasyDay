@@ -2,19 +2,18 @@ package com.civil.easyday.screens.activities.main.home.filter
 
 import android.app.DatePickerDialog
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import com.civil.easyday.R
 import com.civil.easyday.app.sources.local.interfaces.FilterTypeInterface
-import com.civil.easyday.databinding.DueDateFilterLayoutBinding
-import com.civil.easyday.databinding.OtherFilterLayoutBinding
 import com.civil.easyday.screens.base.BaseFragment
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.date_range_filter_layout.view.*
 import kotlinx.android.synthetic.main.fragment_filter.*
+import kotlinx.android.synthetic.main.other_filter_layout.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,10 +24,11 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
         var selectedFilterPosition = 0
     }
 
-    var filterTypeList = arrayListOf<String>()
-    var dueDateLayoutBinding: DueDateFilterLayoutBinding? = null
-    var otherFilterBinding: OtherFilterLayoutBinding? = null
-
+    private var filterTypeList = arrayListOf<String>()
+    private var taskStatusList = arrayListOf<String>()
+    var priorityList = arrayListOf<String>()
+    var redFlagList = arrayListOf<String>()
+    var dueDateList = arrayListOf<String>()
 
     override fun getContentView() = R.layout.fragment_filter
 
@@ -44,19 +44,21 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
         filterTypeList.add(requireContext().resources.getString(R.string.f_due_date))
 
         filterRV.adapter = FilterTypeAdapter(requireContext(), filterTypeList, this)
-       /* dueDateLayoutBinding = DataBindingUtil.inflate<DueDateFilterLayoutBinding>(
-            layoutInflater, R.layout.due_date_filter_layout, null, true
-        )
-        otherFilterBinding =
-            DataBindingUtil.inflate<OtherFilterLayoutBinding>(
-                layoutInflater,
-                R.layout.other_filter_layout,
-                null,
-                true
-            )*/
 
-        dueDateLayoutBinding= dueDateLayoutBinding?.root?.let { DueDateFilterLayoutBinding.bind(it) }
-        otherFilterBinding= otherFilterBinding?.root?.let { OtherFilterLayoutBinding.bind(it) }
+        taskStatusList.add(requireContext().resources.getString(R.string.progress))
+        taskStatusList.add(requireContext().resources.getString(R.string.review))
+        taskStatusList.add(requireContext().resources.getString(R.string.completed))
+        taskStatusList.add(requireContext().resources.getString(R.string.reopened))
+
+        priorityList.add(requireContext().resources.getString(R.string.low))
+        priorityList.add(requireContext().resources.getString(R.string.normal))
+        priorityList.add(requireContext().resources.getString(R.string.high))
+
+        redFlagList.add(requireContext().resources.getString(R.string.yes))
+        redFlagList.add(requireContext().resources.getString(R.string.no))
+
+        dueDateList.add(requireContext().resources.getString(R.string.passed))
+        dueDateList.add(requireContext().resources.getString(R.string.not_passed))
 
         changeFilterUI(selectedFilterPosition)
     }
@@ -69,27 +71,83 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
         changeFilterUI(selectedFilterPosition)
     }
 
+    override fun onFilterSingleChildClick(childList: ArrayList<String>, childPosition: Int) {
+        Log.e("selected:", childList[childPosition])
+    }
+
+    override fun onFilterMultipleChildClick() {
+
+    }
+
     private fun changeFilterUI(position: Int) {
         if (position == 0) {
-            dueDateLayout.isVisible = true
+//            DueDate Filter
+            dateRangeLayout.isVisible = true
             otherLayout.isVisible = false
             dueDateFilterHandler()
         } else {
-            dueDateLayout.isVisible = false
+//            Other Filter
+            dateRangeLayout.isVisible = false
             otherLayout.isVisible = true
+            otherFilterHandler(position)
         }
     }
 
     private fun dueDateFilterHandler() {
-        dueDateLayoutBinding?.fromET?.setOnClickListener {
-            Log.e("fromET","fromET")
+        dateRangeLayout.fromET?.setOnClickListener {
             showDatePicker(it, Date().time)
         }
 
-        dueDateLayoutBinding?.toET?.setOnClickListener {
-            Log.e("toET","toET")
+        dateRangeLayout.toET?.setOnClickListener {
             showDatePicker(it, Date().time)
         }
+    }
+
+    private fun otherFilterHandler(parentPosition: Int) {
+        when (parentPosition) {
+            1 -> {
+//                Single : Task Status
+                otherLayout.childFilterRV.adapter =
+                    FilterSingleChildAdapter(requireContext(), taskStatusList, this)
+            }
+            2 -> {
+//                 Multiple :Tag (API)
+                otherLayout.childFilterRV.adapter =
+                    FilterMultipleChildAdapter(requireContext(), arrayListOf(), arrayListOf())
+            }
+            3 -> {
+//                Single : Priority
+                otherLayout.childFilterRV.adapter =
+                    FilterSingleChildAdapter(requireContext(), priorityList, this)
+            }
+            4 -> {
+//                 Multiple :Assigned To (API)
+                otherLayout.childFilterRV.adapter =
+                    FilterMultipleChildAdapter(requireContext(), arrayListOf(), arrayListOf())
+            }
+            5 -> {
+//                 Multiple :Zone (API)
+                otherLayout.childFilterRV.adapter =
+                    FilterMultipleChildAdapter(requireContext(), arrayListOf(), arrayListOf())
+            }
+            6 -> {
+//                 Multiple :Space (API)
+                otherLayout.childFilterRV.adapter =
+                    FilterMultipleChildAdapter(requireContext(), arrayListOf(), arrayListOf())
+            }
+            7 -> {
+//                 Single :Red Flag
+                otherLayout.childFilterRV.adapter =
+                    FilterSingleChildAdapter(requireContext(), redFlagList, this)
+            }
+            8  -> {
+//                 Single :Due Date
+                otherLayout.childFilterRV.adapter =
+                    FilterSingleChildAdapter(requireContext(), dueDateList, this)
+            }
+
+        }
+
     }
 
     private var dpd: DatePickerDialog? = null
@@ -103,11 +161,11 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
             requireContext(), R.style.DialogTheme, { _, year, monthOfYear, dayOfMonth ->
 
                 if (view.id == R.id.fromET) {
-                    dueDateLayoutBinding?.fromLabel?.setEndIconDrawable(R.drawable.ic_calendar_visible)
-                    dueDateLayoutBinding?.fromLabel?.endIconMode = TextInputLayout.END_ICON_CUSTOM
+                    dateRangeLayout.fromLabel?.setEndIconDrawable(R.drawable.ic_calendar_visible)
+                    dateRangeLayout.fromLabel?.endIconMode = TextInputLayout.END_ICON_CUSTOM
                 } else {
-                    dueDateLayoutBinding?.toLabel?.setEndIconDrawable(R.drawable.ic_calendar_visible)
-                    dueDateLayoutBinding?.toLabel?.endIconMode = TextInputLayout.END_ICON_CUSTOM
+                    dateRangeLayout.toLabel?.setEndIconDrawable(R.drawable.ic_calendar_visible)
+                    dateRangeLayout.toLabel?.endIconMode = TextInputLayout.END_ICON_CUSTOM
                 }
 
                 setDueDate(
@@ -123,8 +181,24 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
         dpd?.show()
     }
 
+    private var fromDateMillis: Long = 0
     private fun setDueDate(view: View, timeInMillies: Long) {
 
+        if (view.id == R.id.fromET) {
+            fromDateMillis = timeInMillies
+        }
+        if (!fromDateMillis.equals(0)) {
+            if (view.id == R.id.toET) {
+                if (fromDateMillis > timeInMillies) {
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().resources.getString(R.string.to_date_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return
+                }
+            }
+        }
         (view as? TextView)?.text = SimpleDateFormat(
             getString(R.string.date_format_template), Locale.getDefault()
         ).format(

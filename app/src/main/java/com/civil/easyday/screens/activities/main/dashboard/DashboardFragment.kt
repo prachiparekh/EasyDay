@@ -8,6 +8,7 @@ import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.civil.easyday.R
+import com.civil.easyday.screens.activities.auth.LoginFragmentDirections
 import com.civil.easyday.screens.activities.main.home.HomeFragment
 import com.civil.easyday.screens.activities.main.inbox.InboxFragment
 import com.civil.easyday.screens.activities.main.more.MoreFragment
@@ -41,6 +42,14 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
                 }
             }
             true
+        }
+
+        add.setOnClickListener {
+            val action = DashboardFragmentDirections.dashboardToCreateTask()
+            val nav: NavController = Navigation.findNavController(requireView())
+            if (nav.currentDestination != null && nav.currentDestination?.id == R.id.dashboardFragment) {
+                nav.navigate(action)
+            }
         }
     }
 

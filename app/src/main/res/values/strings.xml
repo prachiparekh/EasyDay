@@ -81,5 +81,23 @@
     <string name="from">From <font color='#FB4079'>*</font></string>
     <string name="to">To <font color='#FB4079'>*</font></string>
     <string name="date_format_template" translatable="false">dd/MM/yyyy</string>
+    <string name="to_date_error">Due date : To date should greater than from date !</string>
+
+    <string name="progress">In Progress</string>
+    <string name="review">Review</string>
+    <string name="completed">Completed</string>
+    <string name="reopened">Reopened</string>
+
+    <string name="low">Low</string>
+    <string name="normal">Normal</string>
+    <string name="high">High</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="passed">Passed</string>
+    <string name="not_passed">Not Passed</string>
+
+    <string name="task_title">Task Title</string>
 
 </resources>

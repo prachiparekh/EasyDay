@@ -33,4 +33,5 @@
     <color name="color7">#673AB7</color>
     <color name="color8">#E543FF</color>
     <color name="light_text">#818199</color>
+    <color name="light_black">#79000000</color>
 </resources>

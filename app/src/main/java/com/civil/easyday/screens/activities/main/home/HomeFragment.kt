@@ -72,6 +72,12 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             filterDialog.show(childFragmentManager, "filter")
         }
 
+        cta.setOnClickListener {
+            val action = DashboardFragmentDirections.dashboardToCreateTask()
+            val nav: NavController = Navigation.findNavController(requireView())
+            nav.navigate(action)
+        }
+
     }
 
 
