@@ -24,8 +24,8 @@ class ProfileViewModel @Inject constructor(
         class onError(val msg: String?) : ACTION()
     }
 
-    fun createUser(fullName: String, profession: String, phoneNumber: String) {
-        api.createUser(fullName, profession, phoneNumber)
+    fun createUser(fullName: String, profession: String, phoneNumber: String,country_code: String) {
+        api.createUser(fullName, profession, phoneNumber,country_code)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 actionStream.value = ACTION.onAddUpdateUser(resp.data)

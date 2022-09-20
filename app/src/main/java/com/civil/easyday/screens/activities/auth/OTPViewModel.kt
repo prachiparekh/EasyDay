@@ -24,9 +24,9 @@ class OTPViewModel @Inject constructor(
         class GetOTPMsg(val msg: String) : ACTION()
     }
 
-    fun resendOTP(fullNumber: String) {
+    fun resendOTP(fullNumber: String,country_code: String) {
         DeviceUtils.showProgress()
-        api.sendOTP(fullNumber)
+        api.sendOTP(fullNumber,country_code)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 actionStream.value = ACTION.GetOTPMsg(resp.message.toString())
@@ -37,9 +37,9 @@ class OTPViewModel @Inject constructor(
             })
     }
 
-    fun verifyOTP(phone_number: String, otp: String) {
+    fun verifyOTP(phone_number: String, otp: String,country_code: String) {
         DeviceUtils.showProgress()
-        api.verifyOTP(phone_number, otp)
+        api.verifyOTP(phone_number, otp,country_code)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 DeviceUtils.dismissProgress()

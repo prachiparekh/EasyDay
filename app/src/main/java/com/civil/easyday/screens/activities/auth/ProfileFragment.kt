@@ -52,6 +52,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
     override fun initUi() {
 
         val mPhoneNumber = arguments?.getString("phoneNumber")
+        val mCountryCode = arguments?.getString("countryCode")
         isNewUser = arguments?.getBoolean("isNewUser", true)
         if (isNewUser == false) {
             viewModel.getProfile()
@@ -91,11 +92,14 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
 
                 Log.e("mPhoneNumber", "L:$mPhoneNumber")
                 if (mPhoneNumber != null) {
-                    viewModel.createUser(
-                        fullName.text.toString(),
-                        profession.text.toString(),
-                        mPhoneNumber
-                    )
+                    if (mCountryCode != null) {
+                        viewModel.createUser(
+                            fullName.text.toString(),
+                            profession.text.toString(),
+                            mPhoneNumber,
+                            mCountryCode
+                        )
+                    }
                 }
             } else {
 

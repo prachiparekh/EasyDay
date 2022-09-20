@@ -56,6 +56,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     }
 
     override fun onFilterSingleChildClick(childList: ArrayList<String>, childPosition: Int) {
+        Log.e("childfilter", childList[childPosition])
     }
 
     override fun onFilterMultipleChildClick() {

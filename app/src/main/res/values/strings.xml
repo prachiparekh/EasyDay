@@ -99,5 +99,6 @@
     <string name="not_passed">Not Passed</string>
 
     <string name="task_title">Task Title</string>
+    <string name="under_process">Development \nUnder Progress</string>
 
 </resources>

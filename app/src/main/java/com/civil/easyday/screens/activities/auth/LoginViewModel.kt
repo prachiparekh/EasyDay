@@ -26,10 +26,10 @@ class LoginViewModel @Inject constructor(
         class GetErrorMsg(val msg: String) : ACTION()
     }
 
-    fun sendOTP(fullNumber: String) {
+    fun sendOTP(fullNumber: String,country_code: String) {
         DeviceUtils.showProgress()
 
-        api.sendOTP(fullNumber)
+        api.sendOTP(fullNumber,country_code)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 actionStream.value = ACTION.GetOTPMsg(resp.message.toString())

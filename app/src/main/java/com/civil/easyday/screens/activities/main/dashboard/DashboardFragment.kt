@@ -1,5 +1,6 @@
 package com.civil.easyday.screens.activities.main.dashboard
 
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -25,9 +26,19 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
 
     override fun initUi() {
 
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener { v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                requireActivity().finishAffinity()
+                true
+            } else false
+        }
+
         openChildFragment(HomeFragment(), HomeFragment.TAG)
         bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
+            false
+           /* when (it.itemId) {
                 R.id.home -> {
                     openChildFragment(HomeFragment(), HomeFragment.TAG)
                 }
@@ -41,15 +52,15 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
                     openChildFragment(InboxFragment(), MoreFragment.TAG)
                 }
             }
-            true
+            true*/
         }
 
         add.setOnClickListener {
-            val action = DashboardFragmentDirections.dashboardToCreateTask()
+           /* val action = DashboardFragmentDirections.dashboardToCreateTask()
             val nav: NavController = Navigation.findNavController(requireView())
             if (nav.currentDestination != null && nav.currentDestination?.id == R.id.dashboardFragment) {
                 nav.navigate(action)
-            }
+            }*/
         }
     }
 

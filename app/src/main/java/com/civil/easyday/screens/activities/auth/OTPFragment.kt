@@ -25,6 +25,7 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
     companion object {
         var isOTPComplete = MutableLiveData<Boolean>()
         private var mPhoneNumber: String? = null
+        private var mCountryCode: String? = null
         var mViewModel: OTPViewModel? = null
     }
 
@@ -55,7 +56,8 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
         DeviceUtils.initProgress(requireContext())
         mViewModel = viewModel
         mPhoneNumber = arguments?.getString("phoneNumber")
-        phoneNumber.text = Html.fromHtml("<u>$mPhoneNumber</u>")
+        mCountryCode = arguments?.getString("countryCode")
+        phoneNumber.text = Html.fromHtml("<u>$mCountryCode$mPhoneNumber</u>")
 
         timer.start()
 
@@ -77,7 +79,7 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
         }
 
         resendCode.setOnClickListener {
-            mPhoneNumber?.let { viewModel.resendOTP(it) }
+            mPhoneNumber?.let { mCountryCode?.let { it1 -> viewModel.resendOTP(it, it1) } }
         }
 
         //GenericTextWatcher here works only for moving to next EditText when a number is entered
@@ -114,7 +116,11 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
                         tv4.text.toString() +
                         tv5.text.toString() +
                         tv6.text.toString()
-                mPhoneNumber?.let { it1 -> mViewModel?.verifyOTP(it1, fullOTP) }
+                mPhoneNumber?.let { it1 -> mCountryCode?.let { it2 ->
+                    mViewModel?.verifyOTP(it1, fullOTP,
+                        it2
+                    )
+                } }
 
             }
         }
@@ -155,6 +161,7 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
                         action.isNewUser = true
                     }
                     action.phoneNumber = mPhoneNumber
+                    action.countryCode = mCountryCode
                     Navigation.findNavController(requireView()).navigate(action)
                 }
                 is OTPViewModel.ACTION.GetOTPMsg -> {
