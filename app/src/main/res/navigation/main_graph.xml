@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.civil.easyday.screens.activities.main.dashboard.DashboardFragment"
+        android:name="com.app.easyday.screens.activities.main.dashboard.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard">
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/addProjectFragment"
-        android:name="com.civil.easyday.screens.activities.main.home.project.AddProjectFragment"
+        android:name="com.app.easyday.screens.activities.main.home.project.AddProjectFragment"
         android:label="fragment_add_project"
         tools:layout="@layout/fragment_add_project">
 
@@ -44,13 +44,13 @@
             <argument
                 android:name="createProjectModel"
                 android:defaultValue="@null"
-                app:argType="com.civil.easyday.app.sources.remote.model.AddProjectRequestModel"
+                app:argType="com.app.easyday.app.sources.remote.model.AddProjectRequestModel"
                 app:nullable="true" />
         </action>
     </fragment>
     <fragment
         android:id="@+id/addParticipantsFragment"
-        android:name="com.civil.easyday.screens.activities.main.home.project.AddParticipantsFragment"
+        android:name="com.app.easyday.screens.activities.main.home.project.AddParticipantsFragment"
         android:label="fragment_add_participants"
         tools:layout="@layout/fragment_add_participants">
         <action
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/addAdminFragment"
-        android:name="com.civil.easyday.screens.activities.main.home.project.AddAdminFragment"
+        android:name="com.app.easyday.screens.activities.main.home.project.AddAdminFragment"
         android:label="fragment_add_admin"
         tools:layout="@layout/fragment_add_admin">
 
@@ -73,7 +73,7 @@
     </fragment>
     <fragment
         android:id="@+id/createTaskFragment"
-        android:name="com.civil.easyday.screens.activities.main.home.task.CreateTaskFragment"
+        android:name="com.app.easyday.screens.activities.main.home.task.CreateTaskFragment"
         android:label="fragment_create_task"
         tools:layout="@layout/fragment_create_task" />
 

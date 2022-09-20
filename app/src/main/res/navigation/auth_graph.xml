@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.civil.easyday.screens.activities.auth.LoginFragment"
+        android:name="com.app.easyday.screens.activities.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/OTPFragment"
-        android:name="com.civil.easyday.screens.activities.auth.OTPFragment"
+        android:name="com.app.easyday.screens.activities.auth.OTPFragment"
         android:label="fragment_o_t_p"
         tools:layout="@layout/fragment_o_t_p">
 
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.civil.easyday.screens.activities.auth.ProfileFragment"
+        android:name="com.app.easyday.screens.activities.auth.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
