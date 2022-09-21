@@ -18,7 +18,7 @@
     <color name="bg_white">#F9F9F9</color>
 
     <color name="tab_gray">#A1B3C9</color>
-    <color name="accent_blue">#0A0045</color>
+    <color name="accent_blue">#1B194B</color>
     <color name="show_color">#B3243A5A</color>
     <color name="sky_blue">#62B4FE</color>
     <color name="bgf1_white">#F1F1F1</color>
@@ -34,4 +34,8 @@
     <color name="color8">#E543FF</color>
     <color name="light_text">#818199</color>
     <color name="light_black">#79000000</color>
+    <color name="light_white">#80FFFFFF</color>
+    <color name="light_gray">#EAEAEA</color>
+    <color name="light_sky_blue">#1A62B4FE</color>
+
 </resources>

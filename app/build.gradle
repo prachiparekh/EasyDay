@@ -116,8 +116,8 @@ dependencies {
     /**
      * Navigation
      * */
-    implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
-    implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.2"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.2"
 
     /**
      * LifeCycle
@@ -137,5 +137,6 @@ dependencies {
 //    ShowCaseView
     implementation 'com.github.faruktoptas:FancyShowCaseView:1.3.9'
 
-
+//    Flexboxlayout
+    implementation "com.google.android:flexbox:1.1.0"
 }

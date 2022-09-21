@@ -88,6 +88,7 @@
     <string name="completed">Completed</string>
     <string name="reopened">Reopened</string>
 
+    <string name="none">None</string>
     <string name="low">Low</string>
     <string name="normal">Normal</string>
     <string name="high">High</string>
@@ -100,5 +101,7 @@
 
     <string name="task_title">Task Title</string>
     <string name="under_process">Development \nUnder Progress</string>
+    <string name="add_tags">Add Tags</string>
+    <string name="type_to_create">Type to create</string>
 
 </resources>

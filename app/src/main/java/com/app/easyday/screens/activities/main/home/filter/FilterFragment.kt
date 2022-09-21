@@ -79,6 +79,10 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
 
     }
 
+    override fun onFilterFlagClick(redFlag: Boolean) {
+
+    }
+
     private fun changeFilterUI(position: Int) {
         if (position == 0) {
 //            DueDate Filter

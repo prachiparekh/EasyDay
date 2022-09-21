@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,7 @@ class TaskFilterAdapter(
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     var selectedPosition = -1
-
+    var flag = false
 
     override fun getItemCount(): Int = filterList.size
 
@@ -58,51 +57,102 @@ class TaskFilterAdapter(
                 null
             )
 
-
             itemView.setOnClickListener {
-//                Log.e("clickPosition $position", filterList[position])
-
-                when (position) {
-                    0 -> {
-//                        Log.e("adapterPosition $position", filterList[position])
-                        childRV.adapter =
-                            FilterChildAdapter(context, priorityList, filterTypeInterface)
-                        close.isVisible = true
-                    }
-                    1, 3, 4, 5 -> {
-//                        Log.e("elsePosition $position", filterList[position])
-                        childRV.adapter = null
-                        close.isVisible = true
-                    }
-                    2 -> {
-//                        Log.e("flagPosition $position", filterList[position])
-                        setTextViewDrawableColor(filterName, R.color.red)
-                        childRV.adapter = null
-                        close.isVisible = false
-                    }
-                }
-
-                if (selectedPosition != -1) {
-                    selectedPosition = position
-                    notifyDataSetChanged()
-                }
+                selectedPosition = position
+                if (filterList[position] == context.resources.getString(R.string.f_red_flag))
+                    filterTypeInterface.onFilterTypeClick(position)
+                notifyDataSetChanged()
             }
 
             if (selectedPosition != -1) {
-//                Log.e("Position $position", filterList[position])
-                if (selectedPosition != position) {
-//                    Log.e("closePosition $position", filterList[position])
-                    close.isVisible = false
+                when (selectedPosition) {
+                    0 -> {
+                        priorityChanges(position)
+                    }
+                    1, 3, 4, 5 -> {
+                        elseChanges(position)
+                    }
+                    2 -> {
+                        flagChanges(position)
+                    }
                 }
+                textChanges(position)
+            } else {
+                onClose()
             }
 
             close.setOnClickListener {
+                onClose()
+            }
+        }
+
+        private fun onClose() {
+            close.isVisible = false
+            filterName.setTextColor(context.resources.getColor(R.color.light_white))
+            setTextViewDrawableColor(filterName, R.color.light_white)
+            if (position == 0)
+                childRV.adapter = null
+        }
+
+        private fun priorityChanges(currentPosition: Int) {
+            if (currentPosition == selectedPosition) {
+                childRV.adapter =
+                    FilterChildAdapter(context, priorityList, filterTypeInterface)
+                close.isVisible = true
+            } else {
+                childRV.adapter = null
                 close.isVisible = false
-                if (position == 0)
-                    childRV.adapter = null
+            }
+        }
+
+        private fun elseChanges(currentPosition: Int) {
+            if (currentPosition == selectedPosition) {
+                childRV.adapter = null
+                close.isVisible = true
+            } else {
+                childRV.adapter = null
+                close.isVisible = false
+            }
+        }
+
+        private fun flagChanges(currentPosition: Int) {
+            if (currentPosition == selectedPosition) {
+
+                childRV.adapter = null
+                close.isVisible = false
+            } else {
+                childRV.adapter = null
+                close.isVisible = false
+                filterName.setTextColor(context.resources.getColor(R.color.light_white))
+                setTextViewDrawableColor(filterName, R.color.light_white)
+            }
+        }
+
+        private fun textChanges(currentPosition: Int) {
+            if (filterList[currentPosition] != context.resources.getString(R.string.f_red_flag)) {
+                if (currentPosition == selectedPosition) {
+                    filterName.setTextColor(context.resources.getColor(R.color.white))
+                    setTextViewDrawableColor(filterName, R.color.white)
+                } else {
+                    filterName.setTextColor(context.resources.getColor(R.color.light_white))
+                    setTextViewDrawableColor(filterName, R.color.light_white)
+                }
+            } else {
+                if (!flag && filterList[selectedPosition] == context.resources.getString(R.string.f_red_flag)) {
+                    flag = true
+                    filterName.setTextColor(context.resources.getColor(R.color.white))
+                    setTextViewDrawableColor(filterName, R.color.red)
+                    filterTypeInterface.onFilterFlagClick(flag)
+                } else {
+                    flag = false
+                    filterName.setTextColor(context.resources.getColor(R.color.light_white))
+                    setTextViewDrawableColor(filterName, R.color.light_white)
+                    filterTypeInterface.onFilterFlagClick(flag)
+                }
             }
         }
     }
+
 
     private fun setTextViewDrawableColor(textView: TextView, color: Int) {
         for (drawable in textView.compoundDrawables) {
@@ -115,4 +165,10 @@ class TaskFilterAdapter(
             }
         }
     }
+
+    fun closeFilter() {
+        selectedPosition = -1
+        notifyDataSetChanged()
+    }
+
 }

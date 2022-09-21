@@ -37,8 +37,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
 
         openChildFragment(HomeFragment(), HomeFragment.TAG)
         bottomNavigationView.setOnItemSelectedListener {
-            false
-           /* when (it.itemId) {
+            when (it.itemId) {
                 R.id.home -> {
                     openChildFragment(HomeFragment(), HomeFragment.TAG)
                 }
@@ -52,15 +51,15 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
                     openChildFragment(InboxFragment(), MoreFragment.TAG)
                 }
             }
-            true*/
+            true
         }
 
         add.setOnClickListener {
-           /* val action = DashboardFragmentDirections.dashboardToCreateTask()
+            val action = DashboardFragmentDirections.dashboardToCreateTask()
             val nav: NavController = Navigation.findNavController(requireView())
             if (nav.currentDestination != null && nav.currentDestination?.id == R.id.dashboardFragment) {
                 nav.navigate(action)
-            }*/
+            }
         }
     }
 
