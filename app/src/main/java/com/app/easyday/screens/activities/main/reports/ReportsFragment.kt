@@ -6,21 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.app.easyday.R
+import com.app.easyday.screens.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReportsFragment : Fragment() {
+class ReportsFragment : BaseFragment<ReportsViewModel>() {
 
 
     companion object{
         const val TAG = "ReportsFragment"
     }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reports, container, false)
+
+    override fun getContentView()=R.layout.fragment_reports
+
+    override fun initUi() {
+    }
+
+    override fun setObservers() {
     }
 
 

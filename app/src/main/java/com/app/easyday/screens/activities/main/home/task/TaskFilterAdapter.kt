@@ -59,8 +59,19 @@ class TaskFilterAdapter(
 
             itemView.setOnClickListener {
                 selectedPosition = position
-                if (filterList[position] == context.resources.getString(R.string.f_red_flag))
-                    filterTypeInterface.onFilterTypeClick(position)
+                when (position) {
+                    5 -> {
+                        //DueDate
+                        filterTypeInterface.onFilterDueDateClick(filterName.text.toString())
+                    }
+                    2 -> {
+//                        RedFlag
+//                        No code place here bcz notify sends another onFilterFlagClick listener below
+                    }
+                    else -> {
+                        filterTypeInterface.onFilterTypeClick(position)
+                    }
+                }
                 notifyDataSetChanged()
             }
 
@@ -169,6 +180,11 @@ class TaskFilterAdapter(
     fun closeFilter() {
         selectedPosition = -1
         notifyDataSetChanged()
+    }
+
+    fun dueDateFilter(dateStr: String) {
+        filterList[5] = dateStr
+        notifyItemChanged(5)
     }
 
 }

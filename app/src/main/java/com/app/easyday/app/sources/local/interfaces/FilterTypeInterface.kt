@@ -5,4 +5,5 @@ interface FilterTypeInterface {
     fun onFilterSingleChildClick(childList:ArrayList<String>,childPosition: Int)
     fun onFilterMultipleChildClick()
     fun onFilterFlagClick(redFlag:Boolean)
+    fun onFilterDueDateClick(dateStr:String)
 }

@@ -84,6 +84,21 @@
         <item name="android:textColor">@color/green</item>
     </style>
 
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/green</item>
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/accent_blue</item>
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+    </style>
 
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/hint_color</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="fontFamily">@font/dm_sans_700</item>
+    </style>
+
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/accent_blue</item>
+    </style>
 
 </resources>

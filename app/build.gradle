@@ -72,10 +72,10 @@ dependencies {
     /**
      Navigation
      * */
-    implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
-    implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
-    androidTestImplementation("androidx.navigation:navigation-testing:2.5.1")
-    implementation("androidx.navigation:navigation-compose:2.5.1")
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.2"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.2"
+    androidTestImplementation("androidx.navigation:navigation-testing:2.5.2")
+    implementation("androidx.navigation:navigation-compose:2.5.2")
 
     /**
      * Rx
@@ -138,5 +138,5 @@ dependencies {
     implementation 'com.github.faruktoptas:FancyShowCaseView:1.3.9'
 
 //    Flexboxlayout
-    implementation "com.google.android:flexbox:1.1.0"
+    implementation "com.google.android:flexbox:2.0.1"
 }

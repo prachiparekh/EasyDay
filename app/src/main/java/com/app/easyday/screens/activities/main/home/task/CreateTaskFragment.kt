@@ -9,23 +9,28 @@ import com.app.easyday.app.sources.local.interfaces.FilterTypeInterface
 import com.app.easyday.app.sources.local.interfaces.TagInterface
 import com.app.easyday.screens.base.BaseFragment
 import com.app.easyday.screens.dialogs.AddTagBottomSheetDialog
+import com.app.easyday.screens.dialogs.DueDateBottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_create_task.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterface, TagInterface,FilterCloseInterface {
+class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterface, TagInterface,
+    FilterCloseInterface {
 
     override fun getContentView() = R.layout.fragment_create_task
     private var filterTypeList = arrayListOf<String>()
     private var drawableList = arrayListOf<Drawable>()
     private var priorityList = arrayListOf<String>()
-    var adapter:TaskFilterAdapter?=null
+    var adapter: TaskFilterAdapter? = null
 
 //    *****************
 
     var selectedTagList = arrayListOf<String>()
     private var selectedPriority: String? = null
-    var redFlag=false
+    var redFlag = false
+    var selectedDate: String? = null
 
 //    *****************
 
@@ -55,8 +60,9 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             Navigation.findNavController(requireView()).popBackStack()
         }
 
-        adapter=TaskFilterAdapter(requireContext(), filterTypeList, priorityList, drawableList, this)
-        filterRV.adapter =adapter
+        adapter =
+            TaskFilterAdapter(requireContext(), filterTypeList, priorityList, drawableList, this)
+        filterRV.adapter = adapter
 
     }
 
@@ -65,10 +71,10 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     }
 
     override fun onFilterTypeClick(position: Int) {
-        Log.e("filter", filterTypeList[position])
-        when (filterTypeList[position]) {
-            requireContext().resources.getString(R.string.f_tag) -> {
-                val tagList= arrayListOf<String>()
+        when (position) {
+            1 -> {
+                //Tag
+                val tagList = arrayListOf<String>()
                 tagList.add("Tag1")
                 tagList.add("Tag2")
                 tagList.add("Tag3")
@@ -80,13 +86,10 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                 selectedTagList.add(tagList[1])
 
                 val fragment =
-                    AddTagBottomSheetDialog(requireContext(), tagList, selectedTagList, this,this)
+                    AddTagBottomSheetDialog(requireContext(), tagList, selectedTagList, this, this)
                 childFragmentManager.let {
                     fragment.show(it, "tags")
                 }
-            }
-            requireContext().resources.getString(R.string.f_red_flag)->{
-
             }
         }
     }
@@ -99,15 +102,28 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     }
 
     override fun onFilterFlagClick(redFlag: Boolean) {
-       this.redFlag=redFlag
+        this.redFlag = redFlag
+    }
+
+    override fun onFilterDueDateClick(dateStr: String) {
+        val fragment =
+            DueDateBottomSheetDialog(requireContext(),dateStr, this)
+        childFragmentManager.let {
+            fragment.show(it, "due_date")
+        }
     }
 
     override fun onClickTag(selectedTagList: ArrayList<String>) {
-        this.selectedTagList=selectedTagList
+        this.selectedTagList = selectedTagList
     }
 
     override fun onCloseClick() {
         adapter?.closeFilter()
+    }
+
+    override fun onDateClick(datestr: String) {
+        selectedDate = datestr
+        adapter?.dueDateFilter(datestr)
     }
 
 

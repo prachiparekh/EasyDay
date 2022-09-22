@@ -218,10 +218,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
 
 
     private fun openIntent() {
-        requireActivity().startActivityForResult(
-            IntentUtil.getPickImageChooserIntent(requireContext(), requireActivity()),
-            IntentUtil.PICK_IMAGE_CHOOSER_REQUEST_CODE
-        )
+        IntentUtil.getPickImageChooserIntent(requireContext(), requireActivity())?.let {
+            requireActivity().startActivityForResult(
+                it,
+                IntentUtil.PICK_IMAGE_CHOOSER_REQUEST_CODE
+            )
+        }
     }
 
     override fun setObservers() {
