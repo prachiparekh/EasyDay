@@ -20,7 +20,6 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
 import androidx.camera.core.CameraSelector.DEFAULT_FRONT_CAMERA
@@ -42,7 +41,6 @@ import coil.transform.CircleCropTransformation
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.model.Media
 import com.app.easyday.databinding.FragmentCameraBinding
-import com.app.easyday.screens.base.BaseActivity
 import com.app.easyday.utils.IntentUtil
 import com.app.easyday.utils.camera_utils.CameraUtils.Companion.getMedia
 import com.app.easyday.utils.camera_utils.CameraUtils.Companion.outputDirectory
@@ -54,31 +52,44 @@ import com.app.easyday.utils.camera_utils.Camera_Extensions.Companion.startPaddi
 import com.app.easyday.utils.camera_utils.Camera_Extensions.Companion.toggleButton
 import com.app.easyday.utils.camera_utils.Camera_Extensions.Companion.topPadding
 import com.app.easyday.utils.camera_utils.LuminosityAnalyzer
+import com.app.easyday.utils.camera_utils.MainExecutor
 import com.app.easyday.utils.camera_utils.SharedPrefsManager
 import com.app.easyday.utils.camera_utils.ThreadExecutor
-import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImage.getPickImageResultUri
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.concurrent.ExecutionException
+import java.util.concurrent.Executor
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.properties.Delegates
 
+@SuppressLint("RestrictedApi")
 @AndroidEntryPoint
 class CameraFragment : Fragment() {
 
     var binding: FragmentCameraBinding? = null
-    var mImageUriList= arrayListOf<Media>()
-    companion object{
+    var mImageUriList = arrayListOf<Media>()
+    private var videoCapture: VideoCapture? = null
+    private var isRecording = false
+    var isVideo = false
+    private var isTorchOn = false
+    private var camera: Camera? = null
+
+    companion object {
         private const val TAG = "CameraXDemo"
         const val KEY_FLASH = "sPrefFlashCamera"
         private const val RATIO_4_3_VALUE = 4.0 / 3.0 // aspect ratio 4x3
         private const val RATIO_16_9_VALUE = 16.0 / 9.0 // aspect ratio 16x9
     }
+
+//    video
+
+
+//    ******************
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,8 +136,13 @@ class CameraFragment : Fragment() {
         override fun onDisplayChanged(displayId: Int) = view?.let { view ->
             if (displayId == this@CameraFragment.displayId) {
                 preview?.targetRotation = view.display.rotation
-                imageCapture?.targetRotation = view.display.rotation
-                imageAnalyzer?.targetRotation = view.display.rotation
+
+                if (isVideo) {
+                    videoCapture?.setTargetRotation(view.display.rotation)
+                } else {
+                    imageCapture?.targetRotation = view.display.rotation
+                    imageAnalyzer?.targetRotation = view.display.rotation
+                }
             }
         } ?: Unit
     }
@@ -177,6 +193,12 @@ class CameraFragment : Fragment() {
             })
 
             btnTakePicture.setOnClickListener { takePicture() }
+            btnTakePicture.setOnLongClickListener {
+
+                startVideoCamera()
+
+                true
+            }
             btnGallery.setOnClickListener { openPreview() }
             btnImage.setOnClickListener { openPreview() }
             btnSwitchCamera.setOnClickListener { toggleCamera() }
@@ -187,7 +209,7 @@ class CameraFragment : Fragment() {
             btnFlashOn.setOnClickListener { closeFlashAndSelect(ImageCapture.FLASH_MODE_ON) }
             btnFlashAuto.setOnClickListener { closeFlashAndSelect(ImageCapture.FLASH_MODE_AUTO) }
 
-            binding?.close?.setOnClickListener{
+            binding?.close?.setOnClickListener {
                 Navigation.findNavController(requireView()).popBackStack()
             }
 
@@ -199,17 +221,6 @@ class CameraFragment : Fragment() {
             }
 
 
-            /* // This swipe gesture adds a fun gesture to switch between video and photo
-             val swipeGestures = SwipeGestureDetector().apply {
-                 setSwipeCallback(right = {
-                     Navigation.findNavController(view).navigate(R.id.action_camera_to_video)
-                 })
-             }
-             val gestureDetectorCompat = GestureDetector(requireContext(), swipeGestures)
-             viewFinder.setOnTouchListener { _, motionEvent ->
-                 if (gestureDetectorCompat.onTouchEvent(motionEvent)) return@setOnTouchListener false
-                 return@setOnTouchListener true
-             }*/
         }
     }
 
@@ -294,7 +305,11 @@ class CameraFragment : Fragment() {
                         else -> R.drawable.ic_flash_auto
                     }
                 )
-                imageCapture?.flashMode = flashMode
+                if (isVideo) {
+                    isTorchOn = false == (flashMode == ImageCapture.FLASH_MODE_OFF)
+                } else {
+                    imageCapture?.flashMode = flashMode
+                }
                 prefs.putInt(KEY_FLASH, flashMode)
             }
         }
@@ -383,6 +398,8 @@ class CameraFragment : Fragment() {
             if (viewFinder != null) {
                 bindToLifecycle(localCameraProvider, viewFinder)
             }
+
+
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
@@ -471,7 +488,7 @@ class CameraFragment : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             localImageCapture.takePicture(
                 outputOptions, // the options needed for the final image
-                requireContext().mainExecutor, // the executor, on which the task will run
+                requireContext().mainExecutor(), // the executor, on which the task will run
                 object :
                     ImageCapture.OnImageSavedCallback { // the callback, about the result of capture process
                     override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
@@ -481,7 +498,7 @@ class CameraFragment : Fragment() {
 //                                setGalleryThumbnail(uri)
                                 if (getMedia(requireContext()).isEmpty()) return
 
-                                mImageUriList.add(Media(uri,false,System.currentTimeMillis()))
+                                mImageUriList.add(Media(uri, false, System.currentTimeMillis()))
                                 navigateToTask()
                                 Log.d(TAG, "Photo saved in $uri")
                             }
@@ -501,15 +518,15 @@ class CameraFragment : Fragment() {
     }
 
     private fun setGalleryThumbnail(savedUri: Uri?) = binding?.btnImage?.load(savedUri) {
-        binding?.btnImage?.isVisible=true
+        binding?.btnImage?.isVisible = true
         binding?.btnImage?.clipToOutline = true
-        binding?.btnGallery?.isVisible=false
+        binding?.btnGallery?.isVisible = false
         listener(object : ImageRequest.Listener {
             override fun onError(request: ImageRequest, throwable: Throwable) {
                 super.onError(request, throwable)
                 binding?.btnGallery?.load(savedUri) {
-                    binding?.btnImage?.isVisible=false
-                    binding?.btnGallery?.isVisible=true
+                    binding?.btnImage?.isVisible = false
+                    binding?.btnGallery?.isVisible = true
                     placeholder(R.drawable.ic_no_picture)
                     transformations(CircleCropTransformation())
                     fetcher(VideoFrameUriFetcher(requireContext()))
@@ -524,7 +541,6 @@ class CameraFragment : Fragment() {
     }
 
 
-
     private fun onPermission() {
 
         val permissions = mutableListOf(
@@ -537,11 +553,12 @@ class CameraFragment : Fragment() {
             }
         }
 
-        val permissionRequest = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            if (permissions.all { it.value }) {
-                openCamera()
+        val permissionRequest =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                if (permissions.all { it.value }) {
+                    openCamera()
+                }
             }
-        }
 
         permissionRequest.launch(permissions.toTypedArray())
     }
@@ -566,14 +583,14 @@ class CameraFragment : Fragment() {
         if (requestCode == IntentUtil.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val uri = getPickImageResultUri(requireContext(), data)
             if (uri != null) {
-                mImageUriList.add(Media(uri,false,System.currentTimeMillis()))
+                mImageUriList.add(Media(uri, false, System.currentTimeMillis()))
                 navigateToTask()
             }
         }
     }
 
-    fun navigateToTask(){
-        Log.e("urilist", mImageUriList.size.toString())
+    fun navigateToTask() {
+
         val bundle = Bundle()
         bundle.putParcelableArrayList("uriList", mImageUriList)
         val nav = binding?.root?.let { it1 ->
@@ -582,8 +599,147 @@ class CameraFragment : Fragment() {
             )
         }
         if (nav?.currentDestination != null && nav.currentDestination?.id == R.id.cameraFragment) {
-            nav.navigate(R.id.camera_to_create_task,bundle)
+            nav.navigate(R.id.camera_to_create_task, bundle)
+        }
+
+    }
+
+    //    Video
+    @SuppressLint("MissingPermission")
+    private fun recordVideo() {
+
+        camera?.cameraControl?.enableTorch(isTorchOn)
+
+        try {
+            val localVideoCapture =
+                videoCapture ?: throw IllegalStateException("2.Camera initialization failed.")
+
+
+            // Options fot the output video file
+            val outputOptions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, System.currentTimeMillis())
+                    put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, outputDirectory)
+                }
+
+                requireContext().contentResolver.run {
+                    val contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                    VideoCapture.OutputFileOptions.Builder(this, contentUri, contentValues)
+                }
+            } else {
+                File(outputDirectory).mkdirs()
+                val file = File("$outputDirectory/${System.currentTimeMillis()}.mp4")
+
+                VideoCapture.OutputFileOptions.Builder(file)
+            }.build()
+
+            if (!isRecording) {
+
+                localVideoCapture.startRecording(
+                    outputOptions, // the options needed for the final video
+                    requireContext().mainExecutor(), // the executor, on which the task will run
+                    object :
+                        VideoCapture.OnVideoSavedCallback { // the callback after recording a video
+                        override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
+                            // Create small preview
+                            outputFileResults.savedUri
+                                ?.let { uri ->
+//                                    setGalleryThumbnail(uri)
+                                    mImageUriList.add(Media(uri, true, System.currentTimeMillis()))
+                                    navigateToTask()
+                                    Log.d(TAG, "Video saved in $uri")
+                                }
+                                ?: setLastPictureThumbnail()
+                        }
+
+                        override fun onError(
+                            videoCaptureError: Int,
+                            message: String,
+                            cause: Throwable?
+                        ) {
+                            // This function is called if there is an error during recording process
+
+                            val msg = "Video capture failed: $message"
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                            Log.e(TAG, msg)
+                            cause?.printStackTrace()
+                        }
+                    })
+            } else {
+
+                localVideoCapture.stopRecording()
+            }
+            isRecording = !isRecording
+        } catch (e: Exception) {
+            Log.e("ex:", e.message.toString())
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        camera?.cameraControl?.enableTorch(false)
+    }
+
+    private fun startVideoCamera() {
+        // This is the Texture View where the camera will be rendered
+        val viewFinder = binding?.viewFinder
+
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+        cameraProviderFuture.addListener({
+//            cameraProvider = cameraProviderFuture.get()
+
+            // The display information
+            val metrics = DisplayMetrics().also { viewFinder?.display?.getRealMetrics(it) }
+            // The ratio for the output image and preview
+            val aspectRatio = aspectRatio(metrics.widthPixels, metrics.heightPixels)
+            // The display rotation
+            val rotation = viewFinder?.display?.rotation
+
+            val localCameraProvider = cameraProvider
+                ?: throw IllegalStateException("1.Camera initialization failed.")
+
+            // The Configuration of camera preview
+            preview = rotation?.let {
+                Preview.Builder()
+                    .setTargetAspectRatio(aspectRatio) // set the camera aspect ratio
+                    .setTargetRotation(it) // set the camera rotation
+                    .build()
+            }
+
+            val videoCaptureConfig =
+                VideoCapture.DEFAULT_CONFIG.config // default config for video capture
+            // The Configuration of video capture
+            videoCapture = VideoCapture.Builder
+                .fromConfig(videoCaptureConfig)
+                .build()
+
+            localCameraProvider.unbindAll() // unbind the use-cases before rebinding them
+
+            try {
+                // Bind all use cases to the camera with lifecycle
+                camera = localCameraProvider.bindToLifecycle(
+                    viewLifecycleOwner, // current lifecycle owner
+                    lensFacing, // either front or back facing
+                    preview, // camera preview use case
+                    videoCapture, // video capture use case
+                )
+
+                // Attach the viewfinder's surface provider to preview use case
+                preview?.setSurfaceProvider(viewFinder?.surfaceProvider)
+
+                recordVideo()
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to bind use cases", e)
+            }
+        }, ContextCompat.getMainExecutor(requireContext()))
+
+
+    }
+
+    fun Context.mainExecutor(): Executor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        mainExecutor
+    } else {
+        MainExecutor()
+    }
 }

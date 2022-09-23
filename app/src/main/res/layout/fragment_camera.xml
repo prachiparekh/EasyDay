@@ -65,6 +65,7 @@
             app:layout_constraintTop_toTopOf="@id/btnSwitchCamera"
             tools:ignore="ContentDescription" />
 
+
         <ImageView
             android:id="@+id/btnImage"
             android:layout_width="@dimen/_50sdp"
