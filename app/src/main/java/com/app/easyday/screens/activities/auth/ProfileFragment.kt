@@ -90,7 +90,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                     return@setOnClickListener
                 }
 
-                Log.e("mPhoneNumber", "L:$mPhoneNumber")
                 if (mPhoneNumber != null) {
                     if (mCountryCode != null) {
                         viewModel.createUser(

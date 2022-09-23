@@ -73,7 +73,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
         }
 
         cta.setOnClickListener {
-            val action = DashboardFragmentDirections.dashboardToCreateTask()
+            val action = DashboardFragmentDirections.dashboardToCamera()
             val nav: NavController = Navigation.findNavController(requireView())
             nav.navigate(action)
         }

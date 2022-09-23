@@ -104,5 +104,7 @@
     <string name="add_tags">Add Tags</string>
     <string name="add_due_date">Add Due Date</string>
     <string name="type_to_create">Type to create</string>
+    <string name="skip_photo">Skip Photo</string>
+    <string name="press_hold">Press and Hold for Video</string>
 
 </resources>

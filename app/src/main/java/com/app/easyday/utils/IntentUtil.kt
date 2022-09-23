@@ -58,7 +58,7 @@ class IntentUtil {
             return chooserIntent
         }
 
-        private fun getGalleryIntents(
+        fun getGalleryIntents(
             packageManager: PackageManager, action: String
         ): List<Intent> {
             val intents: MutableList<Intent> = ArrayList()
@@ -128,6 +128,15 @@ class IntentUtil {
             return ActivityCompat.checkSelfPermission(
                 activity,
                 Manifest.permission.READ_CONTACTS
+            ) == PackageManager.PERMISSION_GRANTED
+
+        }
+
+        fun recordAudioPermission(activity: Activity): Boolean {
+
+            return ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.RECORD_AUDIO
             ) == PackageManager.PERMISSION_GRANTED
 
         }

@@ -49,7 +49,7 @@ class ProjectListDialog(
             projectInterface
         )
         binding?.projectRV?.adapter = adapter
-//        adapter?.setItems(projectList)
+//        taskAdapter?.setItems(projectList)
 
         binding?.close?.setOnClickListener {
             dismiss()

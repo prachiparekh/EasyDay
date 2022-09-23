@@ -3,16 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     tools:context=".screens.activities.main.home.task.CreateTaskFragment">
 
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/taskImg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/boarding_img2" />
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pagerPhotos"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/close"
@@ -58,6 +63,7 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@id/imgRV"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/close">
@@ -84,7 +90,7 @@
         app:layout_constraintBottom_toTopOf="@id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_task_img" />
+        tools:listitem="@layout/item_bottom_image" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

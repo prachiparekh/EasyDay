@@ -55,7 +55,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
         }
 
         add.setOnClickListener {
-            val action = DashboardFragmentDirections.dashboardToCreateTask()
+            val action = DashboardFragmentDirections.dashboardToCamera()
             val nav: NavController = Navigation.findNavController(requireView())
             if (nav.currentDestination != null && nav.currentDestination?.id == R.id.dashboardFragment) {
                 nav.navigate(action)

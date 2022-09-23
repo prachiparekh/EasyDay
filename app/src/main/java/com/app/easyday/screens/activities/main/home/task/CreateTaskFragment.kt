@@ -1,19 +1,18 @@
 package com.app.easyday.screens.activities.main.home.task
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.navigation.Navigation
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
 import com.app.easyday.app.sources.local.interfaces.FilterTypeInterface
 import com.app.easyday.app.sources.local.interfaces.TagInterface
+import com.app.easyday.app.sources.local.model.Media
 import com.app.easyday.screens.base.BaseFragment
 import com.app.easyday.screens.dialogs.AddTagBottomSheetDialog
 import com.app.easyday.screens.dialogs.DueDateBottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_create_task.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterface, TagInterface,
@@ -23,11 +22,12 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     private var filterTypeList = arrayListOf<String>()
     private var drawableList = arrayListOf<Drawable>()
     private var priorityList = arrayListOf<String>()
-    var adapter: TaskFilterAdapter? = null
+    var taskAdapter: TaskFilterAdapter? = null
+    var imgAdapter: BottomImageAdapter? = null
 
 //    *****************
 
-    var selectedTagList = arrayListOf<String>()
+    private var selectedTagList = arrayListOf<String>()
     private var selectedPriority: String? = null
     var redFlag = false
     var selectedDate: String? = null
@@ -35,6 +35,30 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 //    *****************
 
     override fun initUi() {
+
+        val selectedUriList = arguments?.getParcelableArrayList<Media>("uriList")
+
+        val mediaAdapter = MediaAdapter(
+            requireContext(),
+            onItemClick = { isVideo, uri ->
+                if (isVideo) {
+                    val play =
+                        Intent(Intent.ACTION_VIEW, uri).apply { setDataAndType(uri, "video/mp4") }
+                    startActivity(play)
+                }
+            },
+            onDeleteClick = { isEmpty, uri ->
+                if (!isEmpty) {
+                    val resolver = requireContext().applicationContext.contentResolver
+                    resolver.delete(uri, null, null)
+                }
+            },
+        )
+
+        pagerPhotos.apply {
+            adapter = mediaAdapter.apply { submitList(selectedUriList) }
+//            onPageSelected { page -> currentPage = page }
+        }
 
         filterTypeList.add(requireContext().resources.getString(R.string.f_priority))
         filterTypeList.add(requireContext().resources.getString(R.string.f_tag))
@@ -60,9 +84,25 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             Navigation.findNavController(requireView()).popBackStack()
         }
 
-        adapter =
+        taskAdapter =
             TaskFilterAdapter(requireContext(), filterTypeList, priorityList, drawableList, this)
-        filterRV.adapter = adapter
+        filterRV.adapter = taskAdapter
+
+        val bottomImageList = ArrayList<Media>()
+        bottomImageList.add(0, Media(null, false, System.currentTimeMillis()))
+        if (selectedUriList != null) {
+            bottomImageList.addAll(selectedUriList)
+        }
+
+        imgAdapter =
+            BottomImageAdapter(requireContext(), bottomImageList, onItemClick = { position, item ->
+
+                if (position != 0)
+                    pagerPhotos.currentItem = position - 1
+                else
+                    Navigation.findNavController(requireView()).popBackStack()
+            })
+        imgRV.adapter = imgAdapter
 
     }
 
@@ -107,7 +147,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 
     override fun onFilterDueDateClick(dateStr: String) {
         val fragment =
-            DueDateBottomSheetDialog(requireContext(),dateStr, this)
+            DueDateBottomSheetDialog(requireContext(), dateStr, this)
         childFragmentManager.let {
             fragment.show(it, "due_date")
         }
@@ -118,12 +158,12 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     }
 
     override fun onCloseClick() {
-        adapter?.closeFilter()
+        taskAdapter?.closeFilter()
     }
 
     override fun onDateClick(datestr: String) {
         selectedDate = datestr
-        adapter?.dueDateFilter(datestr)
+        taskAdapter?.dueDateFilter(datestr)
     }
 
 
