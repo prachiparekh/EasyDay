@@ -42,6 +42,7 @@ import com.app.easyday.R
 import com.app.easyday.app.sources.local.model.Media
 import com.app.easyday.databinding.FragmentCameraBinding
 import com.app.easyday.utils.IntentUtil
+import com.app.easyday.utils.camera_utils.*
 import com.app.easyday.utils.camera_utils.CameraUtils.Companion.getMedia
 import com.app.easyday.utils.camera_utils.CameraUtils.Companion.outputDirectory
 import com.app.easyday.utils.camera_utils.Camera_Extensions.Companion.bottomMargin
@@ -51,10 +52,6 @@ import com.app.easyday.utils.camera_utils.Camera_Extensions.Companion.onWindowIn
 import com.app.easyday.utils.camera_utils.Camera_Extensions.Companion.startPadding
 import com.app.easyday.utils.camera_utils.Camera_Extensions.Companion.toggleButton
 import com.app.easyday.utils.camera_utils.Camera_Extensions.Companion.topPadding
-import com.app.easyday.utils.camera_utils.LuminosityAnalyzer
-import com.app.easyday.utils.camera_utils.MainExecutor
-import com.app.easyday.utils.camera_utils.SharedPrefsManager
-import com.app.easyday.utils.camera_utils.ThreadExecutor
 import com.theartofdev.edmodo.cropper.CropImage.getPickImageResultUri
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -67,6 +64,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.properties.Delegates
 
+
 @SuppressLint("RestrictedApi")
 @AndroidEntryPoint
 class CameraFragment : Fragment() {
@@ -78,6 +76,7 @@ class CameraFragment : Fragment() {
     var isVideo = false
     private var isTorchOn = false
     private var camera: Camera? = null
+    var isVideoRunning = false
 
     companion object {
         private const val TAG = "CameraXDemo"
@@ -192,13 +191,34 @@ class CameraFragment : Fragment() {
                     displayManager.unregisterDisplayListener(displayListener)
             })
 
-            btnTakePicture.setOnClickListener { takePicture() }
-            btnTakePicture.setOnLongClickListener {
 
-                startVideoCamera()
+            btnTakePicture.setVideoDuration(10000)
+            btnTakePicture.actionListener = object : CameraVideoButton.ActionListener {
+                override fun onCancelled() {
+                    Log.v("TEST", "onCancelled")
+                }
 
-                true
+                override fun onStartRecord() {
+                    Log.v("TEST", "onStartRecord")
+                    startVideoCamera()
+                }
+
+                override fun onEndRecord() {
+                    Log.v("TEST", "onEndRecord")
+                    recordVideo()
+                }
+
+                override fun onDurationTooShortError() {
+                    Log.v("TEST", "onDurationTooShortError")
+                }
+
+                override fun onSingleTap() {
+                    Log.v("TEST", "onSingleTap")
+                    takePicture()
+                }
+
             }
+
             btnGallery.setOnClickListener { openPreview() }
             btnImage.setOnClickListener { openPreview() }
             btnSwitchCamera.setOnClickListener { toggleCamera() }
@@ -563,6 +583,11 @@ class CameraFragment : Fragment() {
         permissionRequest.launch(permissions.toTypedArray())
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding?.btnTakePicture?.isPressed = false
+    }
+
     private fun openCamera() {
         binding?.viewFinder.let { vf ->
             vf?.post {
@@ -590,7 +615,7 @@ class CameraFragment : Fragment() {
     }
 
     fun navigateToTask() {
-
+        Log.e("uriList", mImageUriList.toString())
         val bundle = Bundle()
         bundle.putParcelableArrayList("uriList", mImageUriList)
         val nav = binding?.root?.let { it1 ->
@@ -610,70 +635,69 @@ class CameraFragment : Fragment() {
 
         camera?.cameraControl?.enableTorch(isTorchOn)
 
-        try {
-            val localVideoCapture =
-                videoCapture ?: throw IllegalStateException("2.Camera initialization failed.")
-
-
-            // Options fot the output video file
-            val outputOptions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val contentValues = ContentValues().apply {
-                    put(MediaStore.MediaColumns.DISPLAY_NAME, System.currentTimeMillis())
-                    put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, outputDirectory)
-                }
-
-                requireContext().contentResolver.run {
-                    val contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                    VideoCapture.OutputFileOptions.Builder(this, contentUri, contentValues)
-                }
-            } else {
-                File(outputDirectory).mkdirs()
-                val file = File("$outputDirectory/${System.currentTimeMillis()}.mp4")
-
-                VideoCapture.OutputFileOptions.Builder(file)
-            }.build()
-
-            if (!isRecording) {
-
-                localVideoCapture.startRecording(
-                    outputOptions, // the options needed for the final video
-                    requireContext().mainExecutor(), // the executor, on which the task will run
-                    object :
-                        VideoCapture.OnVideoSavedCallback { // the callback after recording a video
-                        override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
-                            // Create small preview
-                            outputFileResults.savedUri
-                                ?.let { uri ->
-//                                    setGalleryThumbnail(uri)
-                                    mImageUriList.add(Media(uri, true, System.currentTimeMillis()))
-                                    navigateToTask()
-                                    Log.d(TAG, "Video saved in $uri")
-                                }
-                                ?: setLastPictureThumbnail()
-                        }
-
-                        override fun onError(
-                            videoCaptureError: Int,
-                            message: String,
-                            cause: Throwable?
-                        ) {
-                            // This function is called if there is an error during recording process
-
-                            val msg = "Video capture failed: $message"
-                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-                            Log.e(TAG, msg)
-                            cause?.printStackTrace()
-                        }
-                    })
-            } else {
-
-                localVideoCapture.stopRecording()
+        // Options fot the output video file
+        val outputOptions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, System.currentTimeMillis())
+                put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, outputDirectory)
             }
-            isRecording = !isRecording
-        } catch (e: Exception) {
-            Log.e("ex:", e.message.toString())
+
+            requireContext().contentResolver.run {
+                val contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                VideoCapture.OutputFileOptions.Builder(this, contentUri, contentValues)
+            }
+        } else {
+            File(outputDirectory).mkdirs()
+            val file = File("$outputDirectory/${System.currentTimeMillis()}.mp4")
+
+            VideoCapture.OutputFileOptions.Builder(file)
+        }.build()
+
+        if (!isRecording) {
+
+            videoCapture?.startRecording(
+                outputOptions, // the options needed for the final video
+                requireContext().mainExecutor(), // the executor, on which the task will run
+                object :
+                    VideoCapture.OnVideoSavedCallback { // the callback after recording a video
+                    override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
+                        // Create small preview
+                        outputFileResults.savedUri
+                            ?.let { uri ->
+//                                    setGalleryThumbnail(uri)
+
+                                isVideoRunning = false
+                                mImageUriList.add(Media(uri, true, System.currentTimeMillis()))
+                                navigateToTask()
+                                Log.e(TAG, "Video saved in $uri")
+                            }
+                            ?: setLastPictureThumbnail()
+
+                    }
+
+                    override fun onError(
+                        videoCaptureError: Int,
+                        message: String,
+                        cause: Throwable?
+                    ) {
+                        // This function is called if there is an error during recording process
+
+                        val msg = "Video capture failed: $message"
+
+                        isVideoRunning = false
+                        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                        Log.e(TAG, msg)
+                        cause?.printStackTrace()
+
+                    }
+                })
+        } else {
+
+            videoCapture?.stopRecording()
         }
+        isRecording = !isRecording
+
     }
 
     override fun onStop() {

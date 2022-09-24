@@ -32,7 +32,7 @@
             app:layout_constraintBottom_toTopOf="@id/btnTakePicture"
             android:background="@drawable/ic_curve_white_bg"/>
 
-        <ImageButton
+       <!-- <ImageButton
             android:id="@+id/btnTakePicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,19 @@
             app:layout_constraintBottom_toTopOf="@id/text1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription" />-->
+
+        <com.app.easyday.utils.camera_utils.CameraVideoButton
+            android:id="@+id/btnTakePicture"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentBottom="true"
+            app:layout_constraintBottom_toTopOf="@id/text1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:cvb_recording_color="#D438A2"/>
 
         <ImageView
             android:id="@+id/btnSwitchCamera"
