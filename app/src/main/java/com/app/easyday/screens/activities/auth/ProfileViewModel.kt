@@ -7,8 +7,13 @@ import com.app.easyday.navigation.SingleLiveEvent
 import com.app.easyday.screens.base.BaseViewModel
 import com.app.easyday.utils.ErrorUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,8 +29,23 @@ class ProfileViewModel @Inject constructor(
         class onError(val msg: String?) : ACTION()
     }
 
-    fun createUser(fullName: String, profession: String, phoneNumber: String,country_code: String) {
-        api.createUser(fullName, profession, phoneNumber,country_code)
+    fun createUser(
+        fullName: String,
+        profession: String,
+        phoneNumber: String,
+        country_code: String,
+        profile_image: File?
+    ) {
+
+        val mPartBody: RequestBody? =
+            profile_image?.asRequestBody("image/*".toMediaTypeOrNull())
+        val requestFile: MultipartBody.Part? =
+            mPartBody?.let {
+                MultipartBody.Part.createFormData("profile_image", profile_image.name,
+                    it
+                )
+            }
+        api.createUser(fullName, profession, phoneNumber, country_code, requestFile)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 actionStream.value = ACTION.onAddUpdateUser(resp.data)

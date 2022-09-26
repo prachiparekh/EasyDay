@@ -73,21 +73,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
     }
 
     override fun setObservers() {
-        viewModel.userProfileData.observe(viewLifecycleOwner) { userData ->
-            if (userData?.profileImage != null) {
-                val options = RequestOptions()
-                profile.clipToOutline = true
-                Glide.with(requireContext())
-                    .load(userData.profileImage)
-                    .apply(
-                        options.centerCrop()
-                            .skipMemoryCache(true)
-                            .priority(Priority.HIGH)
-                            .format(DecodeFormat.PREFER_ARGB_8888)
-                    )
-                    .into(profile)
-            }
-        }
+
     }
 
 }

@@ -1,6 +1,13 @@
 package com.app.easyday.screens.activities.auth
 
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -61,7 +68,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
                 val keyValue = obj[keyStr]
                 val code = PhoneCodeModel(keyStr, keyValue as String?)
                 phoneModelList.add(code)
-                if (code.key == "IN") {
+                if (code.key == "US") {
                     defaultCode = code
                 }
             }
@@ -83,6 +90,9 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
         cc_dialog.setOnClickListener {
             phoneCodeDialog.show(requireActivity().supportFragmentManager, null)
         }
+
+        setHighLightedText(terms, requireContext().resources.getString(R.string.terms))
+        setHighLightedText(terms, requireContext().resources.getString(R.string.policy))
     }
 
     override fun setObservers() {
@@ -116,5 +126,45 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
                     countries.key?.lowercase(Locale.getDefault()).toString()
                 ).toString()
             )
+    }
+
+    private fun setHighLightedText(tv: TextView, textToHighlight: String) {
+
+        val tvt = tv.text.toString()
+        var ofe = tvt.indexOf(textToHighlight, 0)
+        val wordToSpan: Spannable = SpannableString(tv.text)
+        var ofs = 0
+        while (ofs < tvt.length && ofe != -1) {
+            ofe = tvt.indexOf(textToHighlight, ofs)
+            if (ofe == -1) break else {
+                wordToSpan.setSpan(
+                    object : ClickableSpan() {
+                        override fun onClick(textView: View) {
+                            val action = LoginFragmentDirections.loginToTerms()
+                            if (textToHighlight == requireContext().resources.getString(R.string.terms))
+                                action.url = "http://63.32.98.218/terms_of_service.html"
+                            else
+                                action.url = "http://63.32.98.218/privacy_policy.html"
+                            action.title = textToHighlight
+                            val nav: NavController = Navigation.findNavController(requireView())
+                            if (nav.currentDestination != null && nav.currentDestination?.id == R.id.loginFragment) {
+                                nav.navigate(action)
+                            }
+                        }
+
+                        override fun updateDrawState(ds: TextPaint) {
+                            super.updateDrawState(ds)
+                            ds.isUnderlineText = false
+                        }
+                    },
+                    ofe,
+                    ofe + textToHighlight.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                tv.movementMethod = LinkMovementMethod.getInstance();
+                tv.setText(wordToSpan, TextView.BufferType.SPANNABLE)
+            }
+            ofs = ofe + 1
+        }
     }
 }

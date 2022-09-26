@@ -33,6 +33,7 @@
         <activity
             android:name="com.app.easyday.screens.activities.auth.AuthActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".screens.activities.boarding.SplashActivity"

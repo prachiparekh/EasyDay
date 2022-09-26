@@ -8,14 +8,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.Priority
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.request.RequestOptions
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.app.easyday.screens.activities.main.MainActivity
@@ -27,6 +22,10 @@ import com.app.easyday.utils.IntentUtil
 import com.app.easyday.utils.IntentUtil.Companion.cameraPermission
 import com.app.easyday.utils.IntentUtil.Companion.readPermission
 import com.app.easyday.utils.IntentUtil.Companion.writePermission
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.textfield.TextInputEditText
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -39,6 +38,7 @@ import com.theartofdev.edmodo.cropper.CropImageOptions
 import com.theartofdev.edmodo.cropper.CropImageView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.File
 
 
 @AndroidEntryPoint
@@ -46,6 +46,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
 
     override fun getContentView() = R.layout.fragment_profile
     var isNewUser: Boolean? = null
+    var mImageFile: File? = null
 
     override fun getStatusBarColor() = ContextCompat.getColor(requireContext(), R.color.bg_white)
 
@@ -96,7 +97,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                             fullName.text.toString(),
                             profession.text.toString(),
                             mPhoneNumber,
-                            mCountryCode
+                            mCountryCode,
+                            mImageFile
                         )
                     }
                 }
@@ -251,7 +253,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
         viewModel.actionStream.observe(viewLifecycleOwner) {
             when (it) {
                 is ProfileViewModel.ACTION.onAddUpdateUser -> {
-                    AppPreferencesDelegates.get().token= it.userData?.token.toString()
+                    AppPreferencesDelegates.get().token = it.userData?.token.toString()
                     requireActivity().startActivity(
                         Intent(
                             requireActivity(),
@@ -302,6 +304,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                         .format(DecodeFormat.PREFER_ARGB_8888)
                 )
                 .into(avatar)
+            mImageFile = File(selectedFile)
         }
     }
 }

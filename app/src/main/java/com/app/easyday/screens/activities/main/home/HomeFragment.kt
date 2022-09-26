@@ -15,6 +15,10 @@ import com.app.easyday.screens.base.BaseFragment
 import com.app.easyday.screens.dialogs.FilterBottomSheetDialog
 import com.app.easyday.screens.dialogs.ProjectListDialog
 import com.app.easyday.utils.DeviceUtils
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.RequestOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 import me.toptas.fancyshowcase.FancyShowCaseQueue
@@ -82,6 +86,23 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
 
 
     override fun setObservers() {
+
+        viewModel.userProfileData.observe(viewLifecycleOwner) { userData ->
+            if (userData?.profileImage != null) {
+                val options = RequestOptions()
+                profile.clipToOutline = true
+                Glide.with(requireContext())
+                    .load(userData.profileImage)
+                    .apply(
+                        options.centerCrop()
+                            .skipMemoryCache(true)
+                            .priority(Priority.HIGH)
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                    )
+                    .into(profile)
+            }
+        }
+
         viewModel.projectList.observe(viewLifecycleOwner) { projectList ->
             activeProject.setOnClickListener {
                 DeviceUtils.showProgress()

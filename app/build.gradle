@@ -148,4 +148,7 @@ dependencies {
     implementation("androidx.camera:camera-view:1.1.0-beta03")
     implementation("io.coil-kt:coil:1.4.0")
     implementation("io.coil-kt:coil-video:1.4.0")
+
+//    Switches
+    implementation 'com.github.addisonelliott:SegmentedButton:3.1.9'
 }

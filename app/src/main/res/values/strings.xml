@@ -106,5 +106,10 @@
     <string name="type_to_create">Type to create</string>
     <string name="skip_photo">Skip Photo</string>
     <string name="press_hold">Press and Hold for Video</string>
+    <string name="by_continuing">By continuing you agree to Easyday \n Terms &amp; Conditions and Privacy Policy</string>
+
+    <string name="terms">Terms &amp; Conditions</string>
+    <string name="policy">Privacy Policy</string>
+    <string name="analytics">Analytics</string>
 
 </resources>

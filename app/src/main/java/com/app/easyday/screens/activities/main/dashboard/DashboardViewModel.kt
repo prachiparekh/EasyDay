@@ -17,21 +17,7 @@ class DashboardViewModel @Inject constructor(
     val api:EasyDayApi
 ) :BaseViewModel(){
 
-    var userProfileData= MutableLiveData<UserModel?>()
 
-    override fun onFragmentCreated() {
-        super.onFragmentCreated()
-        getProfile()
-    }
 
-    private fun getProfile() {
-        api.getProfile()
-            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ resp ->
-                userProfileData.value = resp.data
 
-            }, {
-                userProfileData.value = null
-            })
-    }
 }
