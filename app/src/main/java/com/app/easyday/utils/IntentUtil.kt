@@ -157,21 +157,13 @@ class IntentUtil {
         }
 
         fun getVideoImageChooserIntent(
-            context: Context,
-            activity: Activity
+            context: Context
         ): Intent? {
             val allIntents: MutableList<Intent> = ArrayList()
             val packageManager = context.packageManager
 
             // collect all camera intents if Camera cameraPermission is available
-            if (cameraPermission(activity)) {
-                val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri())
-                allIntents.add(captureIntent)
-                val captureVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-                captureVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, setVideoUri())
-                allIntents.add(captureVideoIntent)
-            }
+
             var galleryIntents =
                 getGalleryVideoIntents(packageManager, Intent.ACTION_GET_CONTENT)
             if (galleryIntents.isEmpty()) {

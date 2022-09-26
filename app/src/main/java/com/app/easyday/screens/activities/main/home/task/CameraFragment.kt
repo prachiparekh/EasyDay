@@ -296,7 +296,7 @@ class CameraFragment : Fragment() {
      * Navigate to PreviewFragment
      * */
     private fun openPreview() {
-        IntentUtil.getVideoImageChooserIntent(requireContext(), requireActivity())?.let {
+        IntentUtil.getVideoImageChooserIntent(requireContext())?.let {
             startActivityForResult(
                 it,
                 IntentUtil.PICK_IMAGE_CHOOSER_REQUEST_CODE
