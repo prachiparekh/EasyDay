@@ -1,16 +1,15 @@
 package com.app.easyday.screens.activities.main.home.task
 
 import android.content.Context
-import android.net.Uri
-import android.util.Log
+import android.graphics.Bitmap
+import android.media.ThumbnailUtils
+import android.provider.MediaStore.Video.Thumbnails.MINI_KIND
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.fetch.VideoFrameUriFetcher
-import coil.load
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.model.Media
 import com.app.easyday.utils.camera_utils.MediaDiffCallback
@@ -18,12 +17,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.fragment_profile.*
 
-class BottomImageAdapter (
+class BottomImageAdapter(
     val mContext: Context,
-    private val mediaList:ArrayList<Media>,
-    private val onItemClick: (Int,Media) -> Unit,
+    private val mediaList: ArrayList<Media>,
+    private val onItemClick: (Int, Media) -> Unit,
 ) : ListAdapter<Media, BottomImageAdapter.PicturesViewHolder>(MediaDiffCallback()) {
 
     private val inflater: LayoutInflater = LayoutInflater.from(mContext)
@@ -46,24 +44,46 @@ class BottomImageAdapter (
 
             val options = RequestOptions()
             imagePreview.clipToOutline = true
-            if(position==0){
+            if (position == 0) {
                 imagePreview.setImageDrawable(mContext.resources.getDrawable(R.drawable.ic_square_add))
-            }else {
-                Glide.with(mContext)
-                    .load(item.uri)
-                    .apply(
-                        options.centerCrop()
-                            .skipMemoryCache(true)
-                            .priority(Priority.HIGH)
-                            .format(DecodeFormat.PREFER_ARGB_8888)
-                    )
-                    .into(imagePreview)
+            } else {
+
+                if (!item.isVideo) {
+                    Glide.with(mContext)
+                        .load(item.uri)
+                        .apply(
+                            options.centerCrop()
+                                .skipMemoryCache(true)
+                                .priority(Priority.HIGH)
+                                .format(DecodeFormat.PREFER_ARGB_8888)
+                        )
+                        .into(imagePreview)
+                } else {
+                    Glide.with(mContext)
+                        .load(item.uri?.let {
+                            getThumbnailImage(
+                                it.toString()
+                            )
+                        })
+                        .apply(
+                            options.centerCrop()
+                                .skipMemoryCache(true)
+                                .priority(Priority.HIGH)
+                                .format(DecodeFormat.PREFER_ARGB_8888)
+                        )
+                        .into(imagePreview)
+                }
             }
 
             imagePreview.setOnClickListener {
-                onItemClick(adapterPosition,item
+                onItemClick(
+                    adapterPosition, item
                 )
             }
         }
+    }
+
+    fun getThumbnailImage(videoPath: String?): Bitmap? {
+        return videoPath?.let { ThumbnailUtils.createVideoThumbnail(it, MINI_KIND) }
     }
 }

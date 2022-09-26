@@ -3,6 +3,7 @@ package com.app.easyday.screens.activities.main.home.task
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -56,7 +57,9 @@ import com.theartofdev.edmodo.cropper.CropImage.getPickImageResultUri
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Executor
 import kotlin.math.abs
@@ -70,7 +73,7 @@ import kotlin.properties.Delegates
 class CameraFragment : Fragment() {
 
     var binding: FragmentCameraBinding? = null
-    var mImageUriList = arrayListOf<Media>()
+    var mImageVideoUriList = arrayListOf<Media>()
     private var videoCapture: VideoCapture? = null
     private var isRecording = false
     var isVideo = false
@@ -191,8 +194,6 @@ class CameraFragment : Fragment() {
                     displayManager.unregisterDisplayListener(displayListener)
             })
 
-
-            btnTakePicture.setVideoDuration(10000)
             btnTakePicture.actionListener = object : CameraVideoButton.ActionListener {
                 override fun onCancelled() {
                     Log.v("TEST", "onCancelled")
@@ -234,10 +235,7 @@ class CameraFragment : Fragment() {
             }
 
             binding?.skipPhoto?.setOnClickListener {
-                val action =
-                    CameraFragmentDirections
-                        .cameraToCreateTask()
-                view.let { Navigation.findNavController(it).navigate(action) }
+                navigateToTask()
             }
 
 
@@ -298,7 +296,7 @@ class CameraFragment : Fragment() {
      * Navigate to PreviewFragment
      * */
     private fun openPreview() {
-        IntentUtil.getPickImageChooserIntent(requireContext(), requireActivity())?.let {
+        IntentUtil.getVideoImageChooserIntent(requireContext(), requireActivity())?.let {
             startActivityForResult(
                 it,
                 IntentUtil.PICK_IMAGE_CHOOSER_REQUEST_CODE
@@ -325,11 +323,9 @@ class CameraFragment : Fragment() {
                         else -> R.drawable.ic_flash_auto
                     }
                 )
-                if (isVideo) {
-                    isTorchOn = false == (flashMode == ImageCapture.FLASH_MODE_OFF)
-                } else {
-                    imageCapture?.flashMode = flashMode
-                }
+
+                imageCapture?.flashMode = flashMode
+
                 prefs.putInt(KEY_FLASH, flashMode)
             }
         }
@@ -518,7 +514,13 @@ class CameraFragment : Fragment() {
 //                                setGalleryThumbnail(uri)
                                 if (getMedia(requireContext()).isEmpty()) return
 
-                                mImageUriList.add(Media(uri, false, System.currentTimeMillis()))
+                                mImageVideoUriList.add(
+                                    Media(
+                                        uri,
+                                        false,
+                                        System.currentTimeMillis()
+                                    )
+                                )
                                 navigateToTask()
                                 Log.d(TAG, "Photo saved in $uri")
                             }
@@ -607,17 +609,46 @@ class CameraFragment : Fragment() {
 
         if (requestCode == IntentUtil.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val uri = getPickImageResultUri(requireContext(), data)
+            Log.e("uri", uri.toString())
             if (uri != null) {
-                mImageUriList.add(Media(uri, false, System.currentTimeMillis()))
-                navigateToTask()
+                val cr: ContentResolver = requireContext().contentResolver
+                val mime = cr.getType(uri)
+                Log.e("mime", mime.toString())
+                if (mime?.startsWith("image/", 0) == true || uri.toString()
+                        .endsWith(".png") || uri.toString().endsWith(".jpg") || uri.toString()
+                        .endsWith(".jpeg")
+                ) {
+                    mImageVideoUriList.add(Media(uri, false, System.currentTimeMillis()))
+                    navigateToTask()
+                } else {
+//            ***********Video***********
+                    val videoFullPath = data?.data?.let {
+                        URIPathHelper.getPath(
+                            requireContext(),
+                            it
+                        )
+                    }
+                    if (videoFullPath != null) {
+                        mImageVideoUriList.add(
+                            Media(
+                                Uri.parse(videoFullPath),
+                                true,
+                                System.currentTimeMillis()
+                            )
+                        )
+                        navigateToTask()
+                    }
+                }
             }
         }
+
     }
 
+
     fun navigateToTask() {
-        Log.e("uriList", mImageUriList.toString())
+        Log.e("uriList", mImageVideoUriList.toString())
         val bundle = Bundle()
-        bundle.putParcelableArrayList("uriList", mImageUriList)
+        bundle.putParcelableArrayList("uriList", mImageVideoUriList)
         val nav = binding?.root?.let { it1 ->
             Navigation.findNavController(
                 it1
@@ -633,6 +664,7 @@ class CameraFragment : Fragment() {
     @SuppressLint("MissingPermission")
     private fun recordVideo() {
 
+        Log.e("isTorchOn", isTorchOn.toString())
         camera?.cameraControl?.enableTorch(isTorchOn)
 
         // Options fot the output video file
@@ -668,7 +700,7 @@ class CameraFragment : Fragment() {
 //                                    setGalleryThumbnail(uri)
 
                                 isVideoRunning = false
-                                mImageUriList.add(Media(uri, true, System.currentTimeMillis()))
+                                mImageVideoUriList.add(Media(uri, true, System.currentTimeMillis()))
                                 navigateToTask()
                                 Log.e(TAG, "Video saved in $uri")
                             }
@@ -708,7 +740,7 @@ class CameraFragment : Fragment() {
     private fun startVideoCamera() {
         // This is the Texture View where the camera will be rendered
         val viewFinder = binding?.viewFinder
-
+        isTorchOn = false == (flashMode == ImageCapture.FLASH_MODE_OFF)
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener({
 //            cameraProvider = cameraProviderFuture.get()
@@ -766,4 +798,29 @@ class CameraFragment : Fragment() {
     } else {
         MainExecutor()
     }
+
+    private fun saveVideoToAppScopeStorage(videoUri: Uri?): File? {
+        if (videoUri == null) {
+            return null
+        }
+        val inputStream = requireContext().contentResolver.openInputStream(videoUri)
+        val file = IntentUtil.getVideoPath()
+        file?.deleteOnExit()
+        file?.createNewFile()
+        val out = FileOutputStream(file)
+        val bos = BufferedOutputStream(out)
+
+        val buf = ByteArray(1024)
+        inputStream?.read(buf)
+        do {
+            bos.write(buf)
+        } while (inputStream?.read(buf) !== -1)
+
+        //out.close()
+        bos.close()
+        inputStream.close()
+
+        return file
+    }
+
 }

@@ -19,6 +19,7 @@ class IntentUtil {
     companion object {
         var PICK_IMAGE_CHOOSER_REQUEST_CODE = 200
         var imgPath: File? = null
+        var vidPath: File? = null
         fun getPickImageChooserIntent(
             context: Context,
             activity: Activity
@@ -89,7 +90,6 @@ class IntentUtil {
 
         }
 
-
         private fun setImageUri(): Uri {
             // Store image in dcim
             val file = File(
@@ -101,8 +101,23 @@ class IntentUtil {
             return imgUri
         }
 
+        private fun setVideoUri(): Uri {
+            // Store image in dcim
+            val file = File(
+                Environment.getExternalStorageDirectory().toString() + "/DCIM/",
+                "vid" + Date().time.toString() + ".mp4"
+            )
+            val vidUri: Uri = Uri.fromFile(file)
+            this.vidPath = file
+            return vidUri
+        }
+
         fun getImagePath(): File? {
             return imgPath
+        }
+
+        fun getVideoPath(): File? {
+            return vidPath
         }
 
         fun readPermission(activity: Activity): Boolean {
@@ -140,6 +155,71 @@ class IntentUtil {
             ) == PackageManager.PERMISSION_GRANTED
 
         }
+
+        fun getVideoImageChooserIntent(
+            context: Context,
+            activity: Activity
+        ): Intent? {
+            val allIntents: MutableList<Intent> = ArrayList()
+            val packageManager = context.packageManager
+
+            // collect all camera intents if Camera cameraPermission is available
+            if (cameraPermission(activity)) {
+                val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri())
+                allIntents.add(captureIntent)
+                val captureVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+                captureVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, setVideoUri())
+                allIntents.add(captureVideoIntent)
+            }
+            var galleryIntents =
+                getGalleryVideoIntents(packageManager, Intent.ACTION_GET_CONTENT)
+            if (galleryIntents.isEmpty()) {
+                // if no intents found for get-content try pick intent action (Huawei P9).
+                galleryIntents =
+                    getGalleryVideoIntents(packageManager, Intent.ACTION_PICK)
+            }
+            allIntents.addAll(galleryIntents)
+            val target: Intent
+            if (allIntents.isEmpty()) {
+                target = Intent()
+            } else {
+                target = allIntents[allIntents.size - 1]
+                allIntents.removeAt(allIntents.size - 1)
+            }
+
+            // Create a chooser from the main  intent
+            val chooserIntent = Intent.createChooser(target, "Choose source")
+
+            // Add all other intents
+            chooserIntent.putExtra(
+                Intent.EXTRA_INITIAL_INTENTS, allIntents.toTypedArray<Parcelable>()
+            )
+            return chooserIntent
+        }
+
+        private fun getGalleryVideoIntents(
+            packageManager: PackageManager, action: String
+        ): List<Intent> {
+            val intents: MutableList<Intent> = ArrayList()
+            val galleryIntent =
+                if (action === Intent.ACTION_GET_CONTENT) Intent(action) else Intent(
+                    action,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                )
+            galleryIntent.type = "video/*, image/*";
+            val listGallery = packageManager.queryIntentActivities(galleryIntent,0)
+            for (res in listGallery) {
+                val intent = Intent(galleryIntent)
+                intent.component =
+                    ComponentName(res.activityInfo.packageName, res.activityInfo.name)
+                intent.setPackage(res.activityInfo.packageName)
+                intents.add(intent)
+            }
+
+            return intents
+        }
+
 
     }
 }

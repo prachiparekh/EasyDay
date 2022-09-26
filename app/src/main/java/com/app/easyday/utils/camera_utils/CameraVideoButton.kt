@@ -303,6 +303,6 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
 
     companion object {
         private const val MINIMUM_VIDEO_DURATION_MILLIS = 300L
-        private const val VIDEO_DURATION = 10000L
+        private const val VIDEO_DURATION = Long.MAX_VALUE
     }
 }
