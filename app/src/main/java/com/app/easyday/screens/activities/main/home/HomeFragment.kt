@@ -2,6 +2,7 @@ package com.app.easyday.screens.activities.main.home
 
 
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
@@ -45,6 +46,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
 
     override fun initUi() {
 
+        Log.e("token:",AppPreferencesDelegates.get().token)
         if (!AppPreferencesDelegates.get().showcaseSeen) {
 
             fancyView2 = FancyShowCaseView.Builder(requireActivity())

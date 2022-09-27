@@ -111,5 +111,43 @@
     <string name="terms">Terms &amp; Conditions</string>
     <string name="policy">Privacy Policy</string>
     <string name="analytics">Analytics</string>
+    <string name="inprogress">In Progress</string>
+    <string name="total_task">Total Task</string>
+    <string name="task_status">Task Status</string>
+    <string name="priority_status">Priority Status</string>
+    <string name="in_review">In Review</string>
+    <string name="completed_task">Completed</string>
+
+    <string name="urgent_p">Urgent</string>
+    <string name="normal_p">Normal</string>
+    <string name="low_p">Low</string>
+    <string name="flag_status">Flag Status</string>
+    <string name="not_flagged">Not Flagged</string>
+    <string name="red_flagged">Red Flagged</string>
+    <string name="team_status">Team Status</string>
+    <string name="tags">Tags</string>
+    <string name="no_msg">No Messages Found</string>
+
+    <string name="general_setting">General Settings</string>
+    <string name="my_profile">My Profile</string>
+    <string name="my_profile_text">View and edit your profile info</string>
+    <string name="notepad">Notepad</string>
+    <string name="notepad_text">Create and manage notepad</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_text">Set notifications priority</string>
+    <string name="privacy_security">Privacy &amp; Security</string>
+    <string name="privacy_security_text">Set notifications priority</string>
+
+    <string name="activity_log">Activity log</string>
+    <string name="activity_log_text">Manage your all activities</string>
+    <string name="other">OTHER</string>
+    <string name="upgrade_premium">Upgrade to Premium</string>
+    <string name="upgrade_premium_text">View and update your interests</string>
+    <string name="feedback_app">Feedback App</string>
+    <string name="feedback_app_text">View and update your interests</string>
+    <string name="logout">Logout</string>
+    <string name="logout_text">Exit you EasyDay account</string>
+
+    <string name="version">Version %s</string>
 
 </resources>

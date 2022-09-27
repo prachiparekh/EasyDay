@@ -72,8 +72,9 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:background="@drawable/bg_circle_white"
-                android:padding="@dimen/_5sdp" />
+                />
 
         </LinearLayout>
 

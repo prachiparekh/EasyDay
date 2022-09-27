@@ -45,7 +45,6 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
             if (phone.text?.isNotEmpty() == true && countryCode?.isNotEmpty() == true) {
                 trimCode = countryCode?.replace("\\s+".toRegex(), "").toString()
                 trimCode = trimCode.replace("+", "")
-                Log.e("trimcode", trimCode)
                 viewModel.sendOTP(phone.text.toString(), trimCode)
             } else {
                 Toast.makeText(

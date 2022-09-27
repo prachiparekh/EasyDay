@@ -6,6 +6,7 @@ import com.app.easyday.app.sources.remote.model.ProjectRespModel
 import com.app.easyday.app.sources.remote.model.UserModel
 import com.app.easyday.app.sources.remote.model.VerifyOTPRespModel
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 import rx.Observable
 
@@ -26,15 +27,14 @@ interface EasyDayApi {
         @Field("country_code") country_code: String
     ): Observable<ApiResponse<VerifyOTPRespModel>>
 
-    @FormUrlEncoded
     @Multipart
     @POST("user/create-user")
     fun createUser(
-        @Field("fullname") fullname: String,
-        @Field("profession") profession: String,
-        @Field("phone_number") phone_number: String,
-        @Field("country_code") country_code: String,
-        @Field("profile_image") profile_image: MultipartBody.Part?
+        @Part("fullname") fullname: RequestBody,
+        @Part("profession") profession: RequestBody,
+        @Part("phone_number") phone_number: RequestBody,
+        @Part("country_code") country_code: RequestBody,
+        @Part profile_image: MultipartBody.Part?
     ): Observable<ApiResponse<UserModel>>
 
     @GET("user/get-profile")

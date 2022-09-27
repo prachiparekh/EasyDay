@@ -1,26 +1,42 @@
 package com.app.easyday.screens.activities.main.inbox
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.app.easyday.R
+import com.app.easyday.screens.activities.main.home.HomeViewModel.Companion.userModel
+import com.app.easyday.screens.base.BaseFragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.RequestOptions
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_inbox.*
 
 @AndroidEntryPoint
-class InboxFragment : Fragment() {
+class InboxFragment : BaseFragment<InboxViewModel>() {
 
-    companion object{
+    companion object {
         const val TAG = "InboxFragment"
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inbox, container, false)
+    override fun getContentView() = R.layout.fragment_inbox
+
+    override fun initUi() {
+
+    }
+
+    override fun setObservers() {
+        if (userModel?.profileImage != null) {
+            val options = RequestOptions()
+            profile.clipToOutline = true
+            Glide.with(requireContext())
+                .load(userModel?.profileImage)
+                .apply(
+                    options.centerCrop()
+                        .skipMemoryCache(true)
+                        .priority(Priority.HIGH)
+                        .format(DecodeFormat.PREFER_ARGB_8888)
+                )
+                .into(profile)
+        }
     }
 
 

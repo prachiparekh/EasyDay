@@ -11,6 +11,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.io.File
@@ -37,6 +38,14 @@ class ProfileViewModel @Inject constructor(
         profile_image: File?
     ) {
 
+        val fullNameBody: RequestBody =
+            fullName.toRequestBody("text/plain".toMediaTypeOrNull())
+        val professionBody: RequestBody =
+            profession.toRequestBody("text/plain".toMediaTypeOrNull())
+        val phoneNumberBody: RequestBody =
+            phoneNumber.toRequestBody("text/plain".toMediaTypeOrNull())
+        val countryCodeBody: RequestBody =
+            country_code.toRequestBody("text/plain".toMediaTypeOrNull())
         val mPartBody: RequestBody? =
             profile_image?.asRequestBody("image/*".toMediaTypeOrNull())
         val requestFile: MultipartBody.Part? =
@@ -45,7 +54,7 @@ class ProfileViewModel @Inject constructor(
                     it
                 )
             }
-        api.createUser(fullName, profession, phoneNumber, country_code, requestFile)
+        api.createUser(fullNameBody, professionBody, phoneNumberBody, countryCodeBody, requestFile)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 actionStream.value = ACTION.onAddUpdateUser(resp.data)

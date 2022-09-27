@@ -38,4 +38,9 @@
     <color name="light_gray">#EAEAEA</color>
     <color name="light_sky_blue">#1A62B4FE</color>
 
+    <color name="yellow">#F9AA4B</color>
+    <color name="light_yellow">#1AF9AA4B</color>
+    <color name="light_green">#1A1AD191</color>
+    <color name="light_red">#1AFF745F</color>
+
 </resources>

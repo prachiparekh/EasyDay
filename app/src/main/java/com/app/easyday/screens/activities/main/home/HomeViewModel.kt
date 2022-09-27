@@ -17,6 +17,9 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val projectList = MutableLiveData<ArrayList<ProjectRespModel>?>()
+    companion object{
+        var userModel:UserModel?=null
+    }
     var userProfileData= MutableLiveData<UserModel?>()
 
     override fun onFragmentCreated() {
@@ -29,8 +32,8 @@ class HomeViewModel @Inject constructor(
         api.getProfile()
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
+                userModel=resp.data
                 userProfileData.value = resp.data
-
             }, {
                 userProfileData.value = null
             })

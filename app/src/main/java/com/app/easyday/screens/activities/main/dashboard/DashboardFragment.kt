@@ -9,6 +9,7 @@ import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.app.easyday.R
+import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.app.easyday.screens.activities.auth.LoginFragmentDirections
 import com.app.easyday.screens.activities.main.home.HomeFragment
 import com.app.easyday.screens.activities.main.inbox.InboxFragment
@@ -25,6 +26,8 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
     override fun getContentView() = R.layout.fragment_dashboard
 
     override fun initUi() {
+
+        AppPreferencesDelegates.get().token="180CdFv6pIeKXcg5YqIXVLIKICo6pim6HBh0bVVt6Mhg1mvmscCsbU1S82GaqjIGx2f6rQc43KaqwDQmYNbuRACBqdsa6b7mFgeKqdHvm4Q9M"
 
         requireView().isFocusableInTouchMode = true
         requireView().requestFocus()
@@ -48,7 +51,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
                     openChildFragment(ReportsFragment(), ReportsFragment.TAG)
                 }
                 R.id.more -> {
-                    openChildFragment(InboxFragment(), MoreFragment.TAG)
+                    openChildFragment(MoreFragment(), MoreFragment.TAG)
                 }
             }
             true
