@@ -27,7 +27,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
 
     override fun initUi() {
 
-        AppPreferencesDelegates.get().token="180CdFv6pIeKXcg5YqIXVLIKICo6pim6HBh0bVVt6Mhg1mvmscCsbU1S82GaqjIGx2f6rQc43KaqwDQmYNbuRACBqdsa6b7mFgeKqdHvm4Q9M"
+
 
         requireView().isFocusableInTouchMode = true
         requireView().requestFocus()

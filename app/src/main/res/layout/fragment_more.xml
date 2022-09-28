@@ -120,7 +120,8 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_profile" />
+                            android:src="@drawable/ic_profile"
+                            android:layout_marginTop="@dimen/_3sdp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -159,7 +160,8 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_note" />
+                            android:src="@drawable/ic_note"
+                            android:layout_marginTop="@dimen/_3sdp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -199,7 +201,8 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_notification_bing" />
+                            android:src="@drawable/ic_notification_bing"
+                            android:layout_marginTop="@dimen/_3sdp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -238,7 +241,8 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_shield" />
+                            android:src="@drawable/ic_shield"
+                            android:layout_marginTop="@dimen/_3sdp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -277,7 +281,8 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_activity" />
+                            android:src="@drawable/ic_activity"
+                            android:layout_marginTop="@dimen/_3sdp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -326,7 +331,8 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_like" />
+                            android:src="@drawable/ic_like"
+                            android:layout_marginTop="@dimen/_3sdp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -365,7 +371,8 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_like" />
+                            android:src="@drawable/ic_like"
+                            android:layout_marginTop="@dimen/_3sdp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -404,7 +411,8 @@
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_logout" />
+                            android:src="@drawable/ic_logout"
+                            android:layout_marginTop="@dimen/_3sdp"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"

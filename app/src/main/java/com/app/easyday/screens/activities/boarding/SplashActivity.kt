@@ -26,6 +26,7 @@ class SplashActivity : BaseActivity<SplashViewModel>() {
         viewModel.userProfileData.observe(this) { userData ->
 
             if (userData != null) {
+//                AppPreferencesDelegates.get().token=userData.token.toString()
                 startActivity(
                     Intent(
                         this@SplashActivity,
