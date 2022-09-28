@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
-            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginTop="@dimen/_50sdp"
             android:background="@android:color/transparent">
 
             <androidx.cardview.widget.CardView
@@ -48,7 +48,7 @@
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/_10sdp"
-                app:cardElevation="0dp">
+                app:cardElevation="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -58,14 +58,13 @@
                     android:paddingBottom="@dimen/_10sdp">
 
                     <TextView
-                        android:id="@+id/taskLabel"
+                        android:id="@+id/userName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/dm_sans_700"
                         android:padding="@dimen/_5sdp"
-                        android:text="Guy Hawkins"
                         android:textColor="@color/accent_blue"
                         android:textSize="@dimen/_13sdp" />
 
@@ -80,7 +79,6 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:fontFamily="@font/dm_sans_700"
                         android:padding="@dimen/_5sdp"
-                        android:text="Painter"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_13sdp" />
 
@@ -93,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/profileCard"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingTop="@dimen/_20sdp"
                 android:background="@color/bg_white"
                 android:scrollbars="none">
 
@@ -459,7 +457,7 @@
             android:layout_height="@dimen/_85sdp"
             android:layout_below="@id/title"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:adjustViewBounds="true"
             android:background="@drawable/bg_circle_white"
             android:scaleType="centerCrop"
@@ -471,7 +469,7 @@
             android:layout_height="@dimen/_80sdp"
             android:layout_below="@id/title"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:adjustViewBounds="true"
             android:background="@drawable/bg_circle_white"
             android:scaleType="centerCrop"

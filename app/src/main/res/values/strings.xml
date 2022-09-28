@@ -24,8 +24,8 @@
     <string name="wrong_otp">Wrong OTP, Please check again</string>
     <string name="create_profile">Create Profile</string>
     <string name="enter_details">Enter your details to complete your profile</string>
-    <string name="full_name">Full Name <font color='#FB4079'>*</font></string>
-    <string name="ur_profession">Your profession <font color='#FB4079'>*</font></string>
+    <string name="full_name_c">Full Name <font color='#FB4079'>*</font></string>
+    <string name="ur_profession_c">Your profession <font color='#FB4079'>*</font></string>
     <string name="crop_fail">Cropping failed:</string>
 
     <string name="name_constarin">Full name is required !</string>
@@ -149,5 +149,8 @@
     <string name="logout_text">Exit you EasyDay account</string>
 
     <string name="version">Version %s</string>
+    <string name="full_name">Full Name</string>
+    <string name="ur_profession">Your profession</string>
+    <string name="save_changes">Save changes</string>
 
 </resources>

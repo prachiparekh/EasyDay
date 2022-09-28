@@ -38,7 +38,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
     private lateinit var queue: FancyShowCaseQueue
     private lateinit var fancyView2: FancyShowCaseView
     private lateinit var fancyView1: FancyShowCaseView
-    private var filterDialog = FilterBottomSheetDialog()
+    private var filterDialog: FilterBottomSheetDialog? = null
 
 
     override fun getContentView() = R.layout.fragment_home
@@ -46,7 +46,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
 
     override fun initUi() {
 
-        Log.e("token:",AppPreferencesDelegates.get().token)
+        Log.e("token:", AppPreferencesDelegates.get().token)
         if (!AppPreferencesDelegates.get().showcaseSeen) {
 
             fancyView2 = FancyShowCaseView.Builder(requireActivity())
@@ -74,8 +74,10 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             }
         }
 
+        filterDialog = FilterBottomSheetDialog()
         filterTV.setOnClickListener {
-            filterDialog.show(childFragmentManager, "filter")
+            if (filterDialog?.isAdded == false)
+                filterDialog?.show(childFragmentManager, "filter")
         }
 
         cta.setOnClickListener {

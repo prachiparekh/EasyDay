@@ -799,28 +799,4 @@ class CameraFragment : Fragment() {
         MainExecutor()
     }
 
-    private fun saveVideoToAppScopeStorage(videoUri: Uri?): File? {
-        if (videoUri == null) {
-            return null
-        }
-        val inputStream = requireContext().contentResolver.openInputStream(videoUri)
-        val file = IntentUtil.getVideoPath()
-        file?.deleteOnExit()
-        file?.createNewFile()
-        val out = FileOutputStream(file)
-        val bos = BufferedOutputStream(out)
-
-        val buf = ByteArray(1024)
-        inputStream?.read(buf)
-        do {
-            bos.write(buf)
-        } while (inputStream?.read(buf) !== -1)
-
-        //out.close()
-        bos.close()
-        inputStream.close()
-
-        return file
-    }
-
 }

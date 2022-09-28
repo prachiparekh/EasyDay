@@ -34,6 +34,9 @@ class MoreFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_more, container, false)
 
+        binding?.userName?.text= userModel?.fullname
+        binding?.profession?.text= userModel?.profession
+
         val info = requireContext().packageManager.getPackageInfo(
             requireContext().packageName, 0
         )
