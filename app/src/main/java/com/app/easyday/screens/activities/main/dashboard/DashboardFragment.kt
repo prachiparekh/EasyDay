@@ -4,13 +4,7 @@ import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.bumptech.glide.Glide
-import com.bumptech.glide.Priority
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.request.RequestOptions
 import com.app.easyday.R
-import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
-import com.app.easyday.screens.activities.auth.LoginFragmentDirections
 import com.app.easyday.screens.activities.main.home.HomeFragment
 import com.app.easyday.screens.activities.main.inbox.InboxFragment
 import com.app.easyday.screens.activities.main.more.MoreFragment
@@ -25,9 +19,11 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
 
     override fun getContentView() = R.layout.fragment_dashboard
 
+    companion object {
+        var selectedTabID = R.id.home
+    }
+
     override fun initUi() {
-
-
 
         requireView().isFocusableInTouchMode = true
         requireView().requestFocus()
@@ -38,22 +34,10 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
             } else false
         }
 
-        openChildFragment(HomeFragment(), HomeFragment.TAG)
+        openChildFragment(selectedTabID)
         bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.home -> {
-                    openChildFragment(HomeFragment(), HomeFragment.TAG)
-                }
-                R.id.inbox -> {
-                    openChildFragment(InboxFragment(), InboxFragment.TAG)
-                }
-                R.id.reports -> {
-                    openChildFragment(ReportsFragment(), ReportsFragment.TAG)
-                }
-                R.id.more -> {
-                    openChildFragment(MoreFragment(), MoreFragment.TAG)
-                }
-            }
+            selectedTabID = it.itemId
+            openChildFragment(selectedTabID)
             true
         }
 
@@ -66,17 +50,46 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
         }
     }
 
-    private fun openChildFragment(fragment: Fragment, tag: String?) {
+    private fun openChildFragment(selectedItemID: Int) {
 
-        childFragmentManager.beginTransaction()
-            .replace(R.id.childContent, fragment)
-            .addToBackStack(tag)
-            .commit()
+        var fragment: Fragment? = null
+        var tag: String? = null
+
+        when (selectedItemID) {
+            R.id.home -> {
+                fragment = HomeFragment()
+                tag = HomeFragment.TAG
+            }
+            R.id.inbox -> {
+                fragment = InboxFragment()
+                tag = InboxFragment.TAG
+            }
+            R.id.reports -> {
+                fragment = ReportsFragment()
+                tag = ReportsFragment.TAG
+            }
+            R.id.more -> {
+                fragment = MoreFragment()
+                tag = MoreFragment.TAG
+            }
+        }
+
+        if (fragment != null) {
+            childFragmentManager.beginTransaction()
+                .replace(R.id.childContent, fragment)
+                .addToBackStack(tag)
+                .commit()
+        }
 
     }
 
     override fun setObservers() {
 
     }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
 
 }

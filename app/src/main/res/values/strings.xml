@@ -152,5 +152,6 @@
     <string name="full_name">Full Name</string>
     <string name="ur_profession">Your profession</string>
     <string name="save_changes">Save changes</string>
+    <string name="edit_profile">Edit Profile</string>
 
 </resources>
