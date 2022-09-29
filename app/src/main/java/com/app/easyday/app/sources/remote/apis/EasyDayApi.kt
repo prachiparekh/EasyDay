@@ -45,4 +45,7 @@ interface EasyDayApi {
 
     @GET("project/get-project")
     fun getProject(@Query("project_id") project_id: Int): Observable<ApiResponse<ProjectRespModel>?>
+
+    @GET("user/delete-user")
+    fun deleteUser(): Observable<ApiResponse<UserModel>>
 }

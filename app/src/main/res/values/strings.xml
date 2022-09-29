@@ -153,5 +153,20 @@
     <string name="ur_profession">Your profession</string>
     <string name="save_changes">Save changes</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="policy_text">In case you missed them on Sign Up</string>
+    <string name="block_list">Block List</string>
+    <string name="block_list_text">Users blocked by you</string>
+    <string name="delete_account">Delete Account</string>
+
+    <string name="delete_my_account"><u>Delete My Account</u></string>
+    <string name="delete_account_text">Delete account from Easyday?</string>
+    <string name="delete_account_text1">Are you sure you would like to Delete your Easyday account?</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes_delete">Yes, Delete</string>
+    <string name="yes_logout">Yes, Logout</string>
+    <string name="logout_account_text">Logout from Easyday?</string>
+    <string name="logout_account_text1">Are you sure you would like to logout of your Easyday account?</string>
+
+    <string name="total">Total</string>
 
 </resources>

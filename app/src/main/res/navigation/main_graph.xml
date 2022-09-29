@@ -34,6 +34,14 @@
             app:popEnterAnim="@anim/slide_in_from_the_left"
             app:popExitAnim="@anim/slide_out_to_the_right" />
 
+        <action
+            android:id="@+id/dashboard_to_more_privacy"
+            app:destination="@id/privacySecurityFragment"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right" />
+
     </fragment>
     <fragment
         android:id="@+id/addProjectFragment"
@@ -105,5 +113,33 @@
         android:name="com.app.easyday.screens.activities.main.more.profile.ViewProfileFragment"
         android:label="fragment_view_profile"
         tools:layout="@layout/fragment_view_profile" />
+    <fragment
+        android:id="@+id/privacySecurityFragment"
+        android:name="com.app.easyday.screens.activities.main.more.privacy.PrivacySecurityFragment"
+        android:label="fragment_privacy_security"
+        tools:layout="@layout/fragment_privacy_security" >
+
+        <action android:id="@+id/more_privacy_to_terms"
+            app:destination="@id/termsPolicyFragment2"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right">
+            <argument
+                android:name="title"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="url"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/termsPolicyFragment2"
+        android:name="com.app.easyday.screens.activities.auth.TermsPolicyFragment"
+        android:label="TermsPolicyFragment" />
 
 </navigation>
