@@ -2,6 +2,7 @@ package com.app.easyday.screens.activities.main.more.privacy
 
 import android.content.Intent
 import androidx.core.view.isVisible
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.app.easyday.R

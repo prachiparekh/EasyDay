@@ -154,4 +154,8 @@ dependencies {
 
 //    Pie chart
     implementation 'com.github.furkanaskin:ClickablePieChart:1.0.9'
+
+//    Image Editor
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':imageeditorlib')
 }

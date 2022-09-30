@@ -98,7 +98,7 @@ class AddParticipantsFragment : Fragment() {
 
         Dexter.withContext(requireContext())
             .withPermissions(
-                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.READ_CONTACTS
             )
             .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {

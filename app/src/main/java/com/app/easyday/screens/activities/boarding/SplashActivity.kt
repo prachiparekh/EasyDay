@@ -3,6 +3,7 @@ package com.app.easyday.screens.activities.boarding
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.observe
 import androidx.navigation.ActivityNavigator
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates

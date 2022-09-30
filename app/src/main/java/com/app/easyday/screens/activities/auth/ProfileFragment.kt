@@ -11,6 +11,7 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.observe
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.app.easyday.screens.activities.main.MainActivity

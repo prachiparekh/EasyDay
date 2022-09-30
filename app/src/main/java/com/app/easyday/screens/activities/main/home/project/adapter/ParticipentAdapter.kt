@@ -9,6 +9,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.compose.ui.text.toLowerCase
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
@@ -102,8 +103,8 @@ class ParticipentAdapter(
                     filteredList1.addAll(contactList)
                 } else {
                     for (location in contactList) {
-                        if (location.name?.lowercase()
-                                ?.contains(charSequence.toString().lowercase()) == true
+                        if (location.name?.toLowerCase()
+                                ?.contains(charSequence.toString().toLowerCase()) == true
                         ) {
                             filteredList1.add(location)
                         }

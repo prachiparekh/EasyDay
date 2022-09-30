@@ -5,7 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class Media(
-    val uri: Uri?,
+    var uri: Uri?,
     val isVideo: Boolean,
     val date: Long,
 ):Parcelable {

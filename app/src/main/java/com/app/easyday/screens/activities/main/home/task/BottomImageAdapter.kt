@@ -25,7 +25,7 @@ import com.bumptech.glide.request.target.Target
 class BottomImageAdapter(
     val mContext: Context,
     private val mediaList: ArrayList<Media>,
-    private val onItemClick: (Int, Media) -> Unit,
+    private val onItemClick: (Int, Media) -> Unit
 ) : ListAdapter<Media, BottomImageAdapter.PicturesViewHolder>(MediaDiffCallback()) {
 
     var loadFail=false

@@ -17,7 +17,7 @@ import com.app.easyday.utils.camera_utils.MediaDiffCallback
 class MediaAdapter(
     val mContext:Context,
     private val onItemClick: (Boolean, Uri) -> Unit,
-    private val onDeleteClick: (Boolean, Uri) -> Unit,
+    private val onDeleteClick: (Boolean, Uri) -> Unit
 ) : ListAdapter<Media, MediaAdapter.PicturesViewHolder>(MediaDiffCallback()) {
 
     private val inflater: LayoutInflater = LayoutInflater.from(mContext)

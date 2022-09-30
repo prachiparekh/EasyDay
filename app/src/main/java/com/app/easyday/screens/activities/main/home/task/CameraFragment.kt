@@ -281,7 +281,7 @@ class CameraFragment : Fragment() {
         flag = lensFacing == DEFAULT_BACK_CAMERA,
         rotationAngle = 180f,
         firstIcon = R.drawable.ic_rotate,
-        secondIcon = R.drawable.ic_rotate,
+        secondIcon = R.drawable.ic_rotate
     ) {
         lensFacing = if (it) {
             DEFAULT_BACK_CAMERA
@@ -360,6 +360,7 @@ class CameraFragment : Fragment() {
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener({
+
             try {
                 cameraProvider = cameraProviderFuture.get()
             } catch (e: InterruptedException) {
@@ -439,7 +440,7 @@ class CameraFragment : Fragment() {
                 hdrCameraSelector ?: lensFacing, // either front or back facing
                 preview, // camera preview use case
                 imageCapture, // image capture use case
-                imageAnalyzer, // image analyzer use case
+                imageAnalyzer // image analyzer use case
             )
             // Attach the viewfinder's surface provider to preview use case
             preview?.setSurfaceProvider(viewFinder.surfaceProvider)
@@ -568,7 +569,7 @@ class CameraFragment : Fragment() {
         val permissions = mutableListOf(
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
         ).apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 add(Manifest.permission.ACCESS_MEDIA_LOCATION)

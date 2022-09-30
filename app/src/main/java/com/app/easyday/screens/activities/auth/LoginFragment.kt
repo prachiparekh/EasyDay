@@ -9,8 +9,10 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.compose.ui.text.toLowerCase
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.app.easyday.R
@@ -80,7 +82,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
         phoneFlag.text =
             CountryCityUtils.getFlagId(
                 CountryCityUtils.firstTwo(
-                    defaultCode?.key?.lowercase(Locale.getDefault()).toString()
+                    defaultCode?.key?.toLowerCase(Locale.getDefault()).toString()
                 )
             )
 
@@ -122,7 +124,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
         phoneFlag.text =
             CountryCityUtils.getFlagId(
                 CountryCityUtils.firstTwo(
-                    countries.key?.lowercase(Locale.getDefault()).toString()
+                    countries.key?.toLowerCase(Locale.getDefault()).toString()
                 ).toString()
             )
     }

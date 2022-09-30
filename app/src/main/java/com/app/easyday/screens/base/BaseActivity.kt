@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.app.easyday.R
 import com.app.easyday.navigation.UiEvent
 import com.app.easyday.utils.DeviceUtils

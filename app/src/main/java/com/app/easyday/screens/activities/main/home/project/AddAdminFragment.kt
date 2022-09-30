@@ -28,7 +28,7 @@ class AddAdminFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_admin, container, false)
-        var selectedParticipantList =
+        val selectedParticipantList =
             arguments?.getParcelableArrayList<ContactModel>("selectedParticipantList")
 
         adapter = selectedParticipantList?.let {

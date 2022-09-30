@@ -1,7 +1,10 @@
 package com.app.easyday.screens.activities.main.home.task
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.util.Log
 import androidx.navigation.Navigation
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
@@ -11,8 +14,11 @@ import com.app.easyday.app.sources.local.model.Media
 import com.app.easyday.screens.base.BaseFragment
 import com.app.easyday.screens.dialogs.AddTagBottomSheetDialog
 import com.app.easyday.screens.dialogs.DueDateBottomSheetDialog
+import com.app.easyday.utils.FileUtil
+import com.passiondroid.imageeditorlib.ImageEditor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_create_task.*
+import java.io.File
 
 @AndroidEntryPoint
 class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterface, TagInterface,
@@ -24,6 +30,8 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     private var priorityList = arrayListOf<String>()
     var taskAdapter: TaskFilterAdapter? = null
     var imgAdapter: BottomImageAdapter? = null
+    var selectedUriList = ArrayList<Media>()
+    var mediaAdapter: MediaAdapter? = null
 
 //    *****************
 
@@ -36,9 +44,9 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 
     override fun initUi() {
 
-        val selectedUriList = arguments?.getParcelableArrayList<Media>("uriList")
+        selectedUriList = arguments?.getParcelableArrayList<Media>("uriList") as ArrayList<Media>
 
-        val mediaAdapter = MediaAdapter(
+        mediaAdapter = MediaAdapter(
             requireContext(),
             onItemClick = { isVideo, uri ->
                 if (isVideo) {
@@ -52,11 +60,11 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                     val resolver = requireContext().applicationContext.contentResolver
                     resolver.delete(uri, null, null)
                 }
-            },
+            }
         )
 
         pagerPhotos.apply {
-            adapter = mediaAdapter.apply { submitList(selectedUriList) }
+            adapter = mediaAdapter?.apply { submitList(selectedUriList) }
 //            onPageSelected { page -> currentPage = page }
         }
 
@@ -90,9 +98,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 
         val bottomImageList = ArrayList<Media>()
         bottomImageList.add(0, Media(null, false, System.currentTimeMillis()))
-        if (selectedUriList != null) {
-            bottomImageList.addAll(selectedUriList)
-        }
+        bottomImageList.addAll(selectedUriList)
 
         imgAdapter =
             BottomImageAdapter(requireContext(), bottomImageList, onItemClick = { position, item ->
@@ -103,6 +109,14 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                     Navigation.findNavController(requireView()).popBackStack()
             })
         imgRV.adapter = imgAdapter
+
+        edit.setOnClickListener {
+            ImageEditor.Builder(
+                requireActivity(),
+                selectedUriList[pagerPhotos.currentItem].uri?.let { it1 -> FileUtil.getPath(it1,requireContext()) }
+            ).open()
+            Log.e("uri:", selectedUriList[pagerPhotos.currentItem].uri.toString())
+        }
 
     }
 
@@ -166,5 +180,16 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         taskAdapter?.dueDateFilter(datestr)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
+        when (requestCode) {
+            ImageEditor.RC_IMAGE_EDITOR ->
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val imagePath: String? = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)
+                    var mfile = File(imagePath)
+                    selectedUriList[pagerPhotos.currentItem].uri = Uri.fromFile(mfile)
+                    mediaAdapter?.notifyItemChanged(pagerPhotos.currentItem)
+                }
+        }
+    }
 }
