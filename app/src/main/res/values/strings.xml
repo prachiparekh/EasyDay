@@ -168,5 +168,7 @@
     <string name="logout_account_text1">Are you sure you would like to logout of your Easyday account?</string>
 
     <string name="total">Total</string>
+    <string name="flagged">Flagged</string>
+    <string name="tag_status">Tag Status</string>
 
 </resources>

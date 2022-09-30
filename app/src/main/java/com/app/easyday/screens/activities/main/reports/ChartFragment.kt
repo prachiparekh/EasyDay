@@ -1,10 +1,5 @@
 package com.app.easyday.screens.activities.main.reports
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.app.easyday.R
 import com.app.easyday.screens.base.BaseFragment
 import com.faskn.lib.PieChart
@@ -15,19 +10,30 @@ import kotlinx.android.synthetic.main.fragment_chart.*
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<ChartViewModel>() {
 
-    companion object
-    {
-        val tag="Chart"
+    companion object {
+        val tag = "Chart"
     }
 
-    override fun getContentView()=R.layout.fragment_chart
+    override fun getContentView() = R.layout.fragment_chart
 
     override fun initUi() {
-        val pieChart = PieChart(
-            slices = provideSlices(), clickListener = null, sliceStartPoint = 0f, sliceWidth = 50f
+        val taskChart1 = PieChart(
+            slices = taskSlices(), clickListener = null, sliceStartPoint = 0f, sliceWidth = 50f
         ).build()
 
-        taskChart.setPieChart(pieChart)
+        taskChart.setPieChart(taskChart1)
+
+        val priorityChart1 = PieChart(
+            slices = prioritySlices(), clickListener = null, sliceStartPoint = 0f, sliceWidth = 50f
+        ).build()
+
+        priorityChart.setPieChart(priorityChart1)
+
+        val flagChart1 = PieChart(
+            slices = flagSlices(), clickListener = null, sliceStartPoint = 0f, sliceWidth = 50f
+        ).build()
+
+        flagChart.setPieChart(flagChart1)
 
     }
 
@@ -35,7 +41,7 @@ class ChartFragment : BaseFragment<ChartViewModel>() {
 
     }
 
-    private fun provideSlices(): ArrayList<Slice> {
+    private fun taskSlices(): ArrayList<Slice> {
         return arrayListOf(
             Slice(
                 20F,
@@ -56,6 +62,41 @@ class ChartFragment : BaseFragment<ChartViewModel>() {
                 86F,
                 R.color.red,
                 requireContext().resources.getString(R.string.reopened)
+            )
+        )
+    }
+
+    private fun prioritySlices(): ArrayList<Slice> {
+        return arrayListOf(
+            Slice(
+                64F,
+                R.color.red,
+                requireContext().resources.getString(R.string.urgent_p)
+            ),
+            Slice(
+                50F,
+                R.color.green,
+                requireContext().resources.getString(R.string.low_p)
+            ),
+            Slice(
+                48F,
+                R.color.yellow,
+                requireContext().resources.getString(R.string.normal)
+            )
+        )
+    }
+
+    private fun flagSlices(): ArrayList<Slice> {
+        return arrayListOf(
+            Slice(
+                64F,
+                R.color.red,
+                requireContext().resources.getString(R.string.red_flagged)
+            ),
+            Slice(
+                50F,
+                R.color.tab_gray,
+                requireContext().resources.getString(R.string.not_flagged)
             )
         )
     }
