@@ -1,5 +1,7 @@
 package com.passiondroid.imageeditorlib.views;
 
+import static com.passiondroid.imageeditorlib.PhotoEditorFragment.MODE_PAINT;
+
 import android.content.Context;
 import android.graphics.*;
 import android.os.Build;
@@ -7,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import androidx.annotation.RequiresApi;
+
+import com.passiondroid.imageeditorlib.PhotoEditorFragment;
 
 /**
  * Created by panyi on 17/2/11.
@@ -109,18 +113,19 @@ public class CustomPaintView extends View {
   @Override
   public boolean onTouchEvent(MotionEvent event) {
     boolean ret = super.onTouchEvent(event);
-    float x = event.getX();
-    float y = event.getY();
+    if(PhotoEditorFragment.currentMode==MODE_PAINT) {
+      float x = event.getX();
+      float y = event.getY();
 
-    switch (event.getAction()) {
-      case MotionEvent.ACTION_DOWN:
-        ret = true;
-        last_x = x;
-        last_y = y;
+      switch (event.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+          ret = true;
+          last_x = x;
+          last_y = y;
 
-        break;
-      case MotionEvent.ACTION_MOVE:
-        ret = true;
+          break;
+        case MotionEvent.ACTION_MOVE:
+          ret = true;
           if (bounds.contains(x, y) && bounds.contains(last_x, last_y)) {
             mPaintCanvas.drawLine(last_x, last_y, x, y, eraser ? mEraserPaint : mPaint);
           }
@@ -129,11 +134,12 @@ public class CustomPaintView extends View {
 
           this.postInvalidate();
 
-        break;
-      case MotionEvent.ACTION_CANCEL:
-      case MotionEvent.ACTION_UP:
-        ret = false;
-        break;
+          break;
+        case MotionEvent.ACTION_CANCEL:
+        case MotionEvent.ACTION_UP:
+          ret = false;
+          break;
+      }
     }
     return ret;
   }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.navigation.Navigation
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
@@ -15,6 +16,7 @@ import com.app.easyday.screens.base.BaseFragment
 import com.app.easyday.screens.dialogs.AddTagBottomSheetDialog
 import com.app.easyday.screens.dialogs.DueDateBottomSheetDialog
 import com.app.easyday.utils.FileUtil
+import com.passiondroid.imageeditorlib.ImageEditActivity
 import com.passiondroid.imageeditorlib.ImageEditor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_create_task.*
@@ -111,11 +113,21 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         imgRV.adapter = imgAdapter
 
         edit.setOnClickListener {
-            ImageEditor.Builder(
-                requireActivity(),
-                selectedUriList[pagerPhotos.currentItem].uri?.let { it1 -> FileUtil.getPath(it1,requireContext()) }
-            ).open()
-            Log.e("uri:", selectedUriList[pagerPhotos.currentItem].uri.toString())
+
+            val imagePath=selectedUriList[pagerPhotos.currentItem].uri?.let { it1 -> FileUtil.getPath(it1,requireContext()) }
+            if (imagePath?.let { it1 -> File(it1).exists() } == true) {
+                val intent = Intent(context, ImageEditActivity::class.java)
+                intent.putExtra(ImageEditor.EXTRA_IS_PAINT_MODE, true)
+                intent.putExtra(ImageEditor.EXTRA_IS_STICKER_MODE, false)
+                intent.putExtra(ImageEditor.EXTRA_IS_TEXT_MODE, true)
+                intent.putExtra(ImageEditor.EXTRA_IS_CROP_MODE, false)
+                intent.putExtra(ImageEditor.EXTRA_HAS_FILTERS, false)
+                intent.putExtra(ImageEditor.EXTRA_IMAGE_PATH, imagePath)
+                startActivityForResult(intent, ImageEditor.RC_IMAGE_EDITOR)
+            } else {
+                Toast.makeText(context, "Invalid image path", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
     }
@@ -186,9 +198,11 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             ImageEditor.RC_IMAGE_EDITOR ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val imagePath: String? = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)
-                    var mfile = File(imagePath)
+                    val mfile = imagePath?.let { File(it) }
+                    Log.e("new:", mfile?.path.toString())
                     selectedUriList[pagerPhotos.currentItem].uri = Uri.fromFile(mfile)
                     mediaAdapter?.notifyItemChanged(pagerPhotos.currentItem)
+                    imgAdapter?.notifyItemChanged(pagerPhotos.currentItem+1)
                 }
         }
     }

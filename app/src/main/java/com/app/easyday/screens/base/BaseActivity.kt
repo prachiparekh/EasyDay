@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +16,9 @@ import com.app.easyday.navigation.UiEvent
 import com.app.easyday.utils.DeviceUtils
 import com.app.easyday.utils.IntentUtil.Companion.PICK_IMAGE_CHOOSER_REQUEST_CODE
 import com.app.easyday.utils.IntentUtil.Companion.getImagePath
+import com.passiondroid.imageeditorlib.ImageEditor
 import com.theartofdev.edmodo.cropper.CropImage
+import kotlinx.android.synthetic.main.fragment_create_task.*
 import java.io.File
 import java.lang.reflect.ParameterizedType
 
@@ -102,6 +105,15 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+        }
+
+
+        if (resultCode == Activity.RESULT_OK && data != null && requestCode ==ImageEditor.RC_IMAGE_EDITOR) {
+            val imagePath: String? = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)
+            var mfile = File(imagePath)
+            Log.e("new:",mfile.path)
+//            selectedUriList[pagerPhotos.currentItem].uri = Uri.fromFile(mfile)
+//            mediaAdapter?.notifyItemChanged(pagerPhotos.currentItem)
         }
     }
 

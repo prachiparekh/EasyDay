@@ -1,5 +1,7 @@
 package com.passiondroid.imageeditorlib.views.imagezoom;
 
+import static com.passiondroid.imageeditorlib.PhotoEditorFragment.MODE_PAINT;
+
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Rect;
@@ -13,6 +15,8 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.ViewConfiguration;
+
+import com.passiondroid.imageeditorlib.PhotoEditorFragment;
 
 public class ImageViewTouch extends ImageViewTouchBase {
     static final float SCROLL_DELTA_THRESHOLD = 1.0f;
@@ -186,7 +190,7 @@ public class ImageViewTouch extends ImageViewTouchBase {
         if (mFlingListener != null) {
             mFlingListener.onFling(e1, e2, velocityX, velocityY);
         }
-        
+
         if (e1.getPointerCount() > 1 || e2.getPointerCount() > 1)
             return false;
         if (mScaleDetector.isInProgress())
