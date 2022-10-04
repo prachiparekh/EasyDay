@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
     tools:context=".screens.activities.main.home.task.CreateTaskFragment">
 
@@ -12,8 +11,8 @@
         android:id="@+id/pagerPhotos"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:foreground="@drawable/ic_gradient_bg"
         android:orientation="horizontal"
-        android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@id/imgRV"
+        app:layout_constraintBottom_toTopOf="@id/bottomSV"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/close">
 
@@ -72,25 +71,46 @@
             android:id="@+id/filterRV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center_vertical"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_task_filter"/>
+            tools:listitem="@layout/item_task_filter" />
 
     </ScrollView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/imgRV"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bottomSV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:scrollbars="none"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/item_bottom_image" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgAdd"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:src="@drawable/ic_square_add" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/imgRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_bottom_image" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -98,7 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_15sdp"
-        app:cardElevation="0dp"
+        app:cardElevation="@dimen/_2sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/send"
         app:layout_constraintStart_toStartOf="parent">

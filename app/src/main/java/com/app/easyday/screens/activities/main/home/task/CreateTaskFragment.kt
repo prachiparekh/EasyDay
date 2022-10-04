@@ -31,7 +31,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     private var drawableList = arrayListOf<Drawable>()
     private var priorityList = arrayListOf<String>()
     var taskAdapter: TaskFilterAdapter? = null
-    var imgAdapter: BottomImageAdapter? = null
+    private var imgAdapter: BottomImageAdapter? = null
     var selectedUriList = ArrayList<Media>()
     var mediaAdapter: MediaAdapter? = null
 
@@ -44,8 +44,10 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 
 //    *****************
 
-    override fun initUi() {
+    override fun getStatusBarColor()=R.color.black
 
+    override fun initUi() {
+//        requireActivity().window.statusBarColor = requireContext().resources.getColor(R.color.black)
         selectedUriList = arguments?.getParcelableArrayList<Media>("uriList") as ArrayList<Media>
 
         mediaAdapter = MediaAdapter(
@@ -98,23 +100,24 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             TaskFilterAdapter(requireContext(), filterTypeList, priorityList, drawableList, this)
         filterRV.adapter = taskAdapter
 
-        val bottomImageList = ArrayList<Media>()
-        bottomImageList.add(0, Media(null, false, System.currentTimeMillis()))
-        bottomImageList.addAll(selectedUriList)
+//        val bottomImageList = ArrayList<Media>()
+//        bottomImageList.add(0, Media(null, false, System.currentTimeMillis()))
+//        bottomImageList.addAll(selectedUriList)
 
         imgAdapter =
-            BottomImageAdapter(requireContext(), bottomImageList, onItemClick = { position, item ->
-
-                if (position != 0)
-                    pagerPhotos.currentItem = position - 1
-                else
-                    Navigation.findNavController(requireView()).popBackStack()
+            BottomImageAdapter(requireContext(), selectedUriList, onItemClick = { position, item ->
+                    pagerPhotos.currentItem = position
             })
         imgRV.adapter = imgAdapter
 
         edit.setOnClickListener {
 
-            val imagePath=selectedUriList[pagerPhotos.currentItem].uri?.let { it1 -> FileUtil.getPath(it1,requireContext()) }
+            val imagePath = selectedUriList[pagerPhotos.currentItem].uri?.let { it1 ->
+                FileUtil.getPath(
+                    it1,
+                    requireContext()
+                )
+            }
             if (imagePath?.let { it1 -> File(it1).exists() } == true) {
                 val intent = Intent(context, ImageEditActivity::class.java)
                 intent.putExtra(ImageEditor.EXTRA_IS_PAINT_MODE, true)
@@ -128,6 +131,17 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                 Toast.makeText(context, "Invalid image path", Toast.LENGTH_SHORT).show()
             }
 
+        }
+
+        delete.setOnClickListener {
+            Log.e("currentItem", pagerPhotos.currentItem.toString())
+            selectedUriList.removeAt(pagerPhotos.currentItem)
+            mediaAdapter?.notifyDataSetChanged()
+            imgAdapter?.notifyDataSetChanged()
+        }
+
+        imgAdd.setOnClickListener {
+            Navigation.findNavController(requireView()).popBackStack()
         }
 
     }
@@ -202,7 +216,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                     Log.e("new:", mfile?.path.toString())
                     selectedUriList[pagerPhotos.currentItem].uri = Uri.fromFile(mfile)
                     mediaAdapter?.notifyItemChanged(pagerPhotos.currentItem)
-                    imgAdapter?.notifyItemChanged(pagerPhotos.currentItem+1)
+                    imgAdapter?.notifyItemChanged(pagerPhotos.currentItem + 1)
                 }
         }
     }

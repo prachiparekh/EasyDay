@@ -1,6 +1,7 @@
 package com.passiondroid.imageeditorlib;
 
 import android.graphics.Matrix;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +13,9 @@ public abstract class BaseImageEditActivity extends AppCompatActivity {
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      getWindow().setStatusBarColor(getBaseContext().getResources().getColor(R.color.black));
+    }
   }
 
   public static int[] getBitmapOffset(ImageView img, Boolean includeLayout) {

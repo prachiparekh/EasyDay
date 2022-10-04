@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.media.ThumbnailUtils
 import android.provider.MediaStore.Video.Thumbnails.MINI_KIND
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,11 +25,11 @@ import com.bumptech.glide.request.target.Target
 
 class BottomImageAdapter(
     val mContext: Context,
-    private val mediaList: ArrayList<Media>,
+    private var mediaList: ArrayList<Media>,
     private val onItemClick: (Int, Media) -> Unit
 ) : ListAdapter<Media, BottomImageAdapter.PicturesViewHolder>(MediaDiffCallback()) {
 
-    var loadFail=false
+    var loadFail = false
     private val inflater: LayoutInflater = LayoutInflater.from(mContext)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -49,9 +50,9 @@ class BottomImageAdapter(
 
             val options = RequestOptions()
             imagePreview.clipToOutline = true
-            if (position == 0) {
-                imagePreview.setImageDrawable(mContext.resources.getDrawable(R.drawable.ic_square_add))
-            } else {
+//            if (adapterPosition == 0) {
+//                imagePreview.setImageDrawable(mContext.resources.getDrawable(R.drawable.ic_square_add))
+//            } else {
 
                 if (!item.isVideo) {
                     Glide.with(mContext)
@@ -91,7 +92,7 @@ class BottomImageAdapter(
                                     target: Target<Bitmap>?,
                                     isFirstResource: Boolean
                                 ): Boolean {
-                                    loadFail=true
+                                    loadFail = true
                                     notifyItemChanged(adapterPosition)
                                     return false
                                 }
@@ -100,9 +101,9 @@ class BottomImageAdapter(
                         )
                         .into(imagePreview)
                 }
-            }
+//            }
 
-            if(loadFail){
+            if (loadFail) {
                 Glide.with(mContext)
                     .load(item.uri?.let {
                         getThumbnailImage(
@@ -129,4 +130,13 @@ class BottomImageAdapter(
     fun getThumbnailImage(videoPath: String?): Bitmap? {
         return videoPath?.let { ThumbnailUtils.createVideoThumbnail(it, MINI_KIND) }
     }
+
+    fun deleteImage(currentPage: Int) {
+        Log.e("ad_current",currentPage.toString())
+//        mediaList.removeAt(currentPage)
+        Log.e("mediaList",mediaList.toString())
+        notifyDataSetChanged()
+    }
+
+
 }
