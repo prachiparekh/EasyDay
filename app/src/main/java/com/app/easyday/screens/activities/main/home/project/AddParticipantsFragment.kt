@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.model.ContactModel
@@ -36,8 +37,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddParticipantsFragment : Fragment() {
 
+
+
     companion object {
-        var contactList = ArrayList<ContactModel>()
+        var createProjectModel :AddProjectRequestModel?=null
         var binding: FragmentAddParticipantsBinding? = null
         var adapter: ParticipentAdapter? = null
 
@@ -75,8 +78,8 @@ class AddParticipantsFragment : Fragment() {
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_participants, container, false)
-        val model = arguments?.getSerializable("createProjectModel") as AddProjectRequestModel
-        Log.e("model", model.toString())
+        createProjectModel = arguments?.getParcelable("createProjectModel") as AddProjectRequestModel?
+        Log.e("model", createProjectModel.toString())
 
 
         return binding?.root
@@ -119,6 +122,14 @@ class AddParticipantsFragment : Fragment() {
     }
 
     class AsyncTaskExample(val context: Context) : AsyncTask<Void, Void, Void>() {
+
+        var contactList = ArrayList<ContactModel>()
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            contactList.clear()
+        }
+
         @SuppressLint("Range")
         override fun doInBackground(vararg p0: Void): Void? {
             val cr: ContentResolver = context.contentResolver
@@ -203,15 +214,19 @@ class AddParticipantsFragment : Fragment() {
             })
 
             binding?.cta?.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putParcelableArrayList("selectedParticipantList", adapter?.getList())
-                val nav = binding?.root?.let { it1 ->
-                    Navigation.findNavController(
-                        it1
-                    )
-                }
-                if (nav?.currentDestination != null && nav.currentDestination?.id == R.id.addParticipantsFragment) {
-                    nav.navigate(R.id.add_participant_to_add_admin,bundle)
+                if(adapter?.getList()!=null) {
+
+                    val action = AddParticipantsFragmentDirections.addParticipantToAddAdmin()
+                    createProjectModel?.participants = adapter?.getList()
+                    action.createProjectModel = createProjectModel
+                    val nav: NavController? = binding?.root?.let { it1 ->
+                        Navigation.findNavController(
+                            it1
+                        )
+                    }
+                    if (nav?.currentDestination != null && nav.currentDestination?.id == R.id.addParticipantsFragment) {
+                        nav.navigate(action)
+                    }
                 }
             }
         }

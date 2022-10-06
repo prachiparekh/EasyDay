@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.passiondroid.imageeditorlib.views.cropimage.CropImageView;
+import com.passiondroid.imageeditorlib.views.cropimage.ImgCropImageView;
 
 public class CropFragment extends BaseFragment implements View.OnClickListener{
 
   private OnFragmentInteractionListener mListener;
-  private CropImageView cropImageView;
+  private ImgCropImageView cropImageView;
   private int currentAngle;
 
   public CropFragment() {
@@ -72,7 +72,7 @@ public class CropFragment extends BaseFragment implements View.OnClickListener{
       if(bitmapimage!=null){
         cropImageView.setImageBitmap(bitmapimage);
         cropImageView.setAspectRatio(1, 1);
-        cropImageView.setGuidelines(CropImageView.Guidelines.ON_TOUCH);
+        cropImageView.setGuidelines(ImgCropImageView.Guidelines.ON_TOUCH);
         final Rect cropRect = getArguments().getParcelable(ImageEditor.EXTRA_CROP_RECT);
         if(cropRect!=null){
           cropImageView.setCropRect(cropRect);

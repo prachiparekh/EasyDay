@@ -1,10 +1,8 @@
 package com.app.easyday.app.sources.remote.apis
 
 import com.app.easyday.app.sources.ApiResponse
-import com.app.easyday.app.sources.remote.model.OTPRespModel
-import com.app.easyday.app.sources.remote.model.ProjectRespModel
-import com.app.easyday.app.sources.remote.model.UserModel
-import com.app.easyday.app.sources.remote.model.VerifyOTPRespModel
+import com.app.easyday.app.sources.local.model.ContactModel
+import com.app.easyday.app.sources.remote.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -40,7 +38,7 @@ interface EasyDayApi {
     @GET("user/get-profile")
     fun getProfile(): Observable<ApiResponse<UserModel>>
 
-    @GET("project/get-project")
+    @GET("project/get-projects")
     fun getAllProject(): Observable<ApiResponse<ArrayList<ProjectRespModel>>>
 
     @GET("project/get-project")
@@ -48,4 +46,11 @@ interface EasyDayApi {
 
     @GET("user/delete-user")
     fun deleteUser(): Observable<ApiResponse<UserModel>>
+
+
+    @POST("project/create-project")
+    fun createProject(
+        @Body addProjectRequestModel:AddProjectRequestModel
+    ):Observable<ApiResponse<ProjectRespModel>>
+
 }

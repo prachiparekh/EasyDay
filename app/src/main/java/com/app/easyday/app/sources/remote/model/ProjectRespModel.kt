@@ -3,7 +3,6 @@ package com.app.easyday.app.sources.remote.model
 import com.google.gson.annotations.SerializedName
 
 data class ProjectRespModel(
-
 	@field:SerializedName("createdAt")
 	val createdAt: String? = null,
 
@@ -29,5 +28,8 @@ data class ProjectRespModel(
 	val updatedAt: String? = null,
 
 	@field:SerializedName("project_participants")
-	val projectParticipants: List<ProjectParticipantsModel?>? = null
+	val projectParticipants: List<ProjectParticipantsModel?>? = null,
+
+	@field:SerializedName("project_invited")
+	val projectInvited: List<ProjectInvitedItem?>? = null,
 )

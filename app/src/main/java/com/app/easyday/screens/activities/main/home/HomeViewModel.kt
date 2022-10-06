@@ -43,9 +43,11 @@ class HomeViewModel @Inject constructor(
         api.getAllProject()
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
+                Log.e("project_resp:", resp?.data.toString())
                 projectList.value = resp.data
 
             }, {
+                Log.e("project_resp_ex:", it.message.toString())
                 projectList.value = null
             })
     }

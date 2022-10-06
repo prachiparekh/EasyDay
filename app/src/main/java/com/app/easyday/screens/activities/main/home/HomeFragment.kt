@@ -111,13 +111,15 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
         viewModel.projectList.observe(viewLifecycleOwner) { projectList ->
             activeProject.setOnClickListener {
                 DeviceUtils.showProgress()
-                if (projectList != null) {
-                    val fragment = ProjectListDialog(this, projectList)
-                    childFragmentManager.let {
-                        fragment.show(it, "projects")
-                        DeviceUtils.dismissProgress()
-                    }
+                if (!projectList.isNullOrEmpty()) {
+                    activeProject.text = projectList[0].projectName
                 }
+                val fragment = ProjectListDialog(this, projectList)
+                childFragmentManager.let {
+                    fragment.show(it, "projects")
+                    DeviceUtils.dismissProgress()
+                }
+//                }
 
             }
         }

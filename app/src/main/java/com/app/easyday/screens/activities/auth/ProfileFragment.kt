@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -271,22 +272,27 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
     }
 
     override fun onCropLogo(uri: Uri) {
-        val mOptions = CropImageOptions()
-        mOptions.allowFlipping = false
-        mOptions.allowRotation = false
-        mOptions.aspectRatioX = 1
-        mOptions.aspectRatioY = 1
-        mOptions.cropShape = CropImageView.CropShape.OVAL
-        val intent = Intent()
-        intent.setClass(requireContext(), CropImageActivity::class.java)
-        val bundle = Bundle()
-        bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE, uri)
-        bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, mOptions)
-        intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
-        requireActivity().startActivityForResult(
-            intent,
-            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE
-        )
+        try {
+            Log.e("uri", uri.toString())
+            val mOptions = CropImageOptions()
+            mOptions.allowFlipping = false
+            mOptions.allowRotation = false
+            mOptions.aspectRatioX = 1
+            mOptions.aspectRatioY = 1
+            mOptions.cropShape = CropImageView.CropShape.OVAL
+            val intent = Intent()
+            intent.setClass(requireContext(), CropImageActivity::class.java)
+            val bundle = Bundle()
+            bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE, uri)
+            bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, mOptions)
+            intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
+            requireActivity().startActivityForResult(
+                intent,
+                CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE
+            )
+        }catch (e: Exception){
+            Log.e("ex",e.message.toString())
+        }
     }
 
     override fun onChangeLogo(uri: Uri) {

@@ -43,7 +43,7 @@ public class CropImageOptions implements Parcelable {
       };
 
   /** The shape of the cropping window. */
-  public CropImageView.CropShape cropShape;
+  public ImgCropImageView.CropShape cropShape;
 
   /**
    * An edge of the crop window will snap to the corresponding edge of a specified bounding box when
@@ -60,10 +60,10 @@ public class CropImageOptions implements Parcelable {
   public float touchRadius;
 
   /** whether the guidelines should be on, off, or only showing when resizing. */
-  public CropImageView.Guidelines guidelines;
+  public ImgCropImageView.Guidelines guidelines;
 
   /** The initial scale type of the image in the crop image view */
-  public CropImageView.ScaleType scaleType;
+  public ImgCropImageView.ScaleType scaleType;
 
   /**
    * if to show crop overlay UI what contains the crop window UI surrounded by background over the
@@ -187,7 +187,7 @@ public class CropImageOptions implements Parcelable {
   public int outputRequestHeight;
 
   /** the resize method to use on the cropped bitmap (see options documentation) */
-  public CropImageView.RequestSizeOptions outputRequestSizeOptions;
+  public ImgCropImageView.RequestSizeOptions outputRequestSizeOptions;
 
   /** if the result of crop image activity should not save the cropped image bitmap */
   public boolean noOutputImage;
@@ -227,11 +227,11 @@ public class CropImageOptions implements Parcelable {
 
     DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
 
-    cropShape = CropImageView.CropShape.RECTANGLE;
+    cropShape = ImgCropImageView.CropShape.RECTANGLE;
     snapRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, dm);
     touchRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, dm);
-    guidelines = CropImageView.Guidelines.ON_TOUCH;
-    scaleType = CropImageView.ScaleType.FIT_CENTER;
+    guidelines = ImgCropImageView.Guidelines.ON_TOUCH;
+    scaleType = ImgCropImageView.ScaleType.FIT_CENTER;
     showCropOverlay = true;
     showProgressBar = true;
     autoZoomEnabled = true;
@@ -269,7 +269,7 @@ public class CropImageOptions implements Parcelable {
     outputCompressQuality = 90;
     outputRequestWidth = 0;
     outputRequestHeight = 0;
-    outputRequestSizeOptions = CropImageView.RequestSizeOptions.NONE;
+    outputRequestSizeOptions = ImgCropImageView.RequestSizeOptions.NONE;
     noOutputImage = false;
 
     initialCropWindowRectangle = null;
@@ -287,11 +287,11 @@ public class CropImageOptions implements Parcelable {
 
   /** Create object from parcel. */
   protected CropImageOptions(Parcel in) {
-    cropShape = CropImageView.CropShape.values()[in.readInt()];
+    cropShape = ImgCropImageView.CropShape.values()[in.readInt()];
     snapRadius = in.readFloat();
     touchRadius = in.readFloat();
-    guidelines = CropImageView.Guidelines.values()[in.readInt()];
-    scaleType = CropImageView.ScaleType.values()[in.readInt()];
+    guidelines = ImgCropImageView.Guidelines.values()[in.readInt()];
+    scaleType = ImgCropImageView.ScaleType.values()[in.readInt()];
     showCropOverlay = in.readByte() != 0;
     showProgressBar = in.readByte() != 0;
     autoZoomEnabled = in.readByte() != 0;
@@ -323,7 +323,7 @@ public class CropImageOptions implements Parcelable {
     outputCompressQuality = in.readInt();
     outputRequestWidth = in.readInt();
     outputRequestHeight = in.readInt();
-    outputRequestSizeOptions = CropImageView.RequestSizeOptions.values()[in.readInt()];
+    outputRequestSizeOptions = ImgCropImageView.RequestSizeOptions.values()[in.readInt()];
     noOutputImage = in.readByte() != 0;
     initialCropWindowRectangle = in.readParcelable(Rect.class.getClassLoader());
     initialRotation = in.readInt();

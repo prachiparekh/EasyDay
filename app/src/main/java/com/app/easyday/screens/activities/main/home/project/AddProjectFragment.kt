@@ -25,7 +25,7 @@ class AddProjectFragment : Fragment(), ColorInterface {
 
     var selectedColor = R.color.color1
 
-    val colorList = intArrayOf(
+    private val colorList = intArrayOf(
         R.color.color1,
         R.color.color2,
         R.color.color3,

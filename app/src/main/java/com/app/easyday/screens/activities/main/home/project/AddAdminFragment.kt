@@ -1,45 +1,47 @@
 package com.app.easyday.screens.activities.main.home.project
 
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.app.easyday.R
-import com.app.easyday.app.sources.local.model.ContactModel
-import com.app.easyday.databinding.FragmentAddAdminBinding
+import com.app.easyday.app.sources.remote.model.AddProjectRequestModel
+import com.app.easyday.screens.activities.auth.LoginFragmentDirections
 import com.app.easyday.screens.activities.main.home.project.adapter.AdminAdapter
+import com.app.easyday.screens.base.BaseFragment
+import com.app.easyday.utils.DeviceUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_add_admin.*
+import kotlinx.android.synthetic.main.fragment_add_admin.cta
+import kotlinx.android.synthetic.main.fragment_login.*
 
 
 @AndroidEntryPoint
-class AddAdminFragment : Fragment() {
+class AddAdminFragment : BaseFragment<ProjectViewModel>() {
 
-    var binding: FragmentAddAdminBinding? = null
+
     var adapter: AdminAdapter? = null
+    var createprojectModel: AddProjectRequestModel? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_admin, container, false)
-        val selectedParticipantList =
-            arguments?.getParcelableArrayList<ContactModel>("selectedParticipantList")
+    override fun getContentView() = R.layout.fragment_add_admin
 
-        adapter = selectedParticipantList?.let {
+    override fun initUi() {
+        DeviceUtils.initProgress(requireContext())
+
+        createprojectModel =
+            arguments?.getParcelable("createProjectModel") as AddProjectRequestModel?
+        adapter = createprojectModel?.participants?.let {
             AdminAdapter(
                 requireContext(),
                 it
             )
         }
-        binding?.adminRV?.adapter = adapter
+        adminRV?.adapter = adapter
 
-        binding?.mSearch?.setOnQueryTextListener(object :
+        mSearch?.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
@@ -47,24 +49,42 @@ class AddAdminFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 if (newText.isEmpty()) {
-                    binding?.searchImageView?.visibility = View.VISIBLE
-                    binding?.adminLL?.isVisible=true
-                }
-                else {
-                    binding?.searchImageView?.visibility = View.INVISIBLE
-                    binding?.adminLL?.isVisible=false
+                    searchImageView?.visibility = View.VISIBLE
+                    adminLL?.isVisible = true
+                } else {
+                    searchImageView?.visibility = View.INVISIBLE
+                    adminLL?.isVisible = false
                 }
                 adapter?.filter?.filter(newText)
                 return true
             }
         })
 
-        binding?.cta?.setOnClickListener {
-
-
+        cta?.setOnClickListener {
+            createprojectModel?.let { it1 -> viewModel.createProject(it1) }
         }
-        Log.e("selectedList", selectedParticipantList.toString())
-        return binding?.root
+
+        Log.e("selectedList", createprojectModel.toString())
+    }
+
+    override fun setObservers() {
+        viewModel.actionStream.observe(viewLifecycleOwner) {
+            when (it) {
+                is ProjectViewModel.ACTION.ProjectResponseSuccess -> {
+                    Toast.makeText(requireContext(),requireContext().resources.getString(R.string.project_create_success), Toast.LENGTH_SHORT).show()
+
+                    val action = AddAdminFragmentDirections.addAdminToDashboard()
+                    val nav: NavController = Navigation.findNavController(requireView())
+                    if (nav.currentDestination != null && nav.currentDestination?.id == R.id.addAdminFragment) {
+                        nav.navigate(action)
+                    }
+                }
+
+                is ProjectViewModel.ACTION.ProjectResponseError -> {
+                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
 }

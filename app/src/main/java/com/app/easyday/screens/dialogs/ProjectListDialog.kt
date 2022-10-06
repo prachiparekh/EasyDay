@@ -22,7 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ProjectListDialog(
     private val projectInterface: ProjectInterface,
-    var projectList: ArrayList<ProjectRespModel>
+    var projectList: ArrayList<ProjectRespModel>?
 ) :
     BottomSheetDialogFragment() {
     var binding: ProjectListBdialogBinding? = null
@@ -43,11 +43,13 @@ class ProjectListDialog(
 
         binding?.projectRV?.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        adapter = ProjectAdapter(
-            requireContext(),
-            projectList = projectList,
-            projectInterface
-        )
+        adapter = projectList?.let {
+            ProjectAdapter(
+                requireContext(),
+                projectList = it,
+                projectInterface
+            )
+        }
         binding?.projectRV?.adapter = adapter
 //        taskAdapter?.setItems(projectList)
 

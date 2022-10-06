@@ -16,7 +16,7 @@
       />
 
 
-  <com.passiondroid.imageeditorlib.views.cropimage.CropImageView
+  <com.passiondroid.imageeditorlib.views.cropimage.ImgCropImageView
       xmlns:custom="http://schemas.android.com/apk/res-auto"
       android:id="@+id/image_iv"
       android:layout_width="match_parent"

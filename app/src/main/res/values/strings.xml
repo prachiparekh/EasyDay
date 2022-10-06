@@ -170,5 +170,6 @@
     <string name="total">Total</string>
     <string name="flagged">Flagged</string>
     <string name="tag_status">Tag Status</string>
+    <string name="project_create_success">Project created successfully</string>
 
 </resources>
