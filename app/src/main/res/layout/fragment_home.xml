@@ -11,12 +11,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fontFamily="@font/dm_sans_700"
+        android:gravity="center"
         android:text="@string/under_process"
         android:textColor="@color/accent_blue"
         android:textSize="@dimen/_22sdp"
-        android:visibility="gone"
-        android:fontFamily="@font/dm_sans_700"
-        android:gravity="center"/>
+        android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topCL"
@@ -36,9 +36,9 @@
             android:text="@string/dashboard"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/iconLL"
@@ -53,17 +53,17 @@
                 android:id="@+id/search"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:padding="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                app:tint="@color/white"
-                android:src="@drawable/ic_search" />
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_search"
+                app:tint="@color/white" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/notification"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:padding="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
                 android:src="@drawable/ic_bell" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -72,9 +72,8 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
                 android:background="@drawable/bg_circle_white"
-                />
+                android:scaleType="centerCrop" />
 
         </LinearLayout>
 
@@ -88,16 +87,25 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_15sdp"
         android:drawableStart="@drawable/ic_color_ecllipse"
-        android:drawableEnd="@drawable/ic_arrow_down"
         android:drawablePadding="@dimen/_5sdp"
         android:fontFamily="@font/dm_sans_400"
-        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_7sdp"
         android:paddingVertical="@dimen/_5sdp"
-        android:text="@string/guys_task"
+        android:text="@string/ur_projects"
         android:textColor="@color/navy_blue"
         android:textSize="@dimen/_11sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topCL" />
+
+
+    <ImageView
+        android:id="@+id/activeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_down"
+        app:layout_constraintBottom_toBottomOf="@id/activeProject"
+        app:layout_constraintStart_toEndOf="@id/activeProject"
+        app:layout_constraintTop_toTopOf="@id/activeProject" />
 
     <TextView
         android:id="@+id/filterTV"

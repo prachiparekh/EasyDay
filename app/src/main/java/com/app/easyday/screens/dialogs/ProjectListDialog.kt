@@ -1,9 +1,7 @@
 package com.app.easyday.screens.dialogs
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +20,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ProjectListDialog(
     private val projectInterface: ProjectInterface,
-    var projectList: ArrayList<ProjectRespModel>?
+    var projectList: ArrayList<ProjectRespModel>?,
+    var selectedProjectPosition: Int?
 ) :
     BottomSheetDialogFragment() {
     var binding: ProjectListBdialogBinding? = null
@@ -47,13 +46,21 @@ class ProjectListDialog(
             ProjectAdapter(
                 requireContext(),
                 projectList = it,
-                projectInterface
+                selectedProjectPosition ?: 0
             )
         }
         binding?.projectRV?.adapter = adapter
-//        taskAdapter?.setItems(projectList)
 
         binding?.close?.setOnClickListener {
+            dismiss()
+        }
+
+        binding?.cta?.setOnClickListener {
+            adapter?.selectedProjectPosition().let { it1 ->
+                if (it1 != null) {
+                    projectInterface.onClickProject(it1)
+                }
+            }
             dismiss()
         }
 

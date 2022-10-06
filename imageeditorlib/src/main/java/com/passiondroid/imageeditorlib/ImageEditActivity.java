@@ -14,8 +14,7 @@ import androidx.annotation.Nullable;
 import com.passiondroid.imageeditorlib.utils.FragmentUtil;
 
 public class ImageEditActivity extends BaseImageEditActivity
-        implements PhotoEditorFragment.OnFragmentInteractionListener,
-        CropFragment.OnFragmentInteractionListener {
+        implements PhotoEditorFragment.OnFragmentInteractionListener {
     private Rect cropRect;
 
     //private View touchView;
@@ -34,8 +33,7 @@ public class ImageEditActivity extends BaseImageEditActivity
 
     @Override
     public void onCropClicked(Bitmap bitmap) {
-        FragmentUtil.replaceFragment(this, R.id.fragment_container,
-                CropFragment.newInstance(bitmap, cropRect));
+
     }
 
     @Override
@@ -47,25 +45,7 @@ public class ImageEditActivity extends BaseImageEditActivity
         finish();
     }
 
-    @Override
-    public void onImageCropped(Bitmap bitmap, Rect cropRect) {
-        this.cropRect = cropRect;
-        PhotoEditorFragment photoEditorFragment =
-                (PhotoEditorFragment) FragmentUtil.getFragmentByTag(this,
-                        PhotoEditorFragment.class.getSimpleName());
-        if (photoEditorFragment != null) {
-            photoEditorFragment.setImageWithRect(cropRect);
-            photoEditorFragment.reset();
-            FragmentUtil.removeFragment(this,
-                    (BaseFragment) FragmentUtil.getFragmentByTag(this, CropFragment.class.getSimpleName()));
-        }
-    }
 
-    @Override
-    public void onCancelCrop() {
-        FragmentUtil.removeFragment(this,
-                (BaseFragment) FragmentUtil.getFragmentByTag(this, CropFragment.class.getSimpleName()));
-    }
 
     @Override
     public void onBackPressed() {

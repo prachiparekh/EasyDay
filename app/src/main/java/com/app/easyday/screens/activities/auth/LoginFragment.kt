@@ -89,6 +89,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
         val phoneCodeDialog = CodeDialog(requireActivity(), phoneModelList, this)
 
         cc_dialog.setOnClickListener {
+            if(!phoneCodeDialog.isAdded)
             phoneCodeDialog.show(requireActivity().supportFragmentManager, null)
         }
 

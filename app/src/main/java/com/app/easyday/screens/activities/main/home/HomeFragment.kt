@@ -1,17 +1,21 @@
 package com.app.easyday.screens.activities.main.home
 
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.ProjectInterface
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
+import com.app.easyday.app.sources.remote.model.ProjectRespModel
 import com.app.easyday.screens.activities.main.dashboard.DashboardFragmentDirections
 import com.app.easyday.screens.base.BaseFragment
 import com.app.easyday.screens.dialogs.FilterBottomSheetDialog
@@ -40,7 +44,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
     private lateinit var fancyView2: FancyShowCaseView
     private lateinit var fancyView1: FancyShowCaseView
     private var filterDialog: FilterBottomSheetDialog? = null
-
+    private var projectList = arrayListOf<ProjectRespModel>()
+    var selectedProjectPosition: Int? = null
 
     override fun getContentView() = R.layout.fragment_home
 
@@ -109,18 +114,25 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
         }
 
         viewModel.projectList.observe(viewLifecycleOwner) { projectList ->
+
+            if (!projectList.isNullOrEmpty()) {
+                this.projectList = projectList
+                TextViewCompat.setCompoundDrawableTintList(
+                    activeProject,
+                    ColorStateList.valueOf(
+                        Color.parseColor(projectList[0].assignColor)
+                    )
+                )
+
+                activeProject.text = projectList[0].projectName
+            }
             activeProject.setOnClickListener {
                 DeviceUtils.showProgress()
-                if (!projectList.isNullOrEmpty()) {
-                    activeProject.text = projectList[0].projectName
-                }
-                val fragment = ProjectListDialog(this, projectList)
+                val fragment = ProjectListDialog(this, projectList, selectedProjectPosition)
                 childFragmentManager.let {
                     fragment.show(it, "projects")
                     DeviceUtils.dismissProgress()
                 }
-//                }
-
             }
         }
     }
@@ -158,8 +170,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
         }, 200)
     }
 
-    override fun onClickProject(id: Int) {
-        if (id == -1) {
+    override fun onClickProject(projectPosition: Int) {
+        if (projectPosition == -1) {
 //            Create New Project
             val action = DashboardFragmentDirections.dashboardToAddProject()
             val nav: NavController = Navigation.findNavController(requireView())
@@ -168,6 +180,15 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             }
         } else {
 //            Switch with ProjectID
+            selectedProjectPosition=projectPosition
+            TextViewCompat.setCompoundDrawableTintList(
+                activeProject,
+                ColorStateList.valueOf(
+                    Color.parseColor(projectList[projectPosition].assignColor)
+                )
+            )
+
+            activeProject.text = projectList[projectPosition].projectName
         }
     }
 
