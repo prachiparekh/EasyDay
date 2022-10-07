@@ -52,6 +52,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
 
     override fun initUi() {
 
+        DeviceUtils.initProgress(requireContext())
         Log.e("token:", AppPreferencesDelegates.get().token)
         if (!AppPreferencesDelegates.get().showcaseSeen) {
 

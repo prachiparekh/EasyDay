@@ -2,12 +2,16 @@ package com.app.easyday.screens.activities.main.home.project
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
+import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
+import android.content.DialogInterface
 import android.database.Cursor
 import android.net.Uri
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.Phone
@@ -27,20 +31,24 @@ import com.app.easyday.databinding.FragmentAddParticipantsBinding
 import com.app.easyday.screens.activities.main.home.project.adapter.ParticipentAdapter
 import com.app.easyday.utils.DeviceUtils
 import com.app.easyday.utils.IntentUtil.Companion.contactPermission
+import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.karumi.dexter.listener.single.CompositePermissionListener
+import com.karumi.dexter.listener.single.PermissionListener
+import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class AddParticipantsFragment : Fragment() {
 
 
-
     companion object {
-        var createProjectModel :AddProjectRequestModel?=null
+        var createProjectModel: AddProjectRequestModel? = null
         var binding: FragmentAddParticipantsBinding? = null
         var adapter: ParticipentAdapter? = null
 
@@ -78,48 +86,70 @@ class AddParticipantsFragment : Fragment() {
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_participants, container, false)
-        createProjectModel = arguments?.getParcelable("createProjectModel") as AddProjectRequestModel?
-        Log.e("model", createProjectModel.toString())
-
+        createProjectModel =
+            arguments?.getParcelable("createProjectModel") as AddProjectRequestModel?
 
         return binding?.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         DeviceUtils.initProgress(requireContext())
-        DeviceUtils.showProgress()
+
         if (contactPermission(requireActivity())) {
+
             AsyncTaskExample(requireContext()).execute()
         } else
             onPermission()
-
     }
 
 
     private fun onPermission() {
 
-        Dexter.withContext(requireContext())
-            .withPermissions(
-                Manifest.permission.READ_CONTACTS
-            )
-            .withListener(object : MultiplePermissionsListener {
-                override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {
-                    if (p0?.areAllPermissionsGranted() == true) {
-                        AsyncTaskExample(requireContext()).execute()
-                    }
+        val contactsPermissionListener = CompositePermissionListener(
+            object :PermissionListener{
+                override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+                    AsyncTaskExample(requireContext()).execute()
+                }
+
+                override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+
                 }
 
                 override fun onPermissionRationaleShouldBeShown(
-                    p0: MutableList<PermissionRequest>?,
+                    p0: PermissionRequest?,
                     p1: PermissionToken?
                 ) {
+                    if (p1 != null) {
+//                        showPermissionRationale(p1)
+                    }
                 }
 
-            }).withErrorListener {}
+            },
+            SnackbarOnDeniedPermissionListener.Builder.with(
+                requireView(),
+                R.string.contacts_permission_denied_feedback
+            )
+                .withOpenSettingsButton(R.string.permission_rationale_settings_button_text)
+                .withCallback(object : Snackbar.Callback() {
+                    override fun onShown(snackbar: Snackbar) {
+                        super.onShown(snackbar)
+                    }
 
+                    override fun onDismissed(snackbar: Snackbar, event: Int) {
+                        super.onDismissed(snackbar, event)
+                    }
+                })
+                .build()
+        )
+
+        Dexter.withContext(requireContext())
+            .withPermission(Manifest.permission.READ_CONTACTS)
+            .withListener(contactsPermissionListener)
             .check()
     }
+
+
 
     class AsyncTaskExample(val context: Context) : AsyncTask<Void, Void, Void>() {
 
@@ -127,6 +157,7 @@ class AddParticipantsFragment : Fragment() {
 
         override fun onPreExecute() {
             super.onPreExecute()
+            DeviceUtils.showProgress()
             contactList.clear()
         }
 
@@ -164,21 +195,20 @@ class AddParticipantsFragment : Fragment() {
                             number.add(lastnumber)
 
                             when (pCur.getInt(pCur.getColumnIndex(Phone.TYPE))) {
-//                                Phone.TYPE_HOME -> Log.e("Not Inserted", "Not inserted")
                                 Phone.TYPE_MOBILE -> {
 
                                     val mBitmapURI = getPhotoUri(context, id)
                                     contactList.add(
                                         ContactModel(
                                             id,
-                                            name, context.resources.getString(R.string.participant_role),
+                                            name,
+                                            context.resources.getString(R.string.participant_role),
                                             lastnumber,
                                             mBitmapURI.toString()
                                         )
                                     )
 
                                 }
-//                                Phone.TYPE_WORK -> Log.e("Not Inserted", "Not inserted")
                             }
                         }
                     }
@@ -195,7 +225,7 @@ class AddParticipantsFragment : Fragment() {
                 contactList
             )
             binding?.participentRV?.adapter = adapter
-            DeviceUtils.dismissProgress()
+
 
             binding?.mSearch?.setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
@@ -214,7 +244,7 @@ class AddParticipantsFragment : Fragment() {
             })
 
             binding?.cta?.setOnClickListener {
-                if(adapter?.getList()!=null) {
+                if (adapter?.getList() != null) {
 
                     val action = AddParticipantsFragmentDirections.addParticipantToAddAdmin()
                     createProjectModel?.participants = adapter?.getList()
@@ -229,6 +259,8 @@ class AddParticipantsFragment : Fragment() {
                     }
                 }
             }
+
+            DeviceUtils.dismissProgress()
         }
     }
 

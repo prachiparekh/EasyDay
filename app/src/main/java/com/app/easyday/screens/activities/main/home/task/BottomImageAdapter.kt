@@ -3,8 +3,8 @@ package com.app.easyday.screens.activities.main.home.task
 import android.content.Context
 import android.graphics.Bitmap
 import android.media.ThumbnailUtils
+import android.os.Build
 import android.provider.MediaStore.Video.Thumbnails.MINI_KIND
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +31,7 @@ class BottomImageAdapter(
 
     var loadFail = false
     private val inflater: LayoutInflater = LayoutInflater.from(mContext)
+    var selectedPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         PicturesViewHolder(inflater.inflate(R.layout.item_bottom_image, parent, false))
@@ -50,58 +51,53 @@ class BottomImageAdapter(
 
             val options = RequestOptions()
             imagePreview.clipToOutline = true
-//            if (adapterPosition == 0) {
-//                imagePreview.setImageDrawable(mContext.resources.getDrawable(R.drawable.ic_square_add))
-//            } else {
+            if (!item.isVideo) {
+                Glide.with(mContext)
+                    .load(item.uri)
+                    .apply(
+                        options.centerCrop()
+                            .skipMemoryCache(true)
+                            .priority(Priority.HIGH)
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                    )
+                    .into(imagePreview)
+            } else {
+                Glide.with(mContext)
+                    .asBitmap()
+                    .load(item.uri)
+                    .apply(
+                        options.centerCrop()
+                            .skipMemoryCache(true)
+                            .priority(Priority.HIGH)
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                    ).listener(
+                        object : RequestListener<Bitmap> {
 
-                if (!item.isVideo) {
-                    Glide.with(mContext)
-                        .load(item.uri)
-                        .apply(
-                            options.centerCrop()
-                                .skipMemoryCache(true)
-                                .priority(Priority.HIGH)
-                                .format(DecodeFormat.PREFER_ARGB_8888)
-                        )
-                        .into(imagePreview)
-                } else {
-                    Glide.with(mContext)
-                        .asBitmap()
-                        .load(item.uri)
-                        .apply(
-                            options.centerCrop()
-                                .skipMemoryCache(true)
-                                .priority(Priority.HIGH)
-                                .format(DecodeFormat.PREFER_ARGB_8888)
-                        ).listener(
-                            object : RequestListener<Bitmap> {
-
-                                override fun onResourceReady(
-                                    resource: Bitmap?,
-                                    model: Any?,
-                                    target: com.bumptech.glide.request.target.Target<Bitmap>?,
-                                    dataSource: DataSource?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    return false
-                                }
-
-                                override fun onLoadFailed(
-                                    e: GlideException?,
-                                    model: Any?,
-                                    target: Target<Bitmap>?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    loadFail = true
-                                    notifyItemChanged(adapterPosition)
-                                    return false
-                                }
-
+                            override fun onResourceReady(
+                                resource: Bitmap?,
+                                model: Any?,
+                                target: com.bumptech.glide.request.target.Target<Bitmap>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                return false
                             }
-                        )
-                        .into(imagePreview)
-                }
-//            }
+
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Bitmap>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                loadFail = true
+                                notifyItemChanged(adapterPosition)
+                                return false
+                            }
+
+                        }
+                    )
+                    .into(imagePreview)
+            }
 
             if (loadFail) {
                 Glide.with(mContext)
@@ -119,7 +115,20 @@ class BottomImageAdapter(
                     .into(imagePreview)
             }
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (selectedPosition == adapterPosition) {
+                    imagePreview.foreground =
+                        mContext.resources.getDrawable(R.drawable.green_corner_bg)
+                } else {
+                    imagePreview.foreground = null
+                }
+            }
+
             imagePreview.setOnClickListener {
+                val lastPosition = selectedPosition
+                selectedPosition = adapterPosition
+                notifyItemChanged(lastPosition)
+                notifyItemChanged(selectedPosition)
                 onItemClick(
                     adapterPosition, item
                 )
@@ -129,13 +138,6 @@ class BottomImageAdapter(
 
     fun getThumbnailImage(videoPath: String?): Bitmap? {
         return videoPath?.let { ThumbnailUtils.createVideoThumbnail(it, MINI_KIND) }
-    }
-
-    fun deleteImage(currentPage: Int) {
-        Log.e("ad_current",currentPage.toString())
-//        mediaList.removeAt(currentPage)
-        Log.e("mediaList",mediaList.toString())
-        notifyDataSetChanged()
     }
 
 

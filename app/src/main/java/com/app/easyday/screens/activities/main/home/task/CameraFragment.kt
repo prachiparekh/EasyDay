@@ -93,6 +93,7 @@ class CameraFragment : Fragment() {
 
 //    ******************
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -196,25 +197,25 @@ class CameraFragment : Fragment() {
 
             btnTakePicture.actionListener = object : CameraVideoButton.ActionListener {
                 override fun onCancelled() {
-                    Log.v("TEST", "onCancelled")
+
                 }
 
                 override fun onStartRecord() {
-                    Log.v("TEST", "onStartRecord")
+
                     startVideoCamera()
                 }
 
                 override fun onEndRecord() {
-                    Log.v("TEST", "onEndRecord")
+
                     recordVideo()
                 }
 
                 override fun onDurationTooShortError() {
-                    Log.v("TEST", "onDurationTooShortError")
+
                 }
 
                 override fun onSingleTap() {
-                    Log.v("TEST", "onSingleTap")
+
                     takePicture()
                 }
 
@@ -589,6 +590,7 @@ class CameraFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding?.btnTakePicture?.isPressed = false
+        requireActivity().window?.statusBarColor = resources.getColor(R.color.black)
     }
 
     private fun openCamera() {

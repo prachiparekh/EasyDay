@@ -171,5 +171,6 @@
     <string name="flagged">Flagged</string>
     <string name="tag_status">Tag Status</string>
     <string name="project_create_success">Project created successfully</string>
-
+    <string name="contacts_permission_denied_feedback">Contacts permission is needed.</string>
+    <string name="permission_rationale_settings_button_text">SETTINGS</string>
 </resources>

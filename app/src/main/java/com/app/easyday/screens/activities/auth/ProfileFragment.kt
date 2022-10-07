@@ -109,6 +109,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                 //update API
                 val intent = Intent(requireActivity(), MainActivity::class.java)
                 requireActivity().startActivity(intent)
+                requireActivity().finish()
             }
         }
 

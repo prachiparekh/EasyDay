@@ -44,7 +44,10 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 
 //    *****************
 
-    override fun getStatusBarColor()=R.color.black
+    override fun onResume() {
+        super.onResume()
+        requireActivity().window?.statusBarColor = resources.getColor(R.color.black)
+    }
 
     override fun initUi() {
 //        requireActivity().window.statusBarColor = requireContext().resources.getColor(R.color.black)
