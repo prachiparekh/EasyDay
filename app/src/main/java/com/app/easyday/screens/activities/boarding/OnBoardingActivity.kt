@@ -12,6 +12,7 @@ import com.app.easyday.R
 import com.app.easyday.app.sources.local.model.OnboardingItem
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.app.easyday.screens.activities.auth.AuthActivity
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_on_boarding.*
 
@@ -40,6 +41,8 @@ class OnBoardingActivity : AppCompatActivity() {
         pager.adapter = adapter
 
         pager.currentItem = 0
+
+        dots_indicator.attachTo(pager)
         pager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageScrolled(
                 position: Int,
@@ -54,26 +57,6 @@ class OnBoardingActivity : AppCompatActivity() {
                     cta.text = getString(R.string.get_started)
                 else
                     cta.text = getString(R.string.next)
-
-                when (position) {
-                    0 -> {
-                        img1.setImageDrawable(resources.getDrawable(R.drawable.ic_boarding_dash))
-                        img2.setImageDrawable(resources.getDrawable(R.drawable.ic_bording_dot))
-                        img3.setImageDrawable(resources.getDrawable(R.drawable.ic_bording_dot))
-                    }
-                    1 -> {
-                        img1.setImageDrawable(resources.getDrawable(R.drawable.ic_bording_dot))
-                        img2.setImageDrawable(resources.getDrawable(R.drawable.ic_boarding_dash))
-                        img3.setImageDrawable(resources.getDrawable(R.drawable.ic_bording_dot))
-                    }
-                    2 -> {
-                        img1.setImageDrawable(resources.getDrawable(R.drawable.ic_bording_dot))
-                        img2.setImageDrawable(resources.getDrawable(R.drawable.ic_bording_dot))
-                        img3.setImageDrawable(resources.getDrawable(R.drawable.ic_boarding_dash))
-                    }
-                }
-
-
 
             }
 
