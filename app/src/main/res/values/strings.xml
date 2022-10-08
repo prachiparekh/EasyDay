@@ -173,4 +173,12 @@
     <string name="project_create_success">Project created successfully</string>
     <string name="contacts_permission_denied_feedback">Contacts permission is needed.</string>
     <string name="permission_rationale_settings_button_text">SETTINGS</string>
+    <string name="date_">Date :</string>
+    <string name="complete">Complete</string>
+    <string name="share">Share</string>
+    <string name="discussion">Discussion</string>
+
+    <string name="message">Message</string>
+    <string name="task_details">Task Details</string>
+    <string name="project_related">Project Related</string>
 </resources>

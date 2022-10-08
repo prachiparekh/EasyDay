@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:layout_marginVertical="@dimen/_7sdp"
-            android:drawableEnd="@drawable/ic_blue_circle"
             android:drawablePadding="@dimen/_10sdp"
             android:fontFamily="@font/dm_sans_400"
             android:textColor="@color/navy_blue"
