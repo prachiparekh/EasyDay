@@ -75,7 +75,7 @@
         android:layout_height="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:padding="@dimen/_3sdp"
-        android:src="@drawable/ic_priority"
+        android:src="@drawable/ic_urgent_p2"
         app:layout_constraintBottom_toBottomOf="@id/edit"
         app:layout_constraintEnd_toStartOf="@id/projectIcon"
         app:layout_constraintTop_toTopOf="@id/edit" />
@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:src="@drawable/ic_color_ecllipse"
+        android:src="@drawable/ic_color_eclipse_med"
         app:layout_constraintBottom_toBottomOf="@id/edit"
         app:layout_constraintEnd_toStartOf="@id/flag"
         app:layout_constraintTop_toTopOf="@id/edit" />
