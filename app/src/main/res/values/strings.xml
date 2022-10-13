@@ -183,4 +183,7 @@
     <string name="project_related">Project Related</string>
     <string name="description_length">%s/500</string>
     <string name="status">Status</string>
+    <string name="tap_to_note">Tab to create button to create note</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

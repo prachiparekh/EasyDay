@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_white"
+        tools:context=".screens.activities.main.more.notepad.CreateNoteFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topCL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/navy_blue"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/title1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans_700"
+                android:text="@string/notepad"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/back"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_back_arrow"
+                android:tint="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/option"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_option_btn"
+                android:tint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.onegravity.rteditor.RTEditText
+            android:id="@+id/rtEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/type_to_create"
+            android:imeOptions="actionDone|flagNoEnterAction"
+            android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+            app:layout_constraintTop_toBottomOf="@id/topCL" />
+
+        <LinearLayout
+            android:id="@+id/rte_toolbar_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/actionBarItemBackground"
+                android:scrollbarStyle="outsideOverlay">
+
+                <com.onegravity.rteditor.toolbar.HorizontalRTToolbar
+                    android:id="@+id/rte_toolbar_character"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/actionBarItemBackground"
+                    android:orientation="horizontal">
+
+                    <com.onegravity.rteditor.toolbar.RTToolbarImageButton
+                        android:id="@+id/toolbar_bold"
+                        style="?attr/rte_ToolbarButton"
+                        android:background="?attr/rte_icToolbarBold"/>
+
+                    <com.onegravity.rteditor.toolbar.RTToolbarImageButton
+                        android:id="@+id/toolbar_italic"
+                        style="?attr/rte_ToolbarButton"
+                        android:background="?attr/rte_icToolbarItalic"/>
+
+                    <com.onegravity.rteditor.toolbar.RTToolbarImageButton
+                        android:id="@+id/toolbar_underline"
+                        style="?attr/rte_ToolbarButton"
+                        android:background="?attr/rte_icToolbarUnderline"/>
+
+                    <com.onegravity.rteditor.toolbar.RTToolbarImageButton
+                        android:id="@+id/toolbar_strikethrough"
+                        style="?attr/rte_ToolbarButton"
+                        android:background="?attr/rte_icToolbarStrikethrough"/>
+
+                    <com.onegravity.rteditor.toolbar.RTToolbarImageButton
+                        android:id="@+id/toolbar_superscript"
+                        style="?attr/rte_ToolbarButton"
+                        android:background="?attr/rte_icToolbarSuperscript"/>
+
+                    <com.onegravity.rteditor.toolbar.RTToolbarImageButton
+                        android:id="@+id/toolbar_subscript"
+                        style="?attr/rte_ToolbarButton"
+                        android:background="?attr/rte_icToolbarSubscript"/>
+
+                    <include layout="@layout/rte_toolbar_divider"/>
+
+                    <Spinner
+                        android:id="@+id/toolbar_font"
+                        style="?attr/rte_ToolbarSpinner"
+                        android:background="?attr/rte_icToolbarFont"/>
+
+                    <Spinner
+                        android:id="@+id/toolbar_fontsize"
+                        style="?attr/rte_ToolbarSpinner"
+                        android:background="?attr/rte_icToolbarFontSize"/>
+
+                    <Spinner
+                        android:id="@+id/toolbar_fontcolor"
+                        style="?attr/rte_ToolbarSpinner"
+                        android:background="?attr/rte_icToolbarFontColor"/>
+
+                    <Spinner
+                        android:id="@+id/toolbar_bgcolor"
+                        style="?attr/rte_ToolbarSpinner"
+                        android:background="?attr/rte_icToolbarBGColor"/>
+
+                </com.onegravity.rteditor.toolbar.HorizontalRTToolbar>
+
+            </HorizontalScrollView>
+
+            <include layout="@layout/rte_toolbar_paragraph" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

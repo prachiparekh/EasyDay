@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.app.easyday"
         minSdk 21
-        targetSdk 31
+        targetSdk 32
         versionCode 4
         versionName "1.0.3"
         setProperty("archivesBaseName", "EasyDay" + "-v" + versionCode + "(" + versionName + ")")
@@ -161,4 +161,7 @@ dependencies {
 
 //    DotsIndicator
     implementation "com.tbuonomo:dotsindicator:4.3"
+
+//      RTEditor
+    implementation("com.1gravity:android-rteditor:1.7.8")
 }

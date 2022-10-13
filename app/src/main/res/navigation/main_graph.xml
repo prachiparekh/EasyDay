@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/dashboardFragment">
+    app:startDestination="@id/notepadFragment">
 
     <fragment
         android:id="@+id/dashboardFragment"
@@ -152,5 +152,24 @@
         android:id="@+id/termsPolicyFragment2"
         android:name="com.app.easyday.screens.activities.auth.TermsPolicyFragment"
         android:label="TermsPolicyFragment" />
+    <fragment
+        android:id="@+id/notepadFragment"
+        android:name="com.app.easyday.screens.activities.main.more.notepad.NotepadListFragment"
+        android:label="fragment_notepad"
+        tools:layout="@layout/fragment_notepad_list" >
+
+        <action android:id="@+id/notepad_list_to_create_note"
+            app:destination="@id/createNoteFragment"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/createNoteFragment"
+        android:name="com.app.easyday.screens.activities.main.more.notepad.CreateNoteFragment"
+        android:label="fragment_create_note"
+        tools:layout="@layout/fragment_create_note" />
 
 </navigation>

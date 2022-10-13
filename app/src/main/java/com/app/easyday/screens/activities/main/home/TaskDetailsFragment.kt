@@ -17,5 +17,10 @@ class TaskDetailsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_task_details, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().window?.statusBarColor = resources.getColor(R.color.navy_blue)
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.app.easyday
 
 import android.content.ContextWrapper
 import androidx.multidex.MultiDexApplication
+import com.onegravity.rteditor.fonts.FontManager
 import com.pixplicity.easyprefs.library.Prefs
 import dagger.hilt.android.HiltAndroidApp
 
@@ -15,5 +16,7 @@ class EasyDayApplication : MultiDexApplication(){
             .setPrefsName(packageName)
             .setUseDefaultSharedPreference(true)
             .build()
+
+        FontManager.preLoadFonts(this)
     }
 }
