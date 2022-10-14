@@ -1,17 +1,14 @@
 package com.app.easyday.app.sources.local.model
 
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
-import java.io.Serializable
 
 
 class ContactModel (
     var id: String? = null,
     var name: String? = null,
     var role: String? = null,
-    var mobileNumber: String? = null,
+    var phoneNumber: String? = null,
     var photoURI: String? = null
 ):Parcelable {
 
@@ -25,14 +22,14 @@ class ContactModel (
     }
 
     override fun toString(): String {
-        return "ContactModel(name=$name, mobileNumber=$mobileNumber)"
+        return "ContactModel(name=$name, phoneNumber=$phoneNumber)"
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(name)
         parcel.writeString(role)
-        parcel.writeString(mobileNumber)
+        parcel.writeString(phoneNumber)
         parcel.writeString(photoURI)
     }
 

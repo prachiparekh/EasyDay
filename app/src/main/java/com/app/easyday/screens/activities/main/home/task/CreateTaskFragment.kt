@@ -4,17 +4,24 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import com.app.easyday.R
+import com.app.easyday.app.sources.local.interfaces.AddAttributeInterface
+import com.app.easyday.app.sources.local.interfaces.AttributeSelectionInterface
 import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
 import com.app.easyday.app.sources.local.interfaces.FilterTypeInterface
-import com.app.easyday.app.sources.local.interfaces.TagInterface
 import com.app.easyday.app.sources.local.model.Media
+import com.app.easyday.app.sources.remote.model.AttributeResponse
+import com.app.easyday.app.sources.remote.model.ProjectParticipantsModel
+import com.app.easyday.screens.activities.main.home.HomeFragment.Companion.selectedProjectID
 import com.app.easyday.screens.base.BaseFragment
+import com.app.easyday.screens.dialogs.AddSpaceZoneBottomSheetDialog
 import com.app.easyday.screens.dialogs.AddTagBottomSheetDialog
+import com.app.easyday.screens.dialogs.AsigneeSelectionBottomSheetDialog
 import com.app.easyday.screens.dialogs.DueDateBottomSheetDialog
+import com.app.easyday.utils.DeviceUtils
 import com.app.easyday.utils.FileUtil
 import com.passiondroid.imageeditorlib.ImageEditActivity
 import com.passiondroid.imageeditorlib.ImageEditor
@@ -23,8 +30,9 @@ import kotlinx.android.synthetic.main.fragment_create_task.*
 import java.io.File
 
 @AndroidEntryPoint
-class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterface, TagInterface,
-    FilterCloseInterface {
+class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterface,
+    AttributeSelectionInterface,
+    FilterCloseInterface, AddAttributeInterface {
 
     override fun getContentView() = R.layout.fragment_create_task
     private var filterTypeList = arrayListOf<String>()
@@ -37,7 +45,15 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 
 //    *****************
 
-    private var selectedTagList = arrayListOf<String>()
+    var tagBSFDialog: AddTagBottomSheetDialog? = null
+    var projectparticipantList: ProjectParticipantsModel? = null
+    var tagList = arrayListOf<AttributeResponse>()
+    var zoneList = arrayListOf<AttributeResponse>()
+    var spaceList = arrayListOf<AttributeResponse>()
+
+    private var selectedTagList = arrayListOf<AttributeResponse>()
+    private var selectedZoneList = arrayListOf<AttributeResponse>()
+    private var selectedSpaceList = arrayListOf<AttributeResponse>()
     private var selectedPriority: String? = null
     var redFlag = false
     var selectedDate: String? = null
@@ -47,11 +63,33 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     override fun onResume() {
         super.onResume()
         requireActivity().window?.statusBarColor = resources.getColor(R.color.black)
+        if (selectedUriList.isEmpty()) {
+            textT.isVisible = false
+            edit.isVisible = false
+        } else {
+            textT.isVisible = true
+            edit.isVisible = true
+        }
     }
 
     override fun initUi() {
-//        requireActivity().window.statusBarColor = requireContext().resources.getColor(R.color.black)
         selectedUriList = arguments?.getParcelableArrayList<Media>("uriList") as ArrayList<Media>
+
+
+        DeviceUtils.initProgress(requireContext())
+        selectedProjectID?.let { viewModel.getAttributes(it, 0) }
+        selectedProjectID?.let { viewModel.getAttributes(it, 1) }
+        selectedProjectID?.let { viewModel.getAttributes(it, 2) }
+        selectedProjectID?.let { viewModel.getProjectParticipants(it) }
+
+        tagBSFDialog =
+            AddTagBottomSheetDialog(
+                requireContext(),
+                arrayListOf(),
+                this,
+                this,
+                this
+            )
 
         mediaAdapter = MediaAdapter(
             requireContext(),
@@ -72,7 +110,6 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 
         pagerPhotos.apply {
             adapter = mediaAdapter?.apply { submitList(selectedUriList) }
-//            onPageSelected { page -> currentPage = page }
         }
 
         filterTypeList.add(requireContext().resources.getString(R.string.f_priority))
@@ -103,13 +140,9 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             TaskFilterAdapter(requireContext(), filterTypeList, priorityList, drawableList, this)
         filterRV.adapter = taskAdapter
 
-//        val bottomImageList = ArrayList<Media>()
-//        bottomImageList.add(0, Media(null, false, System.currentTimeMillis()))
-//        bottomImageList.addAll(selectedUriList)
-
         imgAdapter =
             BottomImageAdapter(requireContext(), selectedUriList, onItemClick = { position, item ->
-                    pagerPhotos.currentItem = position
+                pagerPhotos.currentItem = position
             })
         imgRV.adapter = imgAdapter
 
@@ -137,7 +170,6 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         }
 
         delete.setOnClickListener {
-            Log.e("currentItem", pagerPhotos.currentItem.toString())
             selectedUriList.removeAt(pagerPhotos.currentItem)
             mediaAdapter?.notifyDataSetChanged()
             imgAdapter?.notifyDataSetChanged()
@@ -147,32 +179,93 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             Navigation.findNavController(requireView()).popBackStack()
         }
 
+        send.setOnClickListener {
+            val fragment =
+                AsigneeSelectionBottomSheetDialog(
+                    requireContext(),
+                    spaceList,
+                    arrayListOf(),
+                    this,
+                    this
+                )
+            childFragmentManager.let {
+                fragment.show(it, "Space")
+            }
+        }
+
     }
 
     override fun setObservers() {
+        viewModel.actionStream.observe(viewLifecycleOwner) {
+            when (it) {
+                is CreateTaskViewModel.ACTION.getAttributes -> {
+                    when (it.type) {
+                        0 -> {
+                            tagList = it.attributeList as ArrayList<AttributeResponse>
+                            tagBSFDialog?.clearTagList()
+                            for (i in tagList.indices) {
+                                tagBSFDialog?.setTagListData(tagList[i])
+                            }
+                        }
+                        1 -> {
+                            zoneList = it.attributeList as ArrayList<AttributeResponse>
+                        }
+                        2 -> {
+                            spaceList = it.attributeList as ArrayList<AttributeResponse>
+                        }
+                    }
+                }
+            }
+        }
 
+        viewModel.projectParticipantsData.observe(viewLifecycleOwner) {
+            this.projectparticipantList = it
+        }
     }
 
     override fun onFilterTypeClick(position: Int) {
         when (position) {
             1 -> {
                 //Tag
-                val tagList = arrayListOf<String>()
-                tagList.add("Tag1")
-                tagList.add("Tag2")
-                tagList.add("Tag3")
-                tagList.add("Tag4")
-                tagList.add("Tag5")
 
-                val selectedTagList = arrayListOf<String>()
-                selectedTagList.add(tagList[0])
-                selectedTagList.add(tagList[1])
+                if (tagBSFDialog?.isAdded == false)
+                    childFragmentManager.let {
+                        tagBSFDialog?.show(it, "tags")
+                    }
+            }
+            3 -> {
+                //Space
 
                 val fragment =
-                    AddTagBottomSheetDialog(requireContext(), tagList, selectedTagList, this, this)
-                childFragmentManager.let {
-                    fragment.show(it, "tags")
-                }
+                    AddSpaceZoneBottomSheetDialog(
+                        requireContext(),
+                        spaceList,
+                        arrayListOf(),
+                        this,
+                        this,
+                        2, this
+                    )
+                if (!fragment.isAdded)
+                    childFragmentManager.let {
+                        fragment.show(it, "Space")
+                    }
+            }
+            4 -> {
+                //Zone
+
+                val fragment =
+                    AddSpaceZoneBottomSheetDialog(
+                        requireContext(),
+                        zoneList,
+                        arrayListOf(),
+                        this,
+                        this,
+                        1, this
+                    )
+                if (!fragment.isAdded)
+                    childFragmentManager.let {
+                        fragment.show(it, "Zone")
+                    }
             }
         }
     }
@@ -196,8 +289,19 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         }
     }
 
-    override fun onClickTag(selectedTagList: ArrayList<String>) {
-        this.selectedTagList = selectedTagList
+    override fun onClickAttribute(selectedAttrList: ArrayList<AttributeResponse>, type: Int) {
+        when (type) {
+            0 -> {
+                this.selectedTagList = selectedAttrList
+            }
+            1 -> {
+                this.selectedZoneList = selectedAttrList
+            }
+            2 -> {
+                this.selectedSpaceList = selectedAttrList
+            }
+        }
+
     }
 
     override fun onCloseClick() {
@@ -216,11 +320,21 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val imagePath: String? = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)
                     val mfile = imagePath?.let { File(it) }
-                    Log.e("new:", mfile?.path.toString())
                     selectedUriList[pagerPhotos.currentItem].uri = Uri.fromFile(mfile)
                     mediaAdapter?.notifyItemChanged(pagerPhotos.currentItem)
                     imgAdapter?.notifyItemChanged(pagerPhotos.currentItem + 1)
                 }
         }
     }
+
+    override fun addAttribute(attributeType: Int, attributeName: String) {
+        selectedProjectID?.let {
+            viewModel.addAttributes(
+                projectId = it,
+                type = attributeType,
+                attributeName = attributeName
+            )
+        }
+    }
+
 }

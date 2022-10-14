@@ -262,7 +262,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
         viewModel.actionStream.observe(viewLifecycleOwner) {
             when (it) {
                 is ProfileViewModel.ACTION.onAddUpdateUser -> {
-                    AppPreferencesDelegates.get().token = it.userData?.token.toString()
+
                     requireActivity().startActivity(
                         Intent(
                             requireActivity(),

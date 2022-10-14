@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_white"
-       >
+      >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/topCL"
@@ -32,11 +32,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/mTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/dm_sans_700"
                 android:gravity="center_vertical"
-                android:text="@string/add_tags"
+                android:text="@string/f_space"
                 android:textColor="@color/accent_blue"
                 android:textSize="@dimen/_13sdp"
                 app:layout_constraintBottom_toBottomOf="@id/close"
@@ -78,7 +79,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:padding="@dimen/_7sdp"
                 android:layout_margin="@dimen/_10sdp"
-                android:src="@drawable/ic_small_tag"
+                android:src="@drawable/ic_location"
                 app:layout_constraintBottom_toBottomOf="@id/tagET"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tagET" />
@@ -91,13 +92,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:paddingHorizontal="@dimen/_20sdp"
             android:paddingBottom="@dimen/_30sdp"
             app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/createTagCL"
-            tools:listitem="@layout/item_tag" />
+            tools:listitem="@layout/item_other_filter_selection" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -108,20 +108,21 @@
             android:paddingVertical="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent" >
 
-        <TextView
-            android:id="@+id/cta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:background="@drawable/green_curve_bg"
-            android:enabled="false"
-            android:fontFamily="@font/dm_sans_700"
-            android:gravity="center_horizontal"
-            android:paddingVertical="@dimen/_10sdp"
-            android:text="@string/save"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
-          />
+            <TextView
+                android:id="@+id/cta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/green_curve_bg"
+                android:enabled="false"
+                android:fontFamily="@font/dm_sans_700"
+                android:gravity="center_horizontal"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                />
         </RelativeLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

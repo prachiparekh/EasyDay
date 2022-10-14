@@ -5,6 +5,7 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
@@ -164,12 +165,9 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
                     val action =
                         OTPFragmentDirections
                             .otpToProfile()
-                    if (it.model.isNewUser == false) {
-                        AppPreferencesDelegates.get().token = it.model.token.toString()
-                        action.isNewUser = false
-                    } else {
-                        action.isNewUser = true
-                    }
+                    AppPreferencesDelegates.get().token = it.model.token.toString()
+                    action.isNewUser = it.model.isNewUser != false
+
                     action.phoneNumber = mPhoneNumber
                     action.countryCode = mCountryCode
                     Navigation.findNavController(requireView()).navigate(action)

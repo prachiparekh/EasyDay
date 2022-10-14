@@ -13,6 +13,7 @@ import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.ProjectInterface
+import com.app.easyday.app.sources.remote.model.AttributeResponse
 import com.app.easyday.app.sources.remote.model.ProjectRespModel
 
 
@@ -73,5 +74,7 @@ class ProjectAdapter(
     fun selectedProjectPosition(): Int {
         return selectedProjectPosition
     }
+
+
 
 }

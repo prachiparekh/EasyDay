@@ -1,7 +1,6 @@
 package com.app.easyday.app.sources.remote.apis
 
 import com.app.easyday.app.sources.ApiResponse
-import com.app.easyday.app.sources.local.model.ContactModel
 import com.app.easyday.app.sources.remote.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -56,12 +55,40 @@ interface EasyDayApi {
 
     @POST("project/create-project")
     fun createProject(
-        @Body addProjectRequestModel:AddProjectRequestModel
-    ):Observable<ApiResponse<ProjectRespModel>>
+        @Body addProjectRequestModel: AddProjectRequestModel
+    ): Observable<ApiResponse<ProjectRespModel>>
 
     @POST("task/add-task")
     fun addTask(
-
+        @Body addTaskRequestModel: AddTaskRequestModel
     )
 
+    //  0 tag
+//  1 zone
+//  2 space
+    @POST("project/add-attribute")
+    fun addAttribute(
+        @Body addTaskRequestModel: AddTaskRequestModel
+    )
+
+    @GET("project/get-attributes")
+    fun getAttributes(
+        @Query("project_id") project_id: Int,
+        @Query("type") type: Int
+    ): Observable<ApiResponse<ArrayList<AttributeResponse>>>
+
+    @FormUrlEncoded
+    @POST("project/add-attribute")
+    fun addAttribute(
+        @Field("type") type: Int,
+        @Field("attribute_name") attribute_name: String,
+        @Field("project_id") project_id: Int
+    ): Observable<ApiResponse<AttributeResponse>>
+
+    @GET("project/get-participants")
+    fun getProjectParticipants(
+        @Query("project_id") project_id: Int
+    ): Observable<ApiResponse<ProjectParticipantsModel>>
+
 }
+

@@ -2,23 +2,23 @@ package com.app.easyday.screens.dialogs.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.GridLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.easyday.R
-import com.app.easyday.app.sources.local.interfaces.TagInterface
+import com.app.easyday.app.sources.local.interfaces.AttributeSelectionInterface
+import com.app.easyday.app.sources.remote.model.AttributeResponse
 
 class TagsAdapter(
     private val context: Context,
-    private var tagList: java.util.ArrayList<String>,
-    private var selectedTagList: java.util.ArrayList<String>,
-    val tagsInterface: TagInterface
+    private var tagList: java.util.ArrayList<AttributeResponse>,
+    private var selectedTagList: java.util.ArrayList<AttributeResponse>,
+    val tagsInterface: AttributeSelectionInterface,
+    val attributeType:Int
 ) : RecyclerView.Adapter<TagsAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -42,7 +42,7 @@ class TagsAdapter(
         @SuppressLint("NewApi")
         fun bind(position: Int) {
 
-            tagName.text = tagList[position]
+            tagName.text = tagList[position].attributeName
 
             if (selectedTagList.contains(tagList[position])) {
                 mainCard.setCardBackgroundColor(context.resources.getColor(R.color.light_sky_blue))
@@ -61,9 +61,16 @@ class TagsAdapter(
                     selectedTagList.add(tagList[position])
                 }
 
-                tagsInterface.onClickTag(selectedTagList)
+                tagsInterface.onClickAttribute(selectedTagList,attributeType)
                 notifyDataSetChanged()
             }
         }
+    }
+
+
+
+    fun clearList(){
+        tagList.clear()
+        notifyDataSetChanged()
     }
 }

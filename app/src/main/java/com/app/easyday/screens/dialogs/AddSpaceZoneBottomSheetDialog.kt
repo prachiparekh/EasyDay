@@ -3,46 +3,51 @@ package com.app.easyday.screens.dialogs
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.AddAttributeInterface
-import com.app.easyday.app.sources.local.interfaces.AttributeSelectionInterface
 import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
+import com.app.easyday.app.sources.local.interfaces.AttributeSelectionInterface
 import com.app.easyday.app.sources.remote.model.AttributeResponse
-import com.app.easyday.databinding.AddTagLayoutBinding
-import com.app.easyday.screens.dialogs.adapters.TagsAdapter
+import com.app.easyday.databinding.AddSpaceZoneLayoutBinding
+import com.app.easyday.screens.dialogs.adapters.ProjectAdapter
+import com.app.easyday.screens.dialogs.adapters.SpaceZoneAdapter
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-
-class AddTagBottomSheetDialog(
+class AddSpaceZoneBottomSheetDialog (
     var mContext: Context,
-    private var selectedTagList: java.util.ArrayList<AttributeResponse>,
+    var attrList: ArrayList<AttributeResponse>,
+    private var selectedAttrList: java.util.ArrayList<AttributeResponse>,
     var tagInterface: AttributeSelectionInterface,
     var closeInterface: FilterCloseInterface,
+    var attributeType:Int,
     var addAttributeInterface: AddAttributeInterface
 ) :
     BottomSheetDialogFragment() {
-    var binding: AddTagLayoutBinding? = null
-    var adapter: TagsAdapter? = null
-    private var tagList = ArrayList<AttributeResponse>()
+    var binding: AddSpaceZoneLayoutBinding? = null
+    var adapter: ProjectAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.add_tag_layout, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.add_space_zone_layout, container, false)
         isCancelable = false
 
-        binding?.tagRV?.layoutManager = FlexboxLayoutManager(requireContext())
-        adapter = TagsAdapter(mContext, tagList, selectedTagList, tagInterface, 0)
-        binding?.tagRV?.adapter = adapter
+        binding?.tagRV?.layoutManager= FlexboxLayoutManager(requireContext())
+        binding?.tagRV?.adapter= SpaceZoneAdapter(mContext,attrList,selectedAttrList,tagInterface,attributeType)
+
+        if(attributeType==1){
+            binding?.mTitle?.text=requireContext().resources.getString(R.string.f_zone)
+        }else{
+            binding?.mTitle?.text=requireContext().resources.getString(R.string.f_space)
+        }
 
         binding?.close?.setOnClickListener {
             closeInterface.onCloseClick()
@@ -50,7 +55,7 @@ class AddTagBottomSheetDialog(
         }
 
         binding?.smallTag?.setOnClickListener {
-            addAttributeInterface.addAttribute(0, binding?.tagET?.text.toString())
+            addAttributeInterface.addAttribute(attributeType,binding?.tagET?.text.toString())
         }
 
         return binding?.root
@@ -72,16 +77,5 @@ class AddTagBottomSheetDialog(
 
         return dialog
     }
-
-    fun clearTagList() {
-        this.tagList.clear()
-        adapter?.clearList()
-    }
-
-    fun setTagListData(tag: AttributeResponse) {
-        this.tagList.add(tag)
-        adapter?.notifyItemInserted(tagList.size-1)
-    }
-
 
 }

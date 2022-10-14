@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,13 +56,20 @@ class ProjectListDialog(
             dismiss()
         }
 
-        binding?.cta?.setOnClickListener {
-            adapter?.selectedProjectPosition().let { it1 ->
-                if (it1 != null) {
-                    projectInterface.onClickProject(it1)
+        if(projectList?.isNotEmpty() == true ) {
+            if (projectList?.size == 1) {
+                binding?.cta?.isVisible = false
+            } else {
+                binding?.cta?.isVisible = true
+                binding?.cta?.setOnClickListener {
+                    adapter?.selectedProjectPosition().let { it1 ->
+                        if (it1 != null) {
+                            projectInterface.onClickProject(it1)
+                        }
+                    }
+                    dismiss()
                 }
             }
-            dismiss()
         }
 
         binding?.projectRV

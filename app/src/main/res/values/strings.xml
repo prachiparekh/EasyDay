@@ -186,4 +186,7 @@
     <string name="tap_to_note">Tab to create button to create note</string>
     <string name="untitled_date">Untitled %s</string>
     <string name="type_here">Type here</string>
+    <string name="save">Save</string>
+
+    <string name="select_assignee">Select Assignee</string>
 </resources>
