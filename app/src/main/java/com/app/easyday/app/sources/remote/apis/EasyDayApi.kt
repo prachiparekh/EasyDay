@@ -36,9 +36,9 @@ interface EasyDayApi {
         @Part("phone_number") phone_number: RequestBody,
         @Part("country_code") country_code: RequestBody,
         @Part profile_image: MultipartBody.Part?,
-        @Field("device_token") device_token: String,
-        @Field("device_id") device_id: String,
-        @Field("device_name") device_name: String
+        @Part("device_token") device_token: String,
+        @Part("device_id") device_id: String,
+        @Part("device_name") device_name: String
     ): Observable<ApiResponse<UserModel>>
 
     @GET("user/get-profile")
@@ -58,5 +58,10 @@ interface EasyDayApi {
     fun createProject(
         @Body addProjectRequestModel:AddProjectRequestModel
     ):Observable<ApiResponse<ProjectRespModel>>
+
+    @POST("task/add-task")
+    fun addTask(
+
+    )
 
 }
