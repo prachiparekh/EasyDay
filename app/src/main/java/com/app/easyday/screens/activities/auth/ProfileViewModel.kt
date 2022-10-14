@@ -35,7 +35,7 @@ class ProfileViewModel @Inject constructor(
         profession: String,
         phoneNumber: String,
         country_code: String,
-        profile_image: File?
+        profile_image: File?, deviceID: String, deviceName: String
     ) {
 
         val fullNameBody: RequestBody =
@@ -50,11 +50,12 @@ class ProfileViewModel @Inject constructor(
             profile_image?.asRequestBody("image/*".toMediaTypeOrNull())
         val requestFile: MultipartBody.Part? =
             mPartBody?.let {
-                MultipartBody.Part.createFormData("profile_image", profile_image.name,
+                MultipartBody.Part.createFormData(
+                    "profile_image", profile_image.name,
                     it
                 )
             }
-        api.createUser(fullNameBody, professionBody, phoneNumberBody, countryCodeBody, requestFile)
+        api.createUser(fullNameBody, professionBody, phoneNumberBody, countryCodeBody, requestFile,"deviceToken",deviceID,deviceName)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 actionStream.value = ACTION.onAddUpdateUser(resp.data)

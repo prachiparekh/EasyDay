@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/drawable/selector_ic_toolbar_align_center_light.xml" value="0.2245" />
+        <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/drawable/selector_ic_toolbar_align_left_light.xml" value="0.2245" />
         <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/drawable/selector_ic_toolbar_bold_light.xml" value="0.2245" />
+        <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/drawable/selector_ic_toolbar_inc_indent_light.xml" value="0.2245" />
         <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/layout/rte_toolbar.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/layout/rte_toolbar_character.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/layout/rte_toolbar_paragraph.xml" value="0.3009833262077811" />
@@ -38,6 +41,11 @@
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_home.xml" value="0.2485" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_line.xml" value="0.199" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_no_picture.xml" value="0.209" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_note_heading2.xml" value="0.2265" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_note_paragraph.xml" value="0.2245" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_note_redo.xml" value="0.2265" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_note_underline.xml" value="0.2245" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_note_undo.xml" value="0.2265" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_plus_icon.xml" value="0.2485" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_profile_circle.xml" value="0.2695" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_rotate.xml" value="0.209" />

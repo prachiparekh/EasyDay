@@ -1,6 +1,7 @@
 package com.app.easyday.screens.activities.auth
 
 import android.os.CountDownTimer
+import android.provider.Settings
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
@@ -31,7 +32,7 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
     }
 
     override fun getContentView() = R.layout.fragment_o_t_p
-    override fun getStatusBarColor()= ContextCompat.getColor(requireContext(), R.color.bg_white)
+    override fun getStatusBarColor() = ContextCompat.getColor(requireContext(), R.color.bg_white)
 
     private val timer = object : CountDownTimer(1000 * 60 * 5, 1000) {
         override fun onTick(millisUntilFinished: Long) {
@@ -111,17 +112,25 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
     override fun setObservers() {
         isOTPComplete.observe(viewLifecycleOwner) { it ->
             if (it) {
+                val deviceID: String = Settings.Secure.getString(
+                    requireContext().contentResolver,
+                    Settings.Secure.ANDROID_ID
+                )
+
                 val fullOTP = tv1.text.toString() +
                         tv2.text.toString() +
                         tv3.text.toString() +
                         tv4.text.toString() +
                         tv5.text.toString() +
                         tv6.text.toString()
-                mPhoneNumber?.let { it1 -> mCountryCode?.let { it2 ->
-                    mViewModel?.verifyOTP(it1, fullOTP,
-                        it2
-                    )
-                } }
+                mPhoneNumber?.let { it1 ->
+                    mCountryCode?.let { it2 ->
+                        mViewModel?.verifyOTP(
+                            it1, fullOTP,
+                            it2, deviceID, android.os.Build.MODEL
+                        )
+                    }
+                }
 
             }
         }
@@ -158,7 +167,7 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
                     if (it.model.isNewUser == false) {
                         AppPreferencesDelegates.get().token = it.model.token.toString()
                         action.isNewUser = false
-                    }else{
+                    } else {
                         action.isNewUser = true
                     }
                     action.phoneNumber = mPhoneNumber

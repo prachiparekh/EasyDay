@@ -14,6 +14,9 @@ import com.onegravity.rteditor.RTManager
 import com.onegravity.rteditor.api.RTApi
 import com.onegravity.rteditor.api.RTMediaFactoryImpl
 import com.onegravity.rteditor.api.RTProxyImpl
+import com.onegravity.rteditor.effects.Effects
+import com.onegravity.rteditor.utils.Helper
+import java.util.*
 
 
 class CreateNoteFragment : Fragment() {
@@ -61,7 +64,23 @@ class CreateNoteFragment : Fragment() {
         )
 
         mRTManager?.registerEditor(binding?.rtEditText, true)
-        binding?.rtEditText?.setRichTextEditing(true, "message")
+        binding?.rtEditText?.setRichTextEditing(
+            true, ""
+        )
+
+        val month = Calendar.getInstance().get(Calendar.MONTH)
+        val date = Calendar.getInstance().get(Calendar.DATE)
+        binding?.subject?.setText(
+            requireContext().resources.getString(
+                R.string.untitled_date,
+                "$date/${month + 1}"
+            )
+        )
+
+        binding?.toolbarFontsizeH1?.setOnClickListener {
+            val size = Helper.convertPxToSp(30)
+            binding?.rtEditText?.applyEffect(Effects.FONTSIZE, size)
+        }
 
         return binding?.root
     }

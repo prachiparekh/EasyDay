@@ -48,35 +48,44 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/emptyState"
-            android:layout_width="wrap_content"
+        <!-- <androidx.constraintlayout.widget.ConstraintLayout
+             android:id="@+id/emptyState"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/topCL">
+
+             <androidx.appcompat.widget.AppCompatImageView
+                 android:id="@+id/emptyImg"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/ic_notepad_illustration"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:fontFamily="@font/dm_sans_400"
+                 android:text="@string/tap_to_note"
+                 android:textColor="@color/accent_blue"
+                 android:textSize="@dimen/_12sdp"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toBottomOf="@id/emptyImg" />
+         </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+        <WebView
+            android:id="@+id/mWebview"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topCL">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/emptyImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_notepad_illustration"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/dm_sans_400"
-                android:text="@string/tap_to_note"
-                android:textColor="@color/accent_blue"
-                android:textSize="@dimen/_12sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/emptyImg" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/topCL" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/createNote"

@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -95,12 +96,17 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
 
                 if (mPhoneNumber != null) {
                     if (mCountryCode != null) {
+                        val deviceID: String = Settings.Secure.getString(
+                            requireContext().contentResolver,
+                            Settings.Secure.ANDROID_ID
+                        )
+
                         viewModel.createUser(
                             fullName.text.toString(),
                             profession.text.toString(),
                             mPhoneNumber,
                             mCountryCode,
-                            mImageFile
+                            mImageFile, deviceID, android.os.Build.MODEL
                         )
                     }
                 }
@@ -291,8 +297,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                 intent,
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE
             )
-        }catch (e: Exception){
-            Log.e("ex",e.message.toString())
+        } catch (e: Exception) {
+            Log.e("ex", e.message.toString())
         }
     }
 

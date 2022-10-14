@@ -22,7 +22,10 @@ interface EasyDayApi {
     fun verifyOTP(
         @Field("phone_number") phone_number: String,
         @Field("otp") otp: String,
-        @Field("country_code") country_code: String
+        @Field("country_code") country_code: String,
+        @Field("device_token") device_token: String,
+        @Field("device_id") device_id: String,
+        @Field("device_name") device_name: String
     ): Observable<ApiResponse<VerifyOTPRespModel>>
 
     @Multipart
@@ -32,7 +35,10 @@ interface EasyDayApi {
         @Part("profession") profession: RequestBody,
         @Part("phone_number") phone_number: RequestBody,
         @Part("country_code") country_code: RequestBody,
-        @Part profile_image: MultipartBody.Part?
+        @Part profile_image: MultipartBody.Part?,
+        @Field("device_token") device_token: String,
+        @Field("device_id") device_id: String,
+        @Field("device_name") device_name: String
     ): Observable<ApiResponse<UserModel>>
 
     @GET("user/get-profile")
