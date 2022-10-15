@@ -23,6 +23,15 @@ data class AddTaskRequestModel(
     @field:SerializedName("due_date")
     val due_date: String? = null,
 
+    @field:SerializedName("tags")
+    var tags: ArrayList<Int>? = null,
+
+    @field:SerializedName("zones")
+    var zones: ArrayList<Int>? = null,
+
+    @field:SerializedName("spaces")
+    var spaces: ArrayList<Int>? = null,
+
     @field:SerializedName("task_participants")
     var task_participants: ArrayList<Int>? = null
 )

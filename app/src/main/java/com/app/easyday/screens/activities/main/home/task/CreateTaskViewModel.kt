@@ -3,6 +3,7 @@ package com.app.easyday.screens.activities.main.home.task
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.app.easyday.app.sources.remote.apis.EasyDayApi
+import com.app.easyday.app.sources.remote.model.AddTaskRequestModel
 import com.app.easyday.app.sources.remote.model.AttributeResponse
 import com.app.easyday.app.sources.remote.model.ProjectParticipantsModel
 import com.app.easyday.app.sources.remote.model.UserModel
@@ -21,7 +22,7 @@ class CreateTaskViewModel @Inject constructor(
 ) :BaseViewModel(){
 
     val actionStream: SingleLiveEvent<ACTION> = SingleLiveEvent()
-    val projectParticipantsData = MutableLiveData<ProjectParticipantsModel?>()
+    val projectParticipantsData = MutableLiveData<ArrayList<ProjectParticipantsModel>?>()
 
     sealed class ACTION {
         class getAttributes(val attributeList: List<AttributeResponse>?,val type: Int) : ACTION()
@@ -61,6 +62,21 @@ class CreateTaskViewModel @Inject constructor(
             .subscribe({ resp ->
                 projectParticipantsData.value=resp?.data
                 Log.e("resp:", resp.data.toString())
+                DeviceUtils.dismissProgress()
+            }, {
+                Log.e("resp_ex:", it.message.toString())
+
+                DeviceUtils.dismissProgress()
+            })
+    }
+
+    fun addTask(addTaskRequestModel: AddTaskRequestModel){
+        DeviceUtils.showProgress()
+        api.addTask(addTaskRequestModel)
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ resp ->
+
+                Log.e("resp:", resp.toString())
                 DeviceUtils.dismissProgress()
             }, {
                 Log.e("resp_ex:", it.message.toString())

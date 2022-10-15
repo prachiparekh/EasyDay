@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.app.easyday.app.sources.local.model.ContactModel
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 data class AddProjectRequestModel(
 
@@ -25,7 +24,7 @@ data class AddProjectRequestModel(
         parcel.readString(),
         parcel.readString(),
 
-    )
+        )
 
     override fun describeContents(): Int {
         return 0

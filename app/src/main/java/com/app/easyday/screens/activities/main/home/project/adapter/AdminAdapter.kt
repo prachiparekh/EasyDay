@@ -95,7 +95,7 @@ class AdminAdapter(
                     selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_uncheck_radio))
                     briefcase.isVisible = false
                     item.role =
-                        context.resources.getString(R.string.participant_role)
+                        context.resources.getString(R.string.user_role)
                 }
             }
         }

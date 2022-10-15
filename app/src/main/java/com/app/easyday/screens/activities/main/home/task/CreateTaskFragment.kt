@@ -4,15 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import com.app.easyday.R
-import com.app.easyday.app.sources.local.interfaces.AddAttributeInterface
-import com.app.easyday.app.sources.local.interfaces.AttributeSelectionInterface
-import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
-import com.app.easyday.app.sources.local.interfaces.FilterTypeInterface
+import com.app.easyday.app.sources.local.interfaces.*
+import com.app.easyday.app.sources.local.model.ContactModel
 import com.app.easyday.app.sources.local.model.Media
+import com.app.easyday.app.sources.remote.model.AddTaskRequestModel
 import com.app.easyday.app.sources.remote.model.AttributeResponse
 import com.app.easyday.app.sources.remote.model.ProjectParticipantsModel
 import com.app.easyday.screens.activities.main.home.HomeFragment.Companion.selectedProjectID
@@ -32,7 +32,8 @@ import java.io.File
 @AndroidEntryPoint
 class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterface,
     AttributeSelectionInterface,
-    FilterCloseInterface, AddAttributeInterface {
+    FilterCloseInterface, AddAttributeInterface,
+SkipAssigneeInterface{
 
     override fun getContentView() = R.layout.fragment_create_task
     private var filterTypeList = arrayListOf<String>()
@@ -46,14 +47,15 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 //    *****************
 
     var tagBSFDialog: AddTagBottomSheetDialog? = null
-    var projectparticipantList: ProjectParticipantsModel? = null
+    var spaceZoneBSFDialog: AddSpaceZoneBottomSheetDialog? = null
+    var projectparticipantList: ArrayList<ProjectParticipantsModel>? = null
     var tagList = arrayListOf<AttributeResponse>()
     var zoneList = arrayListOf<AttributeResponse>()
     var spaceList = arrayListOf<AttributeResponse>()
 
-    private var selectedTagList = arrayListOf<AttributeResponse>()
-    private var selectedZoneList = arrayListOf<AttributeResponse>()
-    private var selectedSpaceList = arrayListOf<AttributeResponse>()
+    private var selectedTagList = arrayListOf<Int>()
+    private var selectedZoneList = arrayListOf<Int>()
+    private var selectedSpaceList = arrayListOf<Int>()
     private var selectedPriority: String? = null
     var redFlag = false
     var selectedDate: String? = null
@@ -180,16 +182,41 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         }
 
         send.setOnClickListener {
-            val fragment =
-                AsigneeSelectionBottomSheetDialog(
+            if (taskNameET.text?.isNotEmpty() == true) {
+
+                val contactList = ArrayList<ContactModel>()
+                if (!projectparticipantList.isNullOrEmpty()) {
+                    for (i in projectparticipantList?.indices!!) {
+                        contactList.add(
+                            ContactModel(
+                                id = projectparticipantList!![i].id.toString(),
+                                name = projectparticipantList!![i].user?.fullname,
+                                role = projectparticipantList!![i].role,
+                                phoneNumber = projectparticipantList!![i].user?.phoneNumber.toString(),
+                                photoURI = projectparticipantList!![i].user?.profileImage
+                            )
+
+                        )
+                    }
+                }
+
+                val fragment =
+                    AsigneeSelectionBottomSheetDialog(
+                        requireContext(),
+                        contactList,
+                        this,this
+                    )
+                childFragmentManager.let {
+                    fragment.show(it, "Space")
+                }
+
+
+            } else {
+                Toast.makeText(
                     requireContext(),
-                    spaceList,
-                    arrayListOf(),
-                    this,
-                    this
-                )
-            childFragmentManager.let {
-                fragment.show(it, "Space")
+                    requireContext().resources.getString(R.string.task_title_required),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -209,9 +236,17 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                         }
                         1 -> {
                             zoneList = it.attributeList as ArrayList<AttributeResponse>
+                            spaceZoneBSFDialog?.clearAttrList()
+                            for (i in zoneList.indices) {
+                                spaceZoneBSFDialog?.setAttrListData(zoneList[i])
+                            }
                         }
                         2 -> {
                             spaceList = it.attributeList as ArrayList<AttributeResponse>
+                            spaceZoneBSFDialog?.clearAttrList()
+                            for (i in spaceList.indices) {
+                                spaceZoneBSFDialog?.setAttrListData(spaceList[i])
+                            }
                         }
                     }
                 }
@@ -236,7 +271,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             3 -> {
                 //Space
 
-                val fragment =
+                spaceZoneBSFDialog =
                     AddSpaceZoneBottomSheetDialog(
                         requireContext(),
                         spaceList,
@@ -245,15 +280,15 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                         this,
                         2, this
                     )
-                if (!fragment.isAdded)
+                if (spaceZoneBSFDialog?.isAdded==false)
                     childFragmentManager.let {
-                        fragment.show(it, "Space")
+                        spaceZoneBSFDialog?.show(it, "Space")
                     }
             }
             4 -> {
                 //Zone
 
-                val fragment =
+                spaceZoneBSFDialog =
                     AddSpaceZoneBottomSheetDialog(
                         requireContext(),
                         zoneList,
@@ -262,9 +297,9 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                         this,
                         1, this
                     )
-                if (!fragment.isAdded)
+                if (spaceZoneBSFDialog?.isAdded==false)
                     childFragmentManager.let {
-                        fragment.show(it, "Zone")
+                        spaceZoneBSFDialog?.show(it, "Zone")
                     }
             }
         }
@@ -289,16 +324,19 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         }
     }
 
-    override fun onClickAttribute(selectedAttrList: ArrayList<AttributeResponse>, type: Int) {
+    override fun onClickAttribute(selectedAttrList: ArrayList<Int>, type: Int) {
         when (type) {
             0 -> {
                 this.selectedTagList = selectedAttrList
+                Log.e("selectedTagList",selectedTagList.toString())
             }
             1 -> {
                 this.selectedZoneList = selectedAttrList
+                Log.e("selectedZoneList",selectedZoneList.toString())
             }
             2 -> {
                 this.selectedSpaceList = selectedAttrList
+                Log.e("selectedSpaceList",selectedSpaceList.toString())
             }
         }
 
@@ -306,6 +344,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 
     override fun onCloseClick() {
         taskAdapter?.closeFilter()
+
     }
 
     override fun onDateClick(datestr: String) {
@@ -335,6 +374,19 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                 attributeName = attributeName
             )
         }
+    }
+
+    override fun onSkipAssignee() {
+        viewModel.addTask(
+            AddTaskRequestModel(
+                selectedProjectID,
+                taskNameET.text.toString(),
+                null,
+                0,
+                0, selectedDate,
+                selectedTagList,selectedZoneList,selectedSpaceList
+            )
+        )
     }
 
 }

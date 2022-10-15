@@ -9,10 +9,11 @@ class ContactModel (
     var name: String? = null,
     var role: String? = null,
     var phoneNumber: String? = null,
+    var countryCode: String? = null,
     var photoURI: String? = null
 ):Parcelable {
-
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -21,15 +22,12 @@ class ContactModel (
     ) {
     }
 
-    override fun toString(): String {
-        return "ContactModel(name=$name, phoneNumber=$phoneNumber)"
-    }
-
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(name)
         parcel.writeString(role)
         parcel.writeString(phoneNumber)
+        parcel.writeString(countryCode)
         parcel.writeString(photoURI)
     }
 

@@ -108,20 +108,18 @@
             android:paddingVertical="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent" >
 
-        <TextView
-            android:id="@+id/cta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:background="@drawable/green_curve_bg"
-            android:enabled="false"
-            android:fontFamily="@font/dm_sans_700"
-            android:gravity="center_horizontal"
-            android:paddingVertical="@dimen/_10sdp"
-            android:text="@string/save"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
-          />
+            <TextView
+                android:id="@+id/cta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@drawable/green_curve_bg"
+                android:fontFamily="@font/dm_sans_700"
+                android:gravity="center_horizontal"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

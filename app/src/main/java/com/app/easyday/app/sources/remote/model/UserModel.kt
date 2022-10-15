@@ -12,13 +12,13 @@ data class UserModel(
 	val createdAt: String? = null,
 
 	@field:SerializedName("profile_image")
-	val profileImage: Any? = null,
+	val profileImage: String? = null,
 
 	@field:SerializedName("is_invisible")
 	val isInvisible: Boolean? = null,
 
 	@field:SerializedName("device_token")
-	val deviceToken: Any? = null,
+	val deviceToken: String? = null,
 
 	@field:SerializedName("phone_number")
 	val phoneNumber: Long? = null,

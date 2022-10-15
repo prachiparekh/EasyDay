@@ -23,7 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class AddTagBottomSheetDialog(
     var mContext: Context,
-    private var selectedTagList: java.util.ArrayList<AttributeResponse>,
+    private var selectedTagList: java.util.ArrayList<Int>,
     var tagInterface: AttributeSelectionInterface,
     var closeInterface: FilterCloseInterface,
     var addAttributeInterface: AddAttributeInterface
@@ -41,7 +41,7 @@ class AddTagBottomSheetDialog(
         isCancelable = false
 
         binding?.tagRV?.layoutManager = FlexboxLayoutManager(requireContext())
-        adapter = TagsAdapter(mContext, tagList, selectedTagList, tagInterface, 0)
+        adapter = TagsAdapter(mContext, tagList, selectedTagList)
         binding?.tagRV?.adapter = adapter
 
         binding?.close?.setOnClickListener {
@@ -51,6 +51,11 @@ class AddTagBottomSheetDialog(
 
         binding?.smallTag?.setOnClickListener {
             addAttributeInterface.addAttribute(0, binding?.tagET?.text.toString())
+        }
+
+        binding?.cta?.setOnClickListener {
+            dismiss()
+            adapter?.getSelectedTagList()?.let { it1 -> tagInterface.onClickAttribute(it1, 0) }
         }
 
         return binding?.root

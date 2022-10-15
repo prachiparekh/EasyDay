@@ -87,9 +87,5 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
 
 }

@@ -9,14 +9,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.app.easyday.R
 import com.app.easyday.app.sources.remote.model.AddProjectRequestModel
-import com.app.easyday.screens.activities.auth.LoginFragmentDirections
 import com.app.easyday.screens.activities.main.home.project.adapter.AdminAdapter
 import com.app.easyday.screens.base.BaseFragment
 import com.app.easyday.utils.DeviceUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_admin.*
-import kotlinx.android.synthetic.main.fragment_add_admin.cta
-import kotlinx.android.synthetic.main.fragment_login.*
 
 
 @AndroidEntryPoint
@@ -61,17 +58,25 @@ class AddAdminFragment : BaseFragment<ProjectViewModel>() {
         })
 
         cta?.setOnClickListener {
+
+
+            Log.e("reuestObject", createprojectModel.toString())
             createprojectModel?.let { it1 -> viewModel.createProject(it1) }
         }
 
         Log.e("selectedList", createprojectModel.toString())
     }
 
+
     override fun setObservers() {
         viewModel.actionStream.observe(viewLifecycleOwner) {
             when (it) {
                 is ProjectViewModel.ACTION.ProjectResponseSuccess -> {
-                    Toast.makeText(requireContext(),requireContext().resources.getString(R.string.project_create_success), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().resources.getString(R.string.project_create_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                     val action = AddAdminFragmentDirections.addAdminToDashboard()
                     val nav: NavController = Navigation.findNavController(requireView())

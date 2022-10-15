@@ -91,7 +91,7 @@ class AddProjectFragment : Fragment(), ColorInterface {
             val createProjectModel = AddProjectRequestModel(
                 requireContext().resources.getString(selectedColor),
                 binding.description.text.toString(),
-                binding.projectName.text.toString()
+                binding.projectName.text.toString(), arrayListOf()
             )
 
             val action = AddProjectFragmentDirections.addProjectToAddParticipant()

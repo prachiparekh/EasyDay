@@ -2,7 +2,6 @@ package com.app.easyday.screens.dialogs.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +15,7 @@ import com.app.easyday.app.sources.remote.model.AttributeResponse
 class TagsAdapter(
     private val context: Context,
     private var tagList: java.util.ArrayList<AttributeResponse>,
-    private var selectedTagList: java.util.ArrayList<AttributeResponse>,
-    val tagsInterface: AttributeSelectionInterface,
-    val attributeType:Int
+    private var selectedTagList: java.util.ArrayList<Int>
 ) : RecyclerView.Adapter<TagsAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -44,7 +41,7 @@ class TagsAdapter(
 
             tagName.text = tagList[position].attributeName
 
-            if (selectedTagList.contains(tagList[position])) {
+            if (selectedTagList.contains(tagList[position].id)) {
                 mainCard.setCardBackgroundColor(context.resources.getColor(R.color.light_sky_blue))
                 tagName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_blue_circle, 0)
                 tagName.setTextColor(context.resources.getColor(R.color.sky_blue))
@@ -55,21 +52,22 @@ class TagsAdapter(
             }
 
             itemView.setOnClickListener {
-                if (selectedTagList.contains(tagList[position])) {
-                    selectedTagList.remove(tagList[position])
+                if (selectedTagList.contains(tagList[position].id)) {
+                    selectedTagList.remove(tagList[position].id)
                 } else {
-                    selectedTagList.add(tagList[position])
+                    tagList[position].id?.let { it1 -> selectedTagList.add(it1) }
                 }
 
-                tagsInterface.onClickAttribute(selectedTagList,attributeType)
                 notifyDataSetChanged()
             }
         }
     }
 
+    fun getSelectedTagList(): ArrayList<Int> {
+        return selectedTagList
+    }
 
-
-    fun clearList(){
+    fun clearList() {
         tagList.clear()
         notifyDataSetChanged()
     }

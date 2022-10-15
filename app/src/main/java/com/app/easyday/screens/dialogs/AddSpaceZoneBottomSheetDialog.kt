@@ -13,7 +13,6 @@ import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
 import com.app.easyday.app.sources.local.interfaces.AttributeSelectionInterface
 import com.app.easyday.app.sources.remote.model.AttributeResponse
 import com.app.easyday.databinding.AddSpaceZoneLayoutBinding
-import com.app.easyday.screens.dialogs.adapters.ProjectAdapter
 import com.app.easyday.screens.dialogs.adapters.SpaceZoneAdapter
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -23,15 +22,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class AddSpaceZoneBottomSheetDialog (
     var mContext: Context,
     var attrList: ArrayList<AttributeResponse>,
-    private var selectedAttrList: java.util.ArrayList<AttributeResponse>,
-    var tagInterface: AttributeSelectionInterface,
+    private var selectedAttrList: java.util.ArrayList<Int>,
+    var attrInterface: AttributeSelectionInterface,
     var closeInterface: FilterCloseInterface,
     var attributeType:Int,
     var addAttributeInterface: AddAttributeInterface
 ) :
     BottomSheetDialogFragment() {
     var binding: AddSpaceZoneLayoutBinding? = null
-    var adapter: ProjectAdapter? = null
+    var adapter: SpaceZoneAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +40,8 @@ class AddSpaceZoneBottomSheetDialog (
         isCancelable = false
 
         binding?.tagRV?.layoutManager= FlexboxLayoutManager(requireContext())
-        binding?.tagRV?.adapter= SpaceZoneAdapter(mContext,attrList,selectedAttrList,tagInterface,attributeType)
+        adapter=SpaceZoneAdapter(mContext,attrList,selectedAttrList)
+        binding?.tagRV?.adapter= adapter
 
         if(attributeType==1){
             binding?.mTitle?.text=requireContext().resources.getString(R.string.f_zone)
@@ -56,6 +56,12 @@ class AddSpaceZoneBottomSheetDialog (
 
         binding?.smallTag?.setOnClickListener {
             addAttributeInterface.addAttribute(attributeType,binding?.tagET?.text.toString())
+        }
+
+        binding?.cta?.setOnClickListener {
+            dismiss()
+            adapter?.getSelectedList()
+                ?.let { it1 -> attrInterface.onClickAttribute(it1,attributeType) }
         }
 
         return binding?.root
@@ -76,6 +82,16 @@ class AddSpaceZoneBottomSheetDialog (
         }
 
         return dialog
+    }
+
+    fun clearAttrList() {
+        this.attrList.clear()
+        adapter?.clearList()
+    }
+
+    fun setAttrListData(tag: AttributeResponse) {
+        this.attrList.add(tag)
+        adapter?.notifyItemInserted(attrList.size-1)
     }
 
 }

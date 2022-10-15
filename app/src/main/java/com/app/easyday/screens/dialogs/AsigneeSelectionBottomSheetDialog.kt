@@ -10,25 +10,24 @@ import androidx.databinding.DataBindingUtil
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.AttributeSelectionInterface
 import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
-import com.app.easyday.app.sources.remote.model.AttributeResponse
+import com.app.easyday.app.sources.local.interfaces.SkipAssigneeInterface
+import com.app.easyday.app.sources.local.model.ContactModel
 import com.app.easyday.databinding.AddAssigneeLayoutBinding
-import com.app.easyday.screens.dialogs.adapters.ProjectAdapter
-import com.app.easyday.screens.dialogs.adapters.TagsAdapter
+import com.app.easyday.screens.activities.main.home.project.adapter.ParticipentAdapter
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class AsigneeSelectionBottomSheetDialog (
+class AsigneeSelectionBottomSheetDialog(
     var mContext: Context,
-    var tagList: ArrayList<AttributeResponse>,
-    private var selectedTagList: java.util.ArrayList<AttributeResponse>,
-    var tagInterface: AttributeSelectionInterface,
-    var closeInterface: FilterCloseInterface
+    var userList: ArrayList<ContactModel>,
+    var closeInterface: FilterCloseInterface,
+    var skipInterface:SkipAssigneeInterface
 ) :
     BottomSheetDialogFragment() {
     var binding: AddAssigneeLayoutBinding? = null
-    var adapter: ProjectAdapter? = null
+    var adapter: ParticipentAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +36,9 @@ class AsigneeSelectionBottomSheetDialog (
         binding = DataBindingUtil.inflate(inflater, R.layout.add_assignee_layout, container, false)
         isCancelable = false
 
-        binding?.tagRV?.layoutManager= FlexboxLayoutManager(requireContext())
-        binding?.tagRV?.adapter= TagsAdapter(mContext,tagList,selectedTagList,tagInterface,0)
+        binding?.tagRV?.layoutManager = FlexboxLayoutManager(requireContext())
+        adapter = ParticipentAdapter(requireContext(), userList)
+        binding?.tagRV?.adapter = adapter
 
         binding?.close?.setOnClickListener {
             closeInterface.onCloseClick()
@@ -46,7 +46,7 @@ class AsigneeSelectionBottomSheetDialog (
         }
 
         binding?.skip?.setOnClickListener {
-            closeInterface.onCloseClick()
+            skipInterface.onSkipAssignee()
             dismiss()
         }
 

@@ -15,9 +15,7 @@ import com.app.easyday.app.sources.remote.model.AttributeResponse
 class SpaceZoneAdapter (
     private val context: Context,
     private var attrList: java.util.ArrayList<AttributeResponse>,
-    private var selectedAttrList: java.util.ArrayList<AttributeResponse>,
-    val attrInterface: AttributeSelectionInterface,
-    val attributeType:Int
+    private var selectedAttrList: java.util.ArrayList<Int>
 ) : RecyclerView.Adapter<SpaceZoneAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -44,22 +42,31 @@ class SpaceZoneAdapter (
 
             attrName.text = attrList[position].attributeName
 
-            if (selectedAttrList.contains(attrList[position])) {
+            if (selectedAttrList.contains(attrList[position].id)) {
                 selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_check_radio))
             } else {
                 selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_uncheck_radio))
             }
 
             itemView.setOnClickListener {
-                if (selectedAttrList.contains(attrList[position])) {
-                    selectedAttrList.remove(attrList[position])
+                if (selectedAttrList.contains(attrList[position].id)) {
+                    selectedAttrList.remove(attrList[position].id)
                 } else {
-                    selectedAttrList.add(attrList[position])
+                    attrList[position].id?.let { it1 -> selectedAttrList.add(it1) }
                 }
 
-                attrInterface.onClickAttribute(selectedAttrList,attributeType)
+
                 notifyDataSetChanged()
             }
         }
+    }
+
+    fun getSelectedList():ArrayList<Int>{
+        return selectedAttrList
+    }
+
+    fun clearList() {
+        attrList.clear()
+        notifyDataSetChanged()
     }
 }

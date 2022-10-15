@@ -61,15 +61,7 @@ interface EasyDayApi {
     @POST("task/add-task")
     fun addTask(
         @Body addTaskRequestModel: AddTaskRequestModel
-    )
-
-    //  0 tag
-//  1 zone
-//  2 space
-    @POST("project/add-attribute")
-    fun addAttribute(
-        @Body addTaskRequestModel: AddTaskRequestModel
-    )
+    ): Observable<ApiResponse<Nothing>>
 
     @GET("project/get-attributes")
     fun getAttributes(
@@ -77,6 +69,10 @@ interface EasyDayApi {
         @Query("type") type: Int
     ): Observable<ApiResponse<ArrayList<AttributeResponse>>>
 
+
+//  0 tag
+//  1 zone
+//  2 space
     @FormUrlEncoded
     @POST("project/add-attribute")
     fun addAttribute(
@@ -88,7 +84,7 @@ interface EasyDayApi {
     @GET("project/get-participants")
     fun getProjectParticipants(
         @Query("project_id") project_id: Int
-    ): Observable<ApiResponse<ProjectParticipantsModel>>
+    ): Observable<ApiResponse<ArrayList<ProjectParticipantsModel>>>
 
 }
 

@@ -2,12 +2,9 @@ package com.app.easyday.screens.activities.main.home.project
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
-import android.content.DialogInterface
 import android.database.Cursor
 import android.net.Uri
 import android.os.AsyncTask
@@ -15,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.Phone
+import android.telephony.PhoneNumberUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +39,7 @@ import com.karumi.dexter.listener.single.CompositePermissionListener
 import com.karumi.dexter.listener.single.PermissionListener
 import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -107,7 +106,7 @@ class AddParticipantsFragment : Fragment() {
     private fun onPermission() {
 
         val contactsPermissionListener = CompositePermissionListener(
-            object :PermissionListener{
+            object : PermissionListener {
                 override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
                     AsyncTaskExample(requireContext()).execute()
                 }
@@ -150,8 +149,8 @@ class AddParticipantsFragment : Fragment() {
     }
 
 
-
-    class AsyncTaskExample(val context: Context) : AsyncTask<Void, Void, Void>() {
+    class AsyncTaskExample(val context: Context) :
+        AsyncTask<Void, Void, Void>() {
 
         var contactList = ArrayList<ContactModel>()
 
@@ -191,22 +190,54 @@ class AddParticipantsFragment : Fragment() {
                     )
                     while (pCur?.moveToNext() == true) {
                         lastnumber = pCur.getString(pCur.getColumnIndex(Phone.NUMBER))
-                        if (!number.contains(lastnumber)) {
-                            number.add(lastnumber)
 
-                            when (pCur.getInt(pCur.getColumnIndex(Phone.TYPE))) {
-                                Phone.TYPE_MOBILE -> {
 
-                                    val mBitmapURI = getPhotoUri(context, id)
+
+                        when (pCur.getInt(pCur.getColumnIndex(Phone.TYPE))) {
+                            Phone.TYPE_MOBILE -> {
+
+                                val mBitmapURI = getPhotoUri(context, id)
+
+                                var formattedPhone: String? = null
+                                formattedPhone =
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        PhoneNumberUtils.formatNumber(
+                                            lastnumber,
+                                            Locale.getDefault().country
+                                        )
+                                    } else {
+                                        PhoneNumberUtils.formatNumber(lastnumber)
+                                    }
+
+                                val splitarray = formattedPhone.split("\\s".toRegex())
+
+                                var code: String? = null
+                                var phnumber = ""
+                                for (i in splitarray.indices) {
+                                    if (splitarray[i].startsWith("+"))
+                                        code = splitarray[i]
+                                    else {
+                                        phnumber = "$phnumber${splitarray[i]}"
+                                    }
+                                }
+
+                                phnumber = phnumber.replace("[^0-9]+".toRegex(), "")
+                                code = code?.replace("[^0-9]+".toRegex(), "")
+
+
+                                if (!number.contains(phnumber)) {
+                                    number.add(phnumber)
                                     contactList.add(
                                         ContactModel(
                                             id,
                                             name,
-                                            context.resources.getString(R.string.participant_role),
-                                            lastnumber,
+                                            context.resources.getString(R.string.user_role),
+                                            phnumber,
+                                            code,
                                             mBitmapURI.toString()
                                         )
                                     )
+
 
                                 }
                             }
@@ -247,7 +278,9 @@ class AddParticipantsFragment : Fragment() {
                 if (adapter?.getList() != null) {
 
                     val action = AddParticipantsFragmentDirections.addParticipantToAddAdmin()
+
                     createProjectModel?.participants = adapter?.getList()
+
                     action.createProjectModel = createProjectModel
                     val nav: NavController? = binding?.root?.let { it1 ->
                         Navigation.findNavController(
