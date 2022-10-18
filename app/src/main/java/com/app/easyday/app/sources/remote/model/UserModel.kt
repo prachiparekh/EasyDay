@@ -36,6 +36,6 @@ data class UserModel(
 	val token: String? = null
 ):Serializable {
 	override fun toString(): String {
-		return "UserModel(phoneNumber=$phoneNumber, fullname=$fullname, token=$token)"
+		return "UserModel(phone_number=$phoneNumber, fullname=$fullname, token=$token)"
 	}
 }

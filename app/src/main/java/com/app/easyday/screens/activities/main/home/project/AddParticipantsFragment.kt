@@ -39,6 +39,7 @@ import com.karumi.dexter.listener.single.CompositePermissionListener
 import com.karumi.dexter.listener.single.PermissionListener
 import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_add_participants.*
 import java.util.*
 
 
@@ -87,6 +88,10 @@ class AddParticipantsFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_add_participants, container, false)
         createProjectModel =
             arguments?.getParcelable("createProjectModel") as AddProjectRequestModel?
+
+        binding?.toolBar?.setNavigationOnClickListener {
+            Navigation.findNavController(requireView()).popBackStack()
+        }
 
         return binding?.root
     }

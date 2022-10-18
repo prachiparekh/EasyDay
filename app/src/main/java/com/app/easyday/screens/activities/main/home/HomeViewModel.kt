@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.app.easyday.app.sources.remote.apis.EasyDayApi
 import com.app.easyday.app.sources.remote.model.ProjectRespModel
+import com.app.easyday.app.sources.remote.model.TaskResponse
 import com.app.easyday.app.sources.remote.model.UserModel
 import com.app.easyday.screens.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,10 +18,13 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val projectList = MutableLiveData<ArrayList<ProjectRespModel>?>()
-    companion object{
-        var userModel:UserModel?=null
+    val taskList = MutableLiveData<ArrayList<TaskResponse>?>()
+
+    companion object {
+        var userModel: UserModel? = null
     }
-    var userProfileData= MutableLiveData<UserModel?>()
+
+    var userProfileData = MutableLiveData<UserModel?>()
 
     override fun onFragmentCreated() {
         super.onFragmentCreated()
@@ -32,7 +36,7 @@ class HomeViewModel @Inject constructor(
         api.getProfile()
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
-                userModel=resp.data
+                userModel = resp.data
                 userProfileData.value = resp.data
             }, {
                 userProfileData.value = null
@@ -49,6 +53,18 @@ class HomeViewModel @Inject constructor(
             }, {
 
                 projectList.value = null
+            })
+    }
+
+    fun getAllTask(projectId: Int) {
+        api.getTask(projectId)
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ resp ->
+                taskList.value = resp.data
+                Log.e("taskList", taskList.toString())
+            }, {
+
+                taskList.value = null
             })
     }
 }

@@ -55,7 +55,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
 
     override fun initUi() {
 
-        val mPhoneNumber = arguments?.getString("phoneNumber")
+        val mPhoneNumber = arguments?.getString("phone_number")
         val mCountryCode = arguments?.getString("countryCode")
         isNewUser = arguments?.getBoolean("isNewUser", true)
         if (isNewUser == false) {

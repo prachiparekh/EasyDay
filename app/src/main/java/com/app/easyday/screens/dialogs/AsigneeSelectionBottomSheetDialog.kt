@@ -3,14 +3,14 @@ package com.app.easyday.screens.dialogs
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.app.easyday.R
-import com.app.easyday.app.sources.local.interfaces.AttributeSelectionInterface
 import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
-import com.app.easyday.app.sources.local.interfaces.SkipAssigneeInterface
+import com.app.easyday.app.sources.local.interfaces.AssigneeInterface
 import com.app.easyday.app.sources.local.model.ContactModel
 import com.app.easyday.databinding.AddAssigneeLayoutBinding
 import com.app.easyday.screens.activities.main.home.project.adapter.ParticipentAdapter
@@ -23,7 +23,7 @@ class AsigneeSelectionBottomSheetDialog(
     var mContext: Context,
     var userList: ArrayList<ContactModel>,
     var closeInterface: FilterCloseInterface,
-    var skipInterface:SkipAssigneeInterface
+    var assigneeInterface:AssigneeInterface
 ) :
     BottomSheetDialogFragment() {
     var binding: AddAssigneeLayoutBinding? = null
@@ -45,8 +45,23 @@ class AsigneeSelectionBottomSheetDialog(
             dismiss()
         }
 
+        binding?.cta?.setOnClickListener {
+            val assigneeList=ArrayList<Int>()
+            val mainList=adapter?.getList()
+
+            mainList?.indices?.forEach { i ->
+                mainList[i].id?.toInt()?.let { it1 -> assigneeList.add(it1)
+                    Log.e("assigneeList", mainList[i].name.toString())
+                }
+            }
+
+
+            assigneeInterface.onSelestAssignee(assigneeList)
+            dismiss()
+        }
+
         binding?.skip?.setOnClickListener {
-            skipInterface.onSkipAssignee()
+            assigneeInterface.onSkipAssignee()
             dismiss()
         }
 

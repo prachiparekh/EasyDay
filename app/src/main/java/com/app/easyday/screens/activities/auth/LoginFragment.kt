@@ -105,6 +105,7 @@ class LoginFragment : BaseFragment<LoginViewModel>(), CodeDialog.CountyPickerIte
 
                     val action = LoginFragmentDirections.loginToOtp()
                     action.phoneNumber = phone.text.toString()
+                    Log.e("action.phoneNumber",action.phoneNumber.toString())
                     action.countryCode = trimCode
                     val nav: NavController = Navigation.findNavController(requireView())
                     if (nav.currentDestination != null && nav.currentDestination?.id == R.id.loginFragment) {

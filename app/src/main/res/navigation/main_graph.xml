@@ -102,7 +102,15 @@
         android:id="@+id/createTaskFragment"
         android:name="com.app.easyday.screens.activities.main.home.task.CreateTaskFragment"
         android:label="fragment_create_task"
-        tools:layout="@layout/fragment_create_task" />
+        tools:layout="@layout/fragment_create_task" >
+        <action
+            android:id="@+id/create_task_to_dashboard"
+            app:destination="@id/dashboardFragment"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right"/>
+    </fragment>
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.app.easyday.screens.activities.main.home.task.CameraFragment"

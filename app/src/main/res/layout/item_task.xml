@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/_10sdp">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/mediaPager"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_200sdp"
-        android:background="@color/alpha_blue"
+        android:foreground="@drawable/ic_gradient_top_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -58,6 +59,7 @@
                 android:src="@drawable/ic_profile_circle" />
 
             <TextView
+                android:id="@+id/taskTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -117,6 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
         android:paddingHorizontal="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -217,7 +220,6 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mDescription"
         tools:listitem="@layout/item_tag" />
@@ -236,7 +238,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="4"
-        android:layout_marginVertical="@dimen/_7sdp"
+        android:paddingVertical="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view1">
@@ -299,7 +301,7 @@
         android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/stroke"
         app:layout_constraintTop_toBottomOf="@id/actionLL" />
 

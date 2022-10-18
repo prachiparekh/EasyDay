@@ -55,13 +55,29 @@ interface EasyDayApi {
 
     @POST("project/create-project")
     fun createProject(
-        @Body addProjectRequestModel: AddProjectRequestModel
+        @Body addProjectRequestModel: AddProjectRequestModelToPass
     ): Observable<ApiResponse<ProjectRespModel>>
 
+    @Multipart
     @POST("task/add-task")
     fun addTask(
-        @Body addTaskRequestModel: AddTaskRequestModel
-    ): Observable<ApiResponse<Nothing>>
+        @Part("project_id") project_id: RequestBody,
+        @Part("title") title: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("priority") priority: RequestBody,
+        @Part("red_flag") red_flag: RequestBody,
+        @Part("due_date") due_date: RequestBody,
+        @Part("tags[]") tags: ArrayList<Int>?,
+        @Part("zones[]") zones: ArrayList<Int>?,
+        @Part("spaces[]") spaces: ArrayList<Int>?,
+        @Part task_media: ArrayList<MultipartBody.Part>,
+        @Part("task_participants") task_participants: ArrayList<Int>?,
+    ): Observable<ApiResponse<TaskResponse>>
+
+    @GET("task/get-task")
+    fun getTask(
+        @Query("project_id") project_id:Int
+    ):Observable<ApiResponse<ArrayList<TaskResponse>>>
 
     @GET("project/get-attributes")
     fun getAttributes(
@@ -73,6 +89,15 @@ interface EasyDayApi {
 //  0 tag
 //  1 zone
 //  2 space
+
+//    priority will be
+//    0 => none
+//    1 => low
+//    2 => Normal
+//    3 => High
+//    flags will
+//    0 => false
+//    1 => true
     @FormUrlEncoded
     @POST("project/add-attribute")
     fun addAttribute(

@@ -4,6 +4,7 @@ import android.util.Log
 import com.app.easyday.app.sources.ApiResponse
 import com.app.easyday.app.sources.remote.apis.EasyDayApi
 import com.app.easyday.app.sources.remote.model.AddProjectRequestModel
+import com.app.easyday.app.sources.remote.model.AddProjectRequestModelToPass
 import com.app.easyday.app.sources.remote.model.ProjectRespModel
 import com.app.easyday.navigation.SingleLiveEvent
 import com.app.easyday.screens.base.BaseViewModel
@@ -25,7 +26,7 @@ class ProjectViewModel @Inject constructor(
         class ProjectResponseError(val msg: String) : ACTION()
     }
 
-    fun createProject(createProjectModel: AddProjectRequestModel) {
+    fun createProject(createProjectModel: AddProjectRequestModelToPass) {
 
 
         api.createProject(

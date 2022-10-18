@@ -1,7 +1,7 @@
 package com.app.easyday.app.sources.remote.model
 
-import com.app.easyday.app.sources.local.model.ContactModel
 import com.google.gson.annotations.SerializedName
+import okhttp3.MultipartBody
 
 data class AddTaskRequestModel(
 
@@ -32,6 +32,13 @@ data class AddTaskRequestModel(
     @field:SerializedName("spaces")
     var spaces: ArrayList<Int>? = null,
 
+    @field:SerializedName("task_media")
+    var task_media: List<MultipartBody.Part>? = null,
+
     @field:SerializedName("task_participants")
     var task_participants: ArrayList<Int>? = null
-)
+) {
+    override fun toString(): String {
+        return "AddTaskRequestModel(project_id=$project_id, title=$title, description=$description, priority=$priority, red_flag=$red_flag, due_date=$due_date, tags=$tags, zones=$zones, spaces=$spaces, task_media=$task_media, task_participants=$task_participants)"
+    }
+}

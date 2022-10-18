@@ -7,6 +7,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.*
@@ -27,13 +28,17 @@ import com.passiondroid.imageeditorlib.ImageEditActivity
 import com.passiondroid.imageeditorlib.ImageEditor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_create_task.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 @AndroidEntryPoint
 class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterface,
     AttributeSelectionInterface,
     FilterCloseInterface, AddAttributeInterface,
-SkipAssigneeInterface{
+    AssigneeInterface {
 
     override fun getContentView() = R.layout.fragment_create_task
     private var filterTypeList = arrayListOf<String>()
@@ -186,14 +191,14 @@ SkipAssigneeInterface{
 
                 val contactList = ArrayList<ContactModel>()
                 if (!projectparticipantList.isNullOrEmpty()) {
-                    for (i in projectparticipantList?.indices!!) {
+                    projectparticipantList?.indices?.forEach { i ->
                         contactList.add(
                             ContactModel(
-                                id = projectparticipantList!![i].id.toString(),
-                                name = projectparticipantList!![i].user?.fullname,
-                                role = projectparticipantList!![i].role,
-                                phoneNumber = projectparticipantList!![i].user?.phoneNumber.toString(),
-                                photoURI = projectparticipantList!![i].user?.profileImage
+                                id = projectparticipantList?.get(i)?.id.toString(),
+                                name = projectparticipantList?.get(i)?.user?.fullname,
+                                role = projectparticipantList?.get(i)?.role,
+                                phoneNumber = projectparticipantList?.get(i)?.user?.phoneNumber.toString(),
+                                photoURI = projectparticipantList?.get(i)?.user?.profileImage
                             )
 
                         )
@@ -204,7 +209,7 @@ SkipAssigneeInterface{
                     AsigneeSelectionBottomSheetDialog(
                         requireContext(),
                         contactList,
-                        this,this
+                        this, this
                     )
                 childFragmentManager.let {
                     fragment.show(it, "Space")
@@ -250,6 +255,18 @@ SkipAssigneeInterface{
                         }
                     }
                 }
+                is CreateTaskViewModel.ACTION.showError -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                }
+                is CreateTaskViewModel.ACTION.taskResponse -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+
+                    val action = CreateTaskFragmentDirections.createTaskToDashboard()
+                    val nav: NavController = Navigation.findNavController(requireView())
+                    if (nav.currentDestination != null && nav.currentDestination?.id == R.id.createTaskFragment) {
+                        nav.navigate(action)
+                    }
+                }
             }
         }
 
@@ -280,7 +297,7 @@ SkipAssigneeInterface{
                         this,
                         2, this
                     )
-                if (spaceZoneBSFDialog?.isAdded==false)
+                if (spaceZoneBSFDialog?.isAdded == false)
                     childFragmentManager.let {
                         spaceZoneBSFDialog?.show(it, "Space")
                     }
@@ -297,7 +314,7 @@ SkipAssigneeInterface{
                         this,
                         1, this
                     )
-                if (spaceZoneBSFDialog?.isAdded==false)
+                if (spaceZoneBSFDialog?.isAdded == false)
                     childFragmentManager.let {
                         spaceZoneBSFDialog?.show(it, "Zone")
                     }
@@ -328,15 +345,15 @@ SkipAssigneeInterface{
         when (type) {
             0 -> {
                 this.selectedTagList = selectedAttrList
-                Log.e("selectedTagList",selectedTagList.toString())
+
             }
             1 -> {
                 this.selectedZoneList = selectedAttrList
-                Log.e("selectedZoneList",selectedZoneList.toString())
+
             }
             2 -> {
                 this.selectedSpaceList = selectedAttrList
-                Log.e("selectedSpaceList",selectedSpaceList.toString())
+
             }
         }
 
@@ -377,14 +394,54 @@ SkipAssigneeInterface{
     }
 
     override fun onSkipAssignee() {
+        createTask(null)
+    }
+
+    override fun onSelestAssignee(assigneelist: ArrayList<Int>) {
+        createTask(assigneelist)
+    }
+
+    fun createTask(assigneeList: ArrayList<Int>?) {
+        val fileList = ArrayList<File>()
+
+        for (i in selectedUriList.indices) {
+            selectedUriList[i].uri?.let {
+                FileUtil.getPath(it, requireContext())?.let { File(it) }
+                    ?.let { fileList.add(it) }
+            }
+        }
+
+        val attachmentBodyList: ArrayList<MultipartBody.Part> = ArrayList()
+        for (i in 0 until fileList.size) {
+            val requestList: RequestBody =
+                fileList[i].asRequestBody("*/*".toMediaTypeOrNull())
+
+            val attachmentBody =
+                MultipartBody.Part.createFormData(
+                    "task_media",
+                    fileList[i].name,
+                    requestList
+                )
+
+
+            attachmentBodyList.add(attachmentBody)
+        }
+
+        Log.e("assigneeList", assigneeList.toString())
+
         viewModel.addTask(
             AddTaskRequestModel(
                 selectedProjectID,
                 taskNameET.text.toString(),
-                null,
+                "",
                 0,
-                0, selectedDate,
-                selectedTagList,selectedZoneList,selectedSpaceList
+                0,
+                selectedDate,
+                selectedTagList,
+                selectedZoneList,
+                selectedSpaceList,
+                attachmentBodyList,
+                assigneeList
             )
         )
     }

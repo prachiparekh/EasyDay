@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
@@ -49,7 +50,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
     var selectedProjectPosition: Int? = null
 
     override fun getContentView() = R.layout.fragment_home
-
 
     override fun initUi() {
 
@@ -94,6 +94,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             nav.navigate(action)
         }
 
+
     }
 
 
@@ -136,6 +137,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
                         Color.parseColor(mProject?.assignColor)
                     )
                 )
+
+                selectedProjectID?.let { viewModel.getAllTask(it) }
             }
             activeProject.setOnClickListener {
                 DeviceUtils.showProgress()
@@ -144,6 +147,17 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
                     fragment.show(it, "projects")
                     DeviceUtils.dismissProgress()
                 }
+            }
+        }
+
+        viewModel.taskList.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                noTaskCL.isVisible=true
+                taskRV.isVisible=false
+            } else {
+                noTaskCL.isVisible=false
+                taskRV.isVisible=true
+                taskRV.adapter = TaskAdapter(requireContext(), it)
             }
         }
     }
@@ -200,6 +214,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             )
             selectedProjectID = projectList[projectPosition].id
             activeProject.text = projectList[projectPosition].projectName
+
+            selectedProjectID?.let { viewModel.getAllTask(it) }
         }
     }
 

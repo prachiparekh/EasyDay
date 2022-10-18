@@ -62,6 +62,7 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
         mCountryCode = arguments?.getString("countryCode")
         phoneNumber.text = Html.fromHtml("<u>$mCountryCode$mPhoneNumber</u>")
 
+        Log.e("phoneNumber",mPhoneNumber.toString())
         timer.start()
 
         requireView().isFocusableInTouchMode = true

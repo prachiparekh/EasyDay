@@ -46,7 +46,7 @@ class ParticipentAdapter(
         @SuppressLint("NewApi")
         fun bind(position: Int) {
 
-            participantName.text = filterData[position].name + filterData[position].phoneNumber
+            participantName.text = filterData[position].name
 
             val options = RequestOptions()
             avatar.clipToOutline = true
