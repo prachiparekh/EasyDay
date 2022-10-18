@@ -280,7 +280,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
 
     override fun onCropLogo(uri: Uri) {
         try {
-            Log.e("uri", uri.toString())
+
             val mOptions = CropImageOptions()
             mOptions.allowFlipping = false
             mOptions.allowRotation = false
@@ -298,7 +298,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), BaseActivity.OnProfile
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE
             )
         } catch (e: Exception) {
-            Log.e("ex", e.message.toString())
+
         }
     }
 

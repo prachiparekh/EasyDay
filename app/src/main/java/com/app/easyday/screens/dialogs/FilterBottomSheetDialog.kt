@@ -9,13 +9,14 @@ import android.view.WindowManager
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import com.app.easyday.R
+import com.app.easyday.app.sources.local.interfaces.TaskFilterApplyInterface
 import com.app.easyday.databinding.FilterBottomsheetBinding
 import com.app.easyday.screens.activities.main.home.filter.FilterFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class FilterBottomSheetDialog : BottomSheetDialogFragment() {
+class FilterBottomSheetDialog(val anInterface: TaskFilterApplyInterface) : BottomSheetDialogFragment() {
     var binding: FilterBottomsheetBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,7 +24,7 @@ class FilterBottomSheetDialog : BottomSheetDialogFragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.filter_bottomsheet, container, false)
         val transaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.mapContainer, FilterFragment()).commit()
+        transaction.replace(R.id.mapContainer, FilterFragment(anInterface = anInterface)).commit()
         return binding?.root
     }
 

@@ -61,7 +61,7 @@ class HomeViewModel @Inject constructor(
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 taskList.value = resp.data
-                Log.e("taskList", taskList.toString())
+
             }, {
 
                 taskList.value = null

@@ -71,7 +71,7 @@ class AddAdminFragment : BaseFragment<ProjectViewModel>() {
             val modelToPass=AddProjectRequestModelToPass(createprojectModel?.assignColor,
             createprojectModel?.description,createprojectModel?.projectName,contactToPassList)
 
-            Log.e("reuestObject", createprojectModel.toString())
+
             modelToPass.let { it1 -> viewModel.createProject(it1) }
         }
 

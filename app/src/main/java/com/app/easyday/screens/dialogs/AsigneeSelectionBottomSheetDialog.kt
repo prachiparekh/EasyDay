@@ -51,7 +51,7 @@ class AsigneeSelectionBottomSheetDialog(
 
             mainList?.indices?.forEach { i ->
                 mainList[i].id?.toInt()?.let { it1 -> assigneeList.add(it1)
-                    Log.e("assigneeList", mainList[i].name.toString())
+
                 }
             }
 

@@ -61,8 +61,8 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     private var selectedTagList = arrayListOf<Int>()
     private var selectedZoneList = arrayListOf<Int>()
     private var selectedSpaceList = arrayListOf<Int>()
-    private var selectedPriority: String? = null
-    var redFlag = false
+    private var selectedPriority: Int? = null
+    var redFlag = 0 // False
     var selectedDate: String? = null
 
 //    *****************
@@ -137,7 +137,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         priorityList.add(requireContext().resources.getString(R.string.low))
         priorityList.add(requireContext().resources.getString(R.string.normal))
         priorityList.add(requireContext().resources.getString(R.string.high))
-        selectedPriority = priorityList[0]
+        selectedPriority = 0
 
         close.setOnClickListener {
             Navigation.findNavController(requireView()).popBackStack()
@@ -323,14 +323,18 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
     }
 
     override fun onFilterSingleChildClick(childList: ArrayList<String>, childPosition: Int) {
-        selectedPriority = childList[childPosition]
+        selectedPriority = childPosition
     }
 
     override fun onFilterMultipleChildClick() {
     }
 
     override fun onFilterFlagClick(redFlag: Boolean) {
-        this.redFlag = redFlag
+        if (redFlag)
+            this.redFlag = 1
+        else
+            this.redFlag = 0
+
     }
 
     override fun onFilterDueDateClick(dateStr: String) {
@@ -401,7 +405,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         createTask(assigneelist)
     }
 
-    fun createTask(assigneeList: ArrayList<Int>?) {
+    private fun createTask(assigneeList: ArrayList<Int>?) {
         val fileList = ArrayList<File>()
 
         for (i in selectedUriList.indices) {
@@ -427,15 +431,14 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             attachmentBodyList.add(attachmentBody)
         }
 
-        Log.e("assigneeList", assigneeList.toString())
 
         viewModel.addTask(
             AddTaskRequestModel(
                 selectedProjectID,
                 taskNameET.text.toString(),
                 "",
-                0,
-                0,
+                selectedPriority,
+                redFlag,
                 selectedDate,
                 selectedTagList,
                 selectedZoneList,

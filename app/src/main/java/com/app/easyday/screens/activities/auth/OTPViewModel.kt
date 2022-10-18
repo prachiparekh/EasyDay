@@ -54,8 +54,7 @@ class OTPViewModel @Inject constructor(
             Log.e("deviceToken",deviceToken)
 
         })*/
-            Log.e("deviceID",deviceID)
-            Log.e("deviceName",deviceName)
+
             api.verifyOTP(phone_number, otp, country_code, "deviceToken",deviceID,deviceName)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ resp ->
@@ -67,7 +66,7 @@ class OTPViewModel @Inject constructor(
                 }, {
                     DeviceUtils.dismissProgress()
                     actionStream.value = ACTION.VerifyOTP(false, null)
-                    Log.e("ex:", it.message.toString())
+
                 })
 
 

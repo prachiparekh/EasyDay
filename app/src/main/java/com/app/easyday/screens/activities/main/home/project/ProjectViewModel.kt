@@ -39,10 +39,10 @@ class ProjectViewModel @Inject constructor(
                         it4
                     )
                 }
-                Log.e("resp:", resp.data.toString())
+
                 DeviceUtils.dismissProgress()
             }, {
-                Log.e("resp_ex:", it.message.toString())
+
                 actionStream.value =
                     ACTION.ProjectResponseError(it.message.toString())
                 DeviceUtils.dismissProgress()

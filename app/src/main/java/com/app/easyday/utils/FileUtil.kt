@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.util.Log
 import com.app.easyday.BuildConfig.DEBUG
 import java.io.File
 import java.io.IOException
@@ -17,7 +18,7 @@ import java.io.InputStream
 import java.nio.charset.StandardCharsets
 
 class FileUtil {
-    companion object{
+    companion object {
         fun loadJSONFromAsset(context: Context): String? {
             var json: String? = null
             json = try {
@@ -40,6 +41,7 @@ class FileUtil {
             val needToCheckUri = Build.VERSION.SDK_INT >= 19
             var selection: String? = null
             var selectionArgs: Array<String>? = null
+            var type: String? = null
             // Uri is different in versions after KITKAT (Android 4.4), we need to
             // deal with different Uris.
             if (needToCheckUri && DocumentsContract.isDocumentUri(context, uri)) {
@@ -69,7 +71,7 @@ class FileUtil {
                 } else if (isMediaDocument(uri)) {
                     val docId = DocumentsContract.getDocumentId(uri)
                     val split = docId.split(":").toTypedArray()
-                    val type = split[0]
+                    type = split[0]
                     when (type) {
                         "image" -> uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                         "video" -> uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
@@ -81,25 +83,69 @@ class FileUtil {
                     )
                 }
             }
-            if ("content".equals(uri.scheme, ignoreCase = true)) {
-                val projection = arrayOf(
-                    MediaStore.Images.Media.DATA
-                )
-                try {
-                    context.contentResolver
-                        .query(uri, projection, selection, selectionArgs, null)
-                        .use { cursor ->
-                            if (cursor != null && cursor.moveToFirst()) {
-                                val columnIndex: Int =
-                                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                                return cursor.getString(columnIndex)
-                            }
+             if ("content".equals(uri.scheme, ignoreCase = true)) {
+                 val projection = arrayOf(
+                     MediaStore.Images.Media.DATA
+                 )
+                 try {
+                     context.contentResolver
+                         .query(uri, projection, selection, selectionArgs, null)
+                         .use { cursor ->
+                             if (cursor != null && cursor.moveToFirst()) {
+                                 val columnIndex: Int =
+                                     cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                                 return cursor.getString(columnIndex)
+                             }
+                         }
+                 } catch (e: Exception) {
+                 }
+             } else  {
+
+                 return uri.path
+
+             }
+
+           /* when (type) {
+                "video" -> {
+                    val projection = arrayOf(
+                        MediaStore.Video.VideoColumns.DATA
+                    )
+                    val cursor: Cursor? = context.contentResolver.query(
+                        uri, projection, selection, selectionArgs,
+                        null
+                    )
+                    return if (cursor == null) uri.path else {
+                        cursor.moveToFirst()
+                        val idx = cursor.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DATA)
+                        try {
+                            Log.e("cursor.getString(idx)", cursor.getString(idx))
+                            cursor.getString(idx)
+                        } catch (exception: java.lang.Exception) {
+                            Log.e("exception", exception.message.toString())
+                            null
                         }
-                } catch (e: Exception) {
+                    }
                 }
-            } else if ("file".equals(uri.scheme, ignoreCase = true)) {
-                return uri.path
-            }
+                "image" -> {
+                    val projection = arrayOf(
+                        MediaStore.Images.Media.DATA
+                    )
+                    try {
+                        context.contentResolver
+                            .query(uri, projection, selection, selectionArgs, null)
+                            .use { cursor ->
+                                if (cursor != null && cursor.moveToFirst()) {
+                                    val columnIndex: Int =
+                                        cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                                    return cursor.getString(columnIndex)
+                                }
+                            }
+                    } catch (e: Exception) {
+                    }
+                }
+                else ->
+                    return uri.path
+            }*/
             return null
         }
 

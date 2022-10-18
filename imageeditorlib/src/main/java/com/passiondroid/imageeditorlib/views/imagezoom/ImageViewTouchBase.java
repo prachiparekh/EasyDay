@@ -18,9 +18,9 @@ import com.passiondroid.imageeditorlib.views.imagezoom.utils.IDisposable;
 
 /**
  * Base View to manage image zoom/scrool/pinch operations
- * 
+ *
  * @author alessandro
- * 
+ *
  */
 public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCompatImageView implements IDisposable {
 
@@ -28,7 +28,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 		/**
 		 * Callback invoked when a new drawable has been assigned to the view
-		 * 
+		 *
 		 * @param drawable
 		 */
 		void onDrawableChanged(Drawable drawable);
@@ -37,7 +37,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 	public interface OnLayoutChangeListener {
 		/**
 		 * Callback invoked when the layout bounds changed
-		 * 
+		 *
 		 * @param changed
 		 * @param left
 		 * @param top
@@ -50,9 +50,9 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 	/**
 	 * Use this to change the
 	 * {@link ImageViewTouchBase#setDisplayType(DisplayType)} of this View
-	 * 
+	 *
 	 * @author alessandro
-	 * 
+	 *
 	 */
 	public enum DisplayType {
 		/** Image is not scaled by default */
@@ -180,8 +180,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 			int bottom) {
 
 		if (LOG_ENABLED) {
-			Log.e(LOG_TAG, "onLayout: " + changed + ", bitmapChanged: "
-					+ mBitmapChanged + ", scaleChanged: " + mScaleTypeChanged);
+
 		}
 
 		super.onLayout(changed, left, top, right, bottom);
@@ -330,7 +329,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Restore the original display
-	 * 
+	 *
 	 */
 	public void resetDisplay() {
 		mBitmapChanged = true;
@@ -357,7 +356,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * {@inheritDoc} Set the new image to display and reset the internal matrix.
-	 * 
+	 *
 	 * @param bitmap
 	 *            the {@link Bitmap} to display
 	 * @see {@link ImageView#setImageBitmap(Bitmap)}
@@ -369,7 +368,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * @see #setImageDrawable(Drawable, Matrix, float, float)
-	 * 
+	 *
 	 * @param bitmap
 	 * @param matrix
 	 * @param min_zoom
@@ -390,10 +389,10 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 	}
 
 	/**
-	 * 
+	 *
 	 * Note: if the scaleType is FitToScreen then min_zoom must be <= 1 and
 	 * max_zoom must be >= 1
-	 * 
+	 *
 	 * @param drawable
 	 *            the new drawable
 	 * @param initial_matrix
@@ -485,7 +484,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Fired as soon as a new Bitmap has been set
-	 * 
+	 *
 	 * @param drawable
 	 */
 	protected void onDrawableChanged(final Drawable drawable) {
@@ -513,7 +512,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 	 * Called just after {@link #onLayout(boolean, int, int, int, int)} if the
 	 * view's bounds has changed or a new Drawable has been set or the
 	 * {@link DisplayType} has been modified
-	 * 
+	 *
 	 * @param left
 	 * @param top
 	 * @param right
@@ -562,7 +561,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Returns the current maximum allowed image scale
-	 * 
+	 *
 	 * @return
 	 */
 	public float getMaxScale() {
@@ -574,7 +573,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Returns the current minimum allowed image scale
-	 * 
+	 *
 	 * @return
 	 */
 	public float getMinScale() {
@@ -586,7 +585,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Returns the current view matrix
-	 * 
+	 *
 	 * @return
 	 */
 	public Matrix getImageViewMatrix() {
@@ -618,7 +617,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Called just after a new Matrix has been assigned.
-	 * 
+	 *
 	 * @see {@link #setImageMatrix(Matrix)}
 	 */
 	protected void onImageMatrixChanged() {
@@ -630,12 +629,12 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 	 * {@link #setImageDrawable(Drawable, Matrix, float, float)} to restore the
 	 * same view state of the previous {@link Bitmap}.<br />
 	 * Example:
-	 * 
+	 *
 	 * <pre>
 	 * Matrix currentMatrix = mImageView.getDisplayMatrix();
 	 * mImageView.setImageBitmap(newBitmap, currentMatrix, ZOOM_INVALID, ZOOM_INVALID);
 	 * </pre>
-	 * 
+	 *
 	 * @return the current support matrix
 	 */
 	public Matrix getDisplayMatrix() {
@@ -644,7 +643,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Setup the base matrix so that the image is centered and scaled properly.
-	 * 
+	 *
 	 * @param drawable
 	 * @param matrix
 	 */
@@ -690,7 +689,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Setup the base matrix so that the image is centered and scaled properly.
-	 * 
+	 *
 	 * @param bitmap
 	 * @param matrix
 	 */
@@ -755,7 +754,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Returns the current image scale
-	 * 
+	 *
 	 * @return
 	 */
 	public float getScale() {
@@ -849,7 +848,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Scale to the target scale
-	 * 
+	 *
 	 * @param scale
 	 *            the target zoom
 	 * @param durationMs
@@ -879,7 +878,7 @@ public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCo
 
 	/**
 	 * Scrolls the view by the x and y amount
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 */

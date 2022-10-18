@@ -36,13 +36,13 @@ class TaskMediaAdapter(
 
         fun bind(item: TaskMediaItem) {
 
-            Log.e("mediaURL", item.mediaUrl.toString())
+
             val isImg  =
                 item.mediaUrl?.endsWith(".jpg") == true ||
                         item.mediaUrl?.endsWith(".jpeg") == true || item.mediaUrl?.endsWith(
                     ".png"
                 ) == true
-            Log.e("isImg",isImg.toString())
+
             imagePreview.load(item.mediaUrl) {
                 if (!isImg
                 ) {

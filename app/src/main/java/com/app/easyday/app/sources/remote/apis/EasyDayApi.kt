@@ -85,19 +85,6 @@ interface EasyDayApi {
         @Query("type") type: Int
     ): Observable<ApiResponse<ArrayList<AttributeResponse>>>
 
-
-//  0 tag
-//  1 zone
-//  2 space
-
-//    priority will be
-//    0 => none
-//    1 => low
-//    2 => Normal
-//    3 => High
-//    flags will
-//    0 => false
-//    1 => true
     @FormUrlEncoded
     @POST("project/add-attribute")
     fun addAttribute(

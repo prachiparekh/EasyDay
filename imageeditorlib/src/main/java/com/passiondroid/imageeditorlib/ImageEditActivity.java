@@ -38,7 +38,7 @@ public class ImageEditActivity extends BaseImageEditActivity
 
     @Override
     public void onDoneClicked(String imagePath) {
-        Log.e("imagePath", imagePath);
+
         Intent intent = new Intent();
         intent.putExtra(ImageEditor.EXTRA_EDITED_PATH, imagePath);
         setResult(Activity.RESULT_OK, intent);

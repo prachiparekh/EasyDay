@@ -8,6 +8,10 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.FilterTypeInterface
+import com.app.easyday.app.sources.local.interfaces.TaskFilterApplyInterface
+import com.app.easyday.app.sources.local.model.ContactModel
+import com.app.easyday.app.sources.remote.model.AttributeResponse
+import com.app.easyday.app.sources.remote.model.ProjectParticipantsModel
 import com.app.easyday.screens.base.BaseFragment
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,17 +22,27 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
+class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<FilterViewModel>(),
+    FilterTypeInterface {
 
     companion object {
         var selectedFilterPosition = 0
+        var filterTagList = ArrayList<Int>()
+        var filterZoneList = ArrayList<Int>()
+        var filterSpaceList = ArrayList<Int>()
+        var filterAssigneeList = ArrayList<Int>()
     }
 
     private var filterTypeList = arrayListOf<String>()
     private var taskStatusList = arrayListOf<String>()
+    private var tagList = ArrayList<AttributeResponse>()
+    private var zoneList = ArrayList<AttributeResponse>()
+    private var spaceList = ArrayList<AttributeResponse>()
     var priorityList = arrayListOf<String>()
     var redFlagList = arrayListOf<String>()
     var dueDateList = arrayListOf<String>()
+    var projectparticipantList: ArrayList<ProjectParticipantsModel>? = null
+    val contactList = ArrayList<ContactModel>()
 
     override fun getContentView() = R.layout.fragment_filter
 
@@ -50,6 +64,7 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
         taskStatusList.add(requireContext().resources.getString(R.string.completed))
         taskStatusList.add(requireContext().resources.getString(R.string.reopened))
 
+        priorityList.add(requireContext().resources.getString(R.string.none))
         priorityList.add(requireContext().resources.getString(R.string.low))
         priorityList.add(requireContext().resources.getString(R.string.normal))
         priorityList.add(requireContext().resources.getString(R.string.high))
@@ -61,9 +76,62 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
         dueDateList.add(requireContext().resources.getString(R.string.not_passed))
 
         changeFilterUI(selectedFilterPosition)
+
+        close.setOnClickListener {
+            anInterface.onClose()
+        }
+
+        cta.setOnClickListener {
+
+            filterTagList.distinct()
+            filterZoneList.distinct()
+            filterSpaceList.distinct()
+            filterAssigneeList.distinct()
+            Log.e("filterTagList", filterTagList.toString())
+            Log.e("filterZoneList", filterZoneList.toString())
+            Log.e("filterSpaceList", filterSpaceList.toString())
+            Log.e("AssigneeList", filterAssigneeList.toString())
+            anInterface.onClose()
+        }
     }
 
     override fun setObservers() {
+        viewModel.actionStream.observe(viewLifecycleOwner) {
+            when (it) {
+                is FilterViewModel.ACTION.getAttributes -> {
+                    when (it.type) {
+                        0 -> {
+                            tagList = it.attributeList as ArrayList<AttributeResponse>
+                        }
+                        1 -> {
+                            zoneList = it.attributeList as ArrayList<AttributeResponse>
+                        }
+                        2 -> {
+                            spaceList = it.attributeList as ArrayList<AttributeResponse>
+                        }
+                    }
+                }
+                else -> {}
+            }
+        }
+
+        viewModel.projectParticipantsData.observe(viewLifecycleOwner) {
+            this.projectparticipantList = it
+
+            if (!projectparticipantList.isNullOrEmpty()) {
+                projectparticipantList?.indices?.forEach { i ->
+                    contactList.add(
+                        ContactModel(
+                            id = projectparticipantList?.get(i)?.id.toString(),
+                            name = projectparticipantList?.get(i)?.user?.fullname,
+                            role = projectparticipantList?.get(i)?.role,
+                            phoneNumber = projectparticipantList?.get(i)?.user?.phoneNumber.toString(),
+                            photoURI = projectparticipantList?.get(i)?.user?.profileImage
+                        )
+                    )
+                }
+            }
+        }
     }
 
     override fun onFilterTypeClick(position: Int) {
@@ -72,7 +140,7 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
     }
 
     override fun onFilterSingleChildClick(childList: ArrayList<String>, childPosition: Int) {
-        Log.e("selected:", childList[childPosition])
+
     }
 
     override fun onFilterMultipleChildClick() {
@@ -121,7 +189,7 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
             2 -> {
 //                 Multiple :Tag (API)
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), arrayListOf(), arrayListOf())
+                    FilterMultipleChildAdapter(requireContext(), tagList, filterTagList, 0)
             }
             3 -> {
 //                Single : Priority
@@ -130,25 +198,26 @@ class FilterFragment : BaseFragment<FilterViewModel>(), FilterTypeInterface {
             }
             4 -> {
 //                 Multiple :Assigned To (API)
+
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), arrayListOf(), arrayListOf())
+                    FilterAssigneeAdapter(requireContext(), contactList, filterAssigneeList)
             }
             5 -> {
 //                 Multiple :Zone (API)
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), arrayListOf(), arrayListOf())
+                    FilterMultipleChildAdapter(requireContext(), zoneList, filterZoneList, 1)
             }
             6 -> {
 //                 Multiple :Space (API)
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), arrayListOf(), arrayListOf())
+                    FilterMultipleChildAdapter(requireContext(), spaceList, filterSpaceList, 2)
             }
             7 -> {
 //                 Single :Red Flag
                 otherLayout.childFilterRV.adapter =
                     FilterSingleChildAdapter(requireContext(), redFlagList, this)
             }
-            8  -> {
+            8 -> {
 //                 Single :Due Date
                 otherLayout.childFilterRV.adapter =
                     FilterSingleChildAdapter(requireContext(), dueDateList, this)

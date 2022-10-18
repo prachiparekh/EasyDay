@@ -111,7 +111,7 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && data != null && requestCode ==ImageEditor.RC_IMAGE_EDITOR) {
             val imagePath: String? = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)
             var mfile = File(imagePath)
-            Log.e("new:",mfile.path)
+
 //            selectedUriList[pagerPhotos.currentItem].uri = Uri.fromFile(mfile)
 //            mediaAdapter?.notifyItemChanged(pagerPhotos.currentItem)
         }

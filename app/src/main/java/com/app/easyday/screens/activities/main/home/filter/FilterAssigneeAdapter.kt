@@ -1,4 +1,4 @@
-package com.app.easyday.screens.dialogs.adapters
+package com.app.easyday.screens.activities.main.home.filter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,24 +9,22 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.easyday.R
-import com.app.easyday.app.sources.local.interfaces.AttributeSelectionInterface
-import com.app.easyday.app.sources.remote.model.UserModel
+import com.app.easyday.app.sources.local.model.ContactModel
+import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Companion.filterAssigneeList
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 
-class AssigneeAdapter (
+class FilterAssigneeAdapter(
     private val context: Context,
-    private var assigneeList: java.util.ArrayList<UserModel>,
-    private var selectedAssigneeList: java.util.ArrayList<UserModel>,
-    val attrInterface: AttributeSelectionInterface,
-    val attributeType:Int
-) : RecyclerView.Adapter<AssigneeAdapter.ViewHolder>() {
+    private var filterChildList: java.util.ArrayList<ContactModel>,
+    private var selectedChildPositionList: java.util.ArrayList<Int>
+) : RecyclerView.Adapter<FilterAssigneeAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    override fun getItemCount(): Int = assigneeList.size
+    override fun getItemCount(): Int = filterChildList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = inflater.inflate(R.layout.item_participant, parent, false)
@@ -34,26 +32,24 @@ class AssigneeAdapter (
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.bind(position)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        var participantName = itemView.findViewById<TextView>(R.id.participantName)
-        var avatar = itemView.findViewById<ImageView>(R.id.avatar)
-        var selection = itemView.findViewById<ImageView>(R.id.selection)
+        val selection = itemView.findViewById<ImageView>(R.id.selection)
+        val participantName = itemView.findViewById<TextView>(R.id.participantName)
+        val avatar = itemView.findViewById<ImageView>(R.id.avatar)
 
         @SuppressLint("NewApi")
         fun bind(position: Int) {
 
-            participantName.text = assigneeList[position].fullname
+            participantName.text = filterChildList[position].name
 
             val options = RequestOptions()
             avatar.clipToOutline = true
-            if (assigneeList[position].profileImage != "null") {
+            if (filterChildList[position].photoURI != "null") {
                 Glide.with(context)
-                    .load(assigneeList[position].profileImage)
+                    .load(filterChildList[position].photoURI)
                     .error(context.resources.getDrawable(R.drawable.ic_profile_circle))
                     .apply(
                         options.centerCrop()
@@ -74,21 +70,29 @@ class AssigneeAdapter (
                     .into(avatar)
             }
 
-            if (selectedAssigneeList.contains(assigneeList[position])) {
+            if (selectedChildPositionList.contains(filterChildList[position].id?.toInt())) {
                 selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_check_radio))
             } else {
                 selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_uncheck_radio))
             }
 
             itemView.setOnClickListener {
-                if (selectedAssigneeList.contains(assigneeList[position])) {
-                    selectedAssigneeList.remove(assigneeList[position])
-                } else {
-                    selectedAssigneeList.add(assigneeList[position])
-                }
+                if (!selectedChildPositionList.contains(filterChildList[position].id?.toInt())) {
+                    filterChildList[position].id?.let { it1 -> selectedChildPositionList.add(it1.toInt()) }
+                    selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_check_radio))
 
-                notifyDataSetChanged()
+                    filterChildList[position].id?.toInt()?.let { it1 -> filterAssigneeList.add(it1) }
+                } else {
+                    selectedChildPositionList.remove(filterChildList[position].id?.toInt())
+                    selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_uncheck_radio))
+
+                    filterAssigneeList.remove(filterChildList[position].id?.toInt())
+                }
             }
         }
+    }
+
+    fun getMultiplePositionList(): ArrayList<Int> {
+        return selectedChildPositionList
     }
 }

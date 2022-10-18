@@ -446,7 +446,7 @@ class CameraFragment : Fragment() {
             // Attach the viewfinder's surface provider to preview use case
             preview?.setSurfaceProvider(viewFinder.surfaceProvider)
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to bind use cases", e)
+
         }
     }
 
@@ -612,11 +612,11 @@ class CameraFragment : Fragment() {
 
         if (requestCode == IntentUtil.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val uri = getPickImageResultUri(requireContext(), data)
-            Log.e("uri", uri.toString())
+
             if (uri != null) {
                 val cr: ContentResolver = requireContext().contentResolver
                 val mime = cr.getType(uri)
-                Log.e("mime", mime.toString())
+
                 if (mime?.startsWith("image/", 0) == true || uri.toString()
                         .endsWith(".png") || uri.toString().endsWith(".jpg") || uri.toString()
                         .endsWith(".jpeg")
@@ -649,7 +649,7 @@ class CameraFragment : Fragment() {
 
 
     fun navigateToTask() {
-        Log.e("uriList", mImageVideoUriList.toString())
+
         val bundle = Bundle()
         bundle.putParcelableArrayList("uriList", mImageVideoUriList)
         val nav = binding?.root?.let { it1 ->
@@ -667,7 +667,7 @@ class CameraFragment : Fragment() {
     @SuppressLint("MissingPermission")
     private fun recordVideo() {
 
-        Log.e("isTorchOn", isTorchOn.toString())
+
         camera?.cameraControl?.enableTorch(isTorchOn)
 
         // Options fot the output video file
@@ -705,7 +705,7 @@ class CameraFragment : Fragment() {
                                 isVideoRunning = false
                                 mImageVideoUriList.add(Media(uri, true, System.currentTimeMillis()))
                                 navigateToTask()
-                                Log.e(TAG, "Video saved in $uri")
+
                             }
                             ?: setLastPictureThumbnail()
 
@@ -722,7 +722,7 @@ class CameraFragment : Fragment() {
 
                         isVideoRunning = false
                         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-                        Log.e(TAG, msg)
+
                         cause?.printStackTrace()
 
                     }
@@ -789,7 +789,7 @@ class CameraFragment : Fragment() {
 
                 recordVideo()
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to bind use cases", e)
+
             }
         }, ContextCompat.getMainExecutor(requireContext()))
 

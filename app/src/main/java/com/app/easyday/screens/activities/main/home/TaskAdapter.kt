@@ -6,6 +6,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
@@ -46,6 +47,7 @@ class TaskAdapter(
         val mDescription = itemView.findViewById<TextView>(R.id.mDescription)
         val tagRV = itemView.findViewById<RecyclerView>(R.id.tagRV)
         val dots_indicator = itemView.findViewById<DotsIndicator>(R.id.dots_indicator)
+        val flag = itemView.findViewById<ImageView>(R.id.flag)
 
         @SuppressLint("NewApi")
         fun bind(position: Int) {
@@ -59,9 +61,11 @@ class TaskAdapter(
             mDate.text = dtf.format(odt)
             mDescription.text = item.description
 
-            itemView.setOnClickListener {
-
-            }
+           if(item.redFlag == true){
+               flag.setImageDrawable(context.resources.getDrawable(R.drawable.ic_flaged))
+           }else{
+               flag.setImageDrawable(context.resources.getDrawable(R.drawable.ic_flag))
+           }
 
             var mediaAdapter: TaskMediaAdapter? = null
             mediaAdapter = TaskMediaAdapter(

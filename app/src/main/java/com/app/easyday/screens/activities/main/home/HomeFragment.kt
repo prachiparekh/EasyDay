@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.ProjectInterface
+import com.app.easyday.app.sources.local.interfaces.TaskFilterApplyInterface
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.app.easyday.app.sources.remote.model.ProjectRespModel
 import com.app.easyday.screens.activities.main.dashboard.DashboardFragmentDirections
@@ -35,7 +36,7 @@ import me.toptas.fancyshowcase.listener.OnViewInflateListener
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel>(),
-    ProjectInterface {
+    ProjectInterface ,TaskFilterApplyInterface{
 
     companion object {
         const val TAG = "HomeFragment"
@@ -82,7 +83,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             }
         }
 
-        filterDialog = FilterBottomSheetDialog()
+        filterDialog = FilterBottomSheetDialog(this)
         filterTV.setOnClickListener {
             if (filterDialog?.isAdded == false)
                 filterDialog?.show(childFragmentManager, "filter")
@@ -217,6 +218,14 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
 
             selectedProjectID?.let { viewModel.getAllTask(it) }
         }
+    }
+
+    override fun setFilter() {
+        filterDialog?.dismiss()
+    }
+
+    override fun onClose() {
+        filterDialog?.dismiss()
     }
 
 }

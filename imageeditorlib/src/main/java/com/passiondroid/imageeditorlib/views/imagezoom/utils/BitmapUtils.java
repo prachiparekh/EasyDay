@@ -263,8 +263,7 @@ public class BitmapUtils {
             // 检查SDcard空间
             File SDCardRoot = Environment.getExternalStorageDirectory();
             if (SDCardRoot.getFreeSpace() < 10000) {
-                // 弹出对话框提示用户空间不够
-                Log.e("Utils", "存储空间不够");
+
                 return false;
             }
 

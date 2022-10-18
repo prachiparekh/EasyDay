@@ -344,7 +344,7 @@ class ScaleGestureDetector {
 
         if (prevIndex0 < 0 || prevIndex1 < 0 || currIndex0 < 0 || currIndex1 < 0) {
             mInvalidGesture = true;
-            Log.e(TAG, "Invalid MotionEvent stream detected.", new Throwable());
+
             if (mGestureInProgress) {
                 mListener.onScaleEnd(view, this);
             }

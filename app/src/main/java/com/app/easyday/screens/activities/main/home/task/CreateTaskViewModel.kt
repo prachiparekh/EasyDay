@@ -69,7 +69,7 @@ class CreateTaskViewModel @Inject constructor(
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 projectParticipantsData.value = resp?.data
-                Log.e("resp:", resp.data.toString())
+
                 DeviceUtils.dismissProgress()
             }, {
 
@@ -98,8 +98,7 @@ class CreateTaskViewModel @Inject constructor(
 
         val part_due_date: RequestBody = addTaskRequestModel.due_date.toString()
             .toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        Log.e("task_participants", addTaskRequestModel.task_participants.toString())
-        Log.e("tags", addTaskRequestModel.tags.toString())
+
 
 
         api.addTask(
@@ -118,10 +117,10 @@ class CreateTaskViewModel @Inject constructor(
             .subscribe({ resp ->
                 if(resp.success)
                     actionStream.value= resp.message?.let { ACTION.taskResponse(it) }
-                Log.e("resp:", resp.toString())
+
                 DeviceUtils.dismissProgress()
             }, {
-                Log.e("resp_ex:", it.message.toString())
+
                 actionStream.value = ACTION.showError(it.message.toString())
                 DeviceUtils.dismissProgress()
             })
