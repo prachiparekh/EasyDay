@@ -1,11 +1,14 @@
 package com.app.easyday.screens.activities.main.home
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.app.easyday.app.sources.remote.apis.EasyDayApi
 import com.app.easyday.app.sources.remote.model.ProjectRespModel
 import com.app.easyday.app.sources.remote.model.TaskResponse
 import com.app.easyday.app.sources.remote.model.UserModel
+import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Companion.filterAssigneeList
+import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Companion.filterSpaceList
+import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Companion.filterTagList
+import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Companion.filterZoneList
 import com.app.easyday.screens.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import rx.android.schedulers.AndroidSchedulers
@@ -57,7 +60,15 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getAllTask(projectId: Int) {
-        api.getTask(projectId)
+        api.getTask(
+            projectId,
+            filterZoneList,
+            filterTagList,
+            filterSpaceList,
+            filterAssigneeList,
+            0,
+            ""
+        )
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resp ->
                 taskList.value = resp.data

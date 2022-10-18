@@ -83,15 +83,12 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
 
         cta.setOnClickListener {
 
-            filterTagList.distinct()
-            filterZoneList.distinct()
-            filterSpaceList.distinct()
-            filterAssigneeList.distinct()
+
             Log.e("filterTagList", filterTagList.toString())
             Log.e("filterZoneList", filterZoneList.toString())
             Log.e("filterSpaceList", filterSpaceList.toString())
             Log.e("AssigneeList", filterAssigneeList.toString())
-            anInterface.onClose()
+            anInterface.setFilter()
         }
     }
 
@@ -189,7 +186,7 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
             2 -> {
 //                 Multiple :Tag (API)
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), tagList, filterTagList, 0)
+                    FilterMultipleChildAdapter(requireContext(), tagList,  0)
             }
             3 -> {
 //                Single : Priority
@@ -205,12 +202,12 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
             5 -> {
 //                 Multiple :Zone (API)
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), zoneList, filterZoneList, 1)
+                    FilterMultipleChildAdapter(requireContext(), zoneList,  1)
             }
             6 -> {
 //                 Multiple :Space (API)
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), spaceList, filterSpaceList, 2)
+                    FilterMultipleChildAdapter(requireContext(), spaceList,  2)
             }
             7 -> {
 //                 Single :Red Flag

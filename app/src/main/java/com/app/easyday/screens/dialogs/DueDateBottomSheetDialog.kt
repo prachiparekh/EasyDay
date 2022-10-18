@@ -55,7 +55,8 @@ class DueDateBottomSheetDialog(
         }
 
         binding?.calenderView?.setOnDateChangeListener(OnDateChangeListener { calendarView, i, i1, i2 ->
-            closeInterface.onDateClick("$i2/${(i1 + 1)}/$i")
+
+            closeInterface.onDateClick("$i-${(i1 + 1)}-$i2")
             dismiss()
         })
 

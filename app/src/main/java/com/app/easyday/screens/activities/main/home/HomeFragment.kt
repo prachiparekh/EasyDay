@@ -221,6 +221,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
     }
 
     override fun setFilter() {
+        selectedProjectID?.let { viewModel.getAllTask(it) }
         filterDialog?.dismiss()
     }
 
