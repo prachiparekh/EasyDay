@@ -53,6 +53,7 @@ class TaskMediaAdapter(
                 }
             }
             imagePreview.setOnClickListener {
+                Log.e("item.mediaUrl", item.mediaUrl.toString())
                 item.mediaUrl?.let { it1 ->
                     onItemClick(
                         isImg,

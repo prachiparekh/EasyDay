@@ -77,13 +77,20 @@ interface EasyDayApi {
     @GET("task/get-task")
     fun getTask(
         @Query("project_id") project_id: Int,
-        @Query("zones") zones: ArrayList<Int>?,
-        @Query("tags") tags: ArrayList<Int>?,
-        @Query("spaces") spaces: ArrayList<Int>?,
-        @Query("assigned_to") assigned_to: ArrayList<Int>?,
-        @Query("red_flag") red_flag: Int?,
-        @Query("due_date") due_date: String?,
+        @Query("zones") zones: ArrayList<Int>? = null,
+        @Query("tags") tags: ArrayList<Int>?= null,
+        @Query("spaces") spaces: ArrayList<Int>?= null,
+        @Query("assigned_to") assigned_to: ArrayList<Int>?= null,
+        @Query("red_flag") red_flag: Int?= null,
+        @Query("due_date") due_date: Int?= null,
+        @Query("priority") priority: Int?= null,
+        @Query("date_range") date_range: ArrayList<String>?= null,
     ): Observable<ApiResponse<ArrayList<TaskResponse>>>
+
+   /* @GET("task/get-task")
+    fun getTask(
+        @Query("project_id") project_id: Int
+    ): Observable<ApiResponse<ArrayList<TaskResponse>>>*/
 
     @GET("project/get-attributes")
     fun getAttributes(

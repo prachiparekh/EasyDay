@@ -81,6 +81,7 @@
     <string name="from">From <font color='#FB4079'>*</font></string>
     <string name="to">To <font color='#FB4079'>*</font></string>
     <string name="date_format_template" translatable="false">dd/MM/yyyy</string>
+    <string name="date_format_template1" translatable="false">yyyy-MM-dd</string>
     <string name="to_date_error">Due date : To date should greater than from date !</string>
 
     <string name="progress">In Progress</string>

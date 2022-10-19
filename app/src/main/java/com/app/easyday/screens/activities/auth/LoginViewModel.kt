@@ -35,8 +35,7 @@ class LoginViewModel @Inject constructor(
                 actionStream.value = ACTION.GetOTPMsg(resp.message.toString())
                 DeviceUtils.dismissProgress()
             }, { throwable ->
-                actionStream.value = ErrorUtil.onError(throwable)
-                    ?.let { ACTION.GetErrorMsg(it) }
+
                 DeviceUtils.dismissProgress()
             })
     }

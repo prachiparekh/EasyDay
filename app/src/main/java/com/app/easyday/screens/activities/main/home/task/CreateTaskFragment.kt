@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -77,6 +76,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             textT.isVisible = true
             edit.isVisible = true
         }
+        delete.isVisible = selectedUriList.isNotEmpty()
     }
 
     override fun initUi() {
@@ -114,6 +114,8 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
                 }
             }
         )
+
+
 
         pagerPhotos.apply {
             adapter = mediaAdapter?.apply { submitList(selectedUriList) }
@@ -326,8 +328,6 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         selectedPriority = childPosition
     }
 
-    override fun onFilterMultipleChildClick() {
-    }
 
     override fun onFilterFlagClick(redFlag: Boolean) {
         if (redFlag)

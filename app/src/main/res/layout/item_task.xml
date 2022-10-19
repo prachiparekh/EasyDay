@@ -77,7 +77,8 @@
         android:layout_height="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:padding="@dimen/_3sdp"
-        android:src="@drawable/ic_urgent_p2"
+        android:src="@drawable/ic_low"
+        app:tint="@color/red"
         app:layout_constraintBottom_toBottomOf="@id/edit"
         app:layout_constraintEnd_toStartOf="@id/projectIcon"
         app:layout_constraintTop_toTopOf="@id/edit" />

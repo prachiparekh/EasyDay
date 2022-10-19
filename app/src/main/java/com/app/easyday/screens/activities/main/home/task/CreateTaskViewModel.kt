@@ -7,8 +7,10 @@ import com.app.easyday.app.sources.remote.model.AddTaskRequestModel
 import com.app.easyday.app.sources.remote.model.AttributeResponse
 import com.app.easyday.app.sources.remote.model.ProjectParticipantsModel
 import com.app.easyday.navigation.SingleLiveEvent
+import com.app.easyday.screens.activities.auth.LoginViewModel
 import com.app.easyday.screens.base.BaseViewModel
 import com.app.easyday.utils.DeviceUtils
+import com.app.easyday.utils.ErrorUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -119,9 +121,9 @@ class CreateTaskViewModel @Inject constructor(
                     actionStream.value= resp.message?.let { ACTION.taskResponse(it) }
 
                 DeviceUtils.dismissProgress()
-            }, {
-
-                actionStream.value = ACTION.showError(it.message.toString())
+            }, {throwable->
+                actionStream.value = ErrorUtil.onError(throwable)
+                    ?.let { ACTION.showError(it) }
                 DeviceUtils.dismissProgress()
             })
     }

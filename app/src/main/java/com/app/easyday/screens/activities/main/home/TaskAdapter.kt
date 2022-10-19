@@ -3,18 +3,22 @@ package com.app.easyday.screens.activities.main.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.app.easyday.R
 import com.app.easyday.app.sources.remote.model.TaskAttributeResponse
 import com.app.easyday.app.sources.remote.model.TaskResponse
+import com.app.easyday.screens.activities.main.home.HomeFragment.Companion.selectedColor
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -48,6 +52,8 @@ class TaskAdapter(
         val tagRV = itemView.findViewById<RecyclerView>(R.id.tagRV)
         val dots_indicator = itemView.findViewById<DotsIndicator>(R.id.dots_indicator)
         val flag = itemView.findViewById<ImageView>(R.id.flag)
+        val priority = itemView.findViewById<ImageView>(R.id.priority)
+        val projectIcon = itemView.findViewById<ImageView>(R.id.projectIcon)
 
         @SuppressLint("NewApi")
         fun bind(position: Int) {
@@ -61,17 +67,32 @@ class TaskAdapter(
             mDate.text = dtf.format(odt)
             mDescription.text = item.description
 
-           if(item.redFlag == true){
-               flag.setImageDrawable(context.resources.getDrawable(R.drawable.ic_flaged))
-           }else{
-               flag.setImageDrawable(context.resources.getDrawable(R.drawable.ic_flag))
-           }
+            if (item.redFlag == true) {
+                flag.setImageDrawable(context.resources.getDrawable(R.drawable.ic_flaged))
+            } else {
+                flag.setImageDrawable(context.resources.getDrawable(R.drawable.ic_flag))
+            }
+
+            when (item.priority) {
+                0 -> priority.isVisible = false
+                1 -> priority.setImageDrawable(context.resources.getDrawable(R.drawable.ic_low))
+                2 -> priority.setImageDrawable(context.resources.getDrawable(R.drawable.ic_normal))
+                3 -> priority.setImageDrawable(context.resources.getDrawable(R.drawable.ic_urgent))
+            }
+
+            ImageViewCompat.setImageTintList(
+                projectIcon, ColorStateList.valueOf(
+                    Color.parseColor(
+                        selectedColor
+                    )
+                )
+            )
 
             var mediaAdapter: TaskMediaAdapter? = null
             mediaAdapter = TaskMediaAdapter(
                 context,
-                onItemClick = { isVideo, uri ->
-                    if (isVideo) {
+                onItemClick = { isImg, uri ->
+                    if (!isImg) {
                         val play = Intent(Intent.ACTION_VIEW, uri.toUri())
                         play.setDataAndType(
                             uri.toUri(),
@@ -91,7 +112,7 @@ class TaskAdapter(
 
             tagRV.adapter = TaskTagAdapter(
                 context,
-                item.taskTags as java.util.ArrayList<TaskAttributeResponse>
+                item.taskTags as ArrayList<TaskAttributeResponse>
             )
         }
     }

@@ -31,6 +31,11 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
         var filterZoneList = ArrayList<Int>()
         var filterSpaceList = ArrayList<Int>()
         var filterAssigneeList = ArrayList<Int>()
+        var filterDateRangeList = ArrayList<String>()
+        var filterPriority: Int? = null
+        var filterTaskStatus: Int? = null
+        var filterRedFlag: Int? = null
+        var filterDueDate: Int? = null
     }
 
     private var filterTypeList = arrayListOf<String>()
@@ -43,6 +48,8 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
     var dueDateList = arrayListOf<String>()
     var projectparticipantList: ArrayList<ProjectParticipantsModel>? = null
     val contactList = ArrayList<ContactModel>()
+    var filterDateMax: String? = null
+    var filterDateMin: String? = null
 
     override fun getContentView() = R.layout.fragment_filter
 
@@ -83,12 +90,26 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
 
         cta.setOnClickListener {
 
+            filterDateRangeList.clear()
+            filterDateMin?.let { it1 -> filterDateRangeList.add(it1) }
+            filterDateMax?.let { it1 -> filterDateRangeList.add(it1) }
 
-            Log.e("filterTagList", filterTagList.toString())
-            Log.e("filterZoneList", filterZoneList.toString())
-            Log.e("filterSpaceList", filterSpaceList.toString())
-            Log.e("AssigneeList", filterAssigneeList.toString())
+            Log.e("filterDateRangeList", filterDateRangeList.toString())
+            Log.e("filterPriority", filterPriority.toString())
+
             anInterface.setFilter()
+        }
+
+        clearFilterTV.setOnClickListener {
+            filterTagList.clear()
+            filterZoneList.clear()
+            filterSpaceList.clear()
+            filterAssigneeList.clear()
+            filterDateRangeList.clear()
+            filterPriority = null
+            filterTaskStatus = null
+            filterRedFlag = null
+            filterDueDate = null
         }
     }
 
@@ -140,10 +161,6 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
 
     }
 
-    override fun onFilterMultipleChildClick() {
-
-    }
-
     override fun onFilterFlagClick(redFlag: Boolean) {
 
     }
@@ -181,17 +198,17 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
             1 -> {
 //                Single : Task Status
                 otherLayout.childFilterRV.adapter =
-                    FilterSingleChildAdapter(requireContext(), taskStatusList, this)
+                    FilterSingleChildAdapter(requireContext(), taskStatusList, "TASKSTATUS")
             }
             2 -> {
 //                 Multiple :Tag (API)
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), tagList,  0)
+                    FilterMultipleChildAdapter(requireContext(), tagList, 0)
             }
             3 -> {
 //                Single : Priority
                 otherLayout.childFilterRV.adapter =
-                    FilterSingleChildAdapter(requireContext(), priorityList, this)
+                    FilterSingleChildAdapter(requireContext(), priorityList, "PRIORITY")
             }
             4 -> {
 //                 Multiple :Assigned To (API)
@@ -202,22 +219,22 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
             5 -> {
 //                 Multiple :Zone (API)
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), zoneList,  1)
+                    FilterMultipleChildAdapter(requireContext(), zoneList, 1)
             }
             6 -> {
 //                 Multiple :Space (API)
                 otherLayout.childFilterRV.adapter =
-                    FilterMultipleChildAdapter(requireContext(), spaceList,  2)
+                    FilterMultipleChildAdapter(requireContext(), spaceList, 2)
             }
             7 -> {
 //                 Single :Red Flag
                 otherLayout.childFilterRV.adapter =
-                    FilterSingleChildAdapter(requireContext(), redFlagList, this)
+                    FilterSingleChildAdapter(requireContext(), redFlagList, "REDFLAG")
             }
             8 -> {
 //                 Single :Due Date
                 otherLayout.childFilterRV.adapter =
-                    FilterSingleChildAdapter(requireContext(), dueDateList, this)
+                    FilterSingleChildAdapter(requireContext(), dueDateList, "DUEDATE")
             }
 
         }
@@ -278,6 +295,18 @@ class FilterFragment(val anInterface: TaskFilterApplyInterface) : BaseFragment<F
         ).format(
             Date(timeInMillies)
         )
+
+        val filterDate = SimpleDateFormat(
+            getString(R.string.date_format_template1), Locale.getDefault()
+        ).format(
+            Date(timeInMillies)
+        )
+
+        if (view.id == R.id.fromET) {
+            filterDateMin = filterDate
+        } else {
+            filterDateMax = filterDate
+        }
 
     }
 

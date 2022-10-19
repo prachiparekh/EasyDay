@@ -9,12 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.easyday.R
-import com.app.easyday.app.sources.local.interfaces.FilterTypeInterface
+import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Companion.filterDueDate
+import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Companion.filterPriority
+import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Companion.filterRedFlag
+import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Companion.filterTaskStatus
 
 class FilterSingleChildAdapter(
     private val context: Context,
     private var filterChildList: java.util.ArrayList<String>,
-    val filterTypeInterface: FilterTypeInterface
+    val filterType: String
 ) : RecyclerView.Adapter<FilterSingleChildAdapter.ViewHolder>() {
 
     var selectedPosition = -1
@@ -34,10 +37,18 @@ class FilterSingleChildAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val childName = itemView.findViewById<TextView>(R.id.childName)
         val selection = itemView.findViewById<ImageView>(R.id.selection)
+
         @SuppressLint("NewApi")
         fun bind(position: Int) {
 
             childName.text = filterChildList[position]
+
+            when (filterType) {
+                "TASKSTATUS" -> selectedPosition = filterTaskStatus ?: -1
+                "PRIORITY" -> selectedPosition = filterPriority ?: -1
+                "REDFLAG" -> selectedPosition = filterRedFlag ?: -1
+                "DUEDATE" -> selectedPosition = filterDueDate ?: -1
+            }
 
             if (selectedPosition == position) {
                 selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_check_radio))
@@ -50,7 +61,12 @@ class FilterSingleChildAdapter(
                 selectedPosition = position
                 notifyItemChanged(selectedPosition)
                 notifyItemChanged(previousPosition)
-               filterTypeInterface.onFilterSingleChildClick(filterChildList,selectedPosition)
+                when (filterType) {
+                    "TASKSTATUS" -> filterTaskStatus = position
+                    "PRIORITY" -> filterPriority = position
+                    "REDFLAG" -> filterRedFlag = position
+                    "DUEDATE" -> filterDueDate = position
+                }
             }
         }
     }
