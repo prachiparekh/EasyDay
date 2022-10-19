@@ -33,6 +33,20 @@
             app:exitAnim="@anim/slide_out_to_the_left"
             app:popEnterAnim="@anim/slide_in_from_the_left"
             app:popExitAnim="@anim/slide_out_to_the_right" />
+        <action
+            android:id="@+id/dashboard_to_more_devices"
+            app:destination="@id/deviceFragment"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right" />
+        <action
+            android:id="@+id/dashboard_to_more_activity_log"
+            app:destination="@id/activityLogFragment"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right" />
 
         <action
             android:id="@+id/dashboard_to_more_privacy"
@@ -148,6 +162,16 @@
         android:name="com.app.easyday.screens.activities.main.more.profile.ViewProfileFragment"
         android:label="fragment_view_profile"
         tools:layout="@layout/fragment_view_profile" />
+    <fragment
+        android:id="@+id/deviceFragment"
+        android:name="com.app.easyday.screens.activities.main.more.devices.DevicesFragment"
+        android:label="fragment_devices"
+        tools:layout="@layout/fragment_devices" />
+    <fragment
+        android:id="@+id/activityLogFragment"
+        android:name="com.app.easyday.screens.activities.main.more.activityLog.ActivityLogFragment"
+        android:label="fragment_activity_log"
+        tools:layout="@layout/fragment_activity_log" />
     <fragment
         android:id="@+id/privacySecurityFragment"
         android:name="com.app.easyday.screens.activities.main.more.privacy.PrivacySecurityFragment"

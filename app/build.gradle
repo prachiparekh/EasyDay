@@ -165,6 +165,9 @@ dependencies {
 
 //    Firebase
     implementation 'com.google.firebase:firebase-messaging:23.1.0'
+
+//  circular Imageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }
 
 

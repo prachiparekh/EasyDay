@@ -72,6 +72,8 @@ class MoreFragment : Fragment(), OnClickListener, DeleteLogoutProfileInterface {
         binding?.profileLL?.setOnClickListener(this)
         binding?.privacyLL?.setOnClickListener(this)
         binding?.logoutLL?.setOnClickListener(this)
+        binding?.deviceLL?.setOnClickListener(this)
+        binding?.activityLogLL?.setOnClickListener(this)
         binding?.notepadLL?.setOnClickListener(this)
 
         return binding?.root
@@ -99,6 +101,15 @@ class MoreFragment : Fragment(), OnClickListener, DeleteLogoutProfileInterface {
                 if (nav.currentDestination != null && nav.currentDestination?.id == R.id.dashboardFragment) {
                     nav.navigate(action)
                 }
+            }
+            R.id.deviceLL -> {
+                val direction = DashboardFragmentDirections.dashboardToMoreDevices()
+                Navigation.findNavController(requireView()).navigate(direction)
+
+            }
+            R.id.activity_logLL -> {
+                val direction = DashboardFragmentDirections.dashboardToMoreActivityLog()
+                Navigation.findNavController(requireView()).navigate(direction)
             }
 
         }

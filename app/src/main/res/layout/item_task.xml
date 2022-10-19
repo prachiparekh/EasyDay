@@ -80,8 +80,7 @@
         android:layout_height="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:padding="@dimen/_3sdp"
-        android:src="@drawable/ic_low"
-        app:tint="@color/red"
+        android:src="@drawable/ic_urgent_p2"
         app:layout_constraintBottom_toBottomOf="@id/edit"
         app:layout_constraintEnd_toStartOf="@id/projectIcon"
         app:layout_constraintTop_toTopOf="@id/edit" />
@@ -265,7 +264,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
-            android:drawableStart="@drawable/ic_send"
+            android:drawableStart="@drawable/ic_snd"
             android:drawablePadding="@dimen/_5sdp"
             android:fontFamily="@font/inter_medium_500"
             android:maxLines="1"

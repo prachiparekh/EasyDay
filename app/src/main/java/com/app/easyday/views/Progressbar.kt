@@ -24,6 +24,7 @@ open class Progressbar constructor(context: Context) : Dialog(context) {
 
     fun showPopup() {
         dialog?.show()
+
     }
 
     override fun onBackPressed() {
