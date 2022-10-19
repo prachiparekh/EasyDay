@@ -81,7 +81,6 @@
     <string name="from">From <font color='#FB4079'>*</font></string>
     <string name="to">To <font color='#FB4079'>*</font></string>
     <string name="date_format_template" translatable="false">dd/MM/yyyy</string>
-    <string name="date_format_template1" translatable="false">yyyy-MM-dd</string>
     <string name="to_date_error">Due date : To date should greater than from date !</string>
 
     <string name="progress">In Progress</string>
@@ -108,8 +107,13 @@
     <string name="skip_photo">Skip Photo</string>
     <string name="press_hold">Press and Hold for Video</string>
     <string name="by_continuing">By continuing you agree to Easyday \n Terms &amp; Conditions and Privacy Policy</string>
+    <string name="link">Link EasyDay Desktop or EasyDay Web by \n Scanning QR code</string>
+    <string name="easy_day_desktop">EasyDay Desktop</string>
+    <string name="easy_day_web">EasyDay Web</string>
 
     <string name="terms">Terms &amp; Conditions</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
     <string name="policy">Privacy Policy</string>
     <string name="analytics">Analytics</string>
     <string name="inprogress">In Progress</string>
@@ -131,6 +135,14 @@
 
     <string name="general_setting">General Settings</string>
     <string name="my_profile">My Profile</string>
+    <string name="device">Devices</string>
+    <string name="you_commented">You commented on Door Fix on second floor</string>
+    <string name="oct">Oct 16,2022 %s 2.45 pm</string>
+    <string name="my_activity_log">My Activity Log</string>
+    <string name="one_plus">OnePlus OnePlus Nord CE2</string>
+    <string name="hyderabad">Hyderabad, India %s Online</string>
+    <string name="online">Online</string>
+    <string name="android">Android 9.0.2</string>
     <string name="my_profile_text">View and edit your profile info</string>
     <string name="notepad">Notepad</string>
     <string name="notepad_text">Create and manage notepad</string>
@@ -193,4 +205,6 @@
     <string name="user_role">user</string>
     <string name="task_title_required">Task title is required !</string>
     <string name="assign">Assign</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="dot">•</string>
 </resources>

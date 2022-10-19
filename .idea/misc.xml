@@ -9,6 +9,7 @@
         <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/drawable/selector_ic_toolbar_inc_indent_light.xml" value="0.2245" />
         <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/layout/rte_toolbar.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/layout/rte_toolbar_character.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/layout/rte_toolbar_divider.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/.gradle/caches/transforms-3/63bb56e7012c7f32603c02570978fef4/transformed/jetified-android-rteditor-1.7.8/res/layout/rte_toolbar_paragraph.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable-v24/bg_circle_avatar.xml" value="0.2695" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable-v24/bg_rounded_rect.xml" value="0.209" />
@@ -36,6 +37,7 @@
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_color_ecllipse.xml" value="0.199" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_curve_white_bg.xml" value="0.209" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_easyday_white.xml" value="0.276" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_edittext_radius_bg.xml" value="0.288" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_flash_off.xml" value="0.209" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_flash_on.xml" value="0.1985" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_gradient_bg.xml" value="0.217" />
@@ -50,6 +52,7 @@
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_plus_icon.xml" value="0.2485" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_profile_circle.xml" value="0.2695" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_rotate.xml" value="0.209" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_search.xml" value="0.288" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_square_add.xml" value="0.199" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_take_picture.xml" value="0.202" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/ic_toggle.xml" value="0.199" />
@@ -61,6 +64,8 @@
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/report_progressbar.xml" value="0.199" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/tab_bg_selected.xml" value="0.199" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/tab_bg_unselected.xml" value="0.199" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/tab_selector.xml" value="0.217" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/tab_selector_boarding.xml" value="0.196" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/tabs_selector.xml" value="0.199" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/drawable/video_progressbar.xml" value="0.231" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/activity_auth.xml" value="0.36666666666666664" />
@@ -87,7 +92,7 @@
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_chart.xml" value="0.25" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_create_note.xml" value="0.2894399315946986" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_create_task.xml" value="0.25" />
-        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_dashboard.xml" value="0.33" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_filter.xml" value="0.18" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_inbox.xml" value="0.36666666666666664" />
@@ -101,6 +106,7 @@
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_privacy_security.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_reports.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_search.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_task_details.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_terms_policy.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/fragment_view.xml" value="0.36666666666666664" />
@@ -114,6 +120,7 @@
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/item_participant.xml" value="0.33" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/item_picture.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/item_project.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/item_search_project.xml" value="0.30012825994014536" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/item_space_zone.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/item_tag.xml" value="0.365625" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/app/src/main/res/layout/item_tag_line_report.xml" value="0.36666666666666664" />
@@ -145,6 +152,7 @@
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/imageeditorlib/src/main/res/layout/popwindow.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/imageeditorlib/src/main/res/layout/sticker_view.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Cubezytech/AndroidStudioProjects/Client_Projects/EasyDay/imageeditorlib/src/main/res/layout/text_editor.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/Parth/Documents/EasyDay/app/src/main/res/layout/fragment_more.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

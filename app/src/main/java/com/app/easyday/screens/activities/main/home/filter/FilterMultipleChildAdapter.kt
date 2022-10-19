@@ -18,11 +18,11 @@ import com.app.easyday.screens.activities.main.home.filter.FilterFragment.Compan
 class FilterMultipleChildAdapter(
     private val context: Context,
     private var filterChildList: java.util.ArrayList<AttributeResponse>,
+    private var selectedChildPositionList: java.util.ArrayList<Int>,
     val type: Int
 ) : RecyclerView.Adapter<FilterMultipleChildAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    var selectedChildPositionList = ArrayList<Int>()
 
     override fun getItemCount(): Int = filterChildList.size
 
@@ -32,7 +32,6 @@ class FilterMultipleChildAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.e("filterSpaceList_onBind", filterSpaceList.toString())
         holder.bind(position)
     }
 
@@ -42,14 +41,7 @@ class FilterMultipleChildAdapter(
 
         @SuppressLint("NewApi")
         fun bind(position: Int) {
-            var selectedChildPositionList = when (type) {
-                0 -> filterTagList
-                1 -> filterZoneList
-                2 -> filterSpaceList
-                else -> {
-                    filterTagList
-                }
-            }
+
             childName.text = filterChildList[position].attributeName
 
             if (selectedChildPositionList.contains(filterChildList[position].id)) {
@@ -63,26 +55,28 @@ class FilterMultipleChildAdapter(
                     filterChildList[position].id?.let { it1 -> selectedChildPositionList.add(it1) }
                     selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_check_radio))
 
-
+                    Log.e("filterSpaceList", filterSpaceList.toString())
+                    when (type) {
+                        0 -> filterChildList[position].id?.let { it1 -> filterTagList.add(it1) }
+                        1 -> filterChildList[position].id?.let { it1 -> filterZoneList.add(it1) }
+                        2 -> filterChildList[position].id?.let { it1 -> filterSpaceList.add(it1) }
+                    }
+                    Log.e("filterSpaceList", filterSpaceList.toString())
                 } else {
                     selectedChildPositionList.remove(filterChildList[position].id)
                     selection.setImageDrawable(context.resources.getDrawable(R.drawable.ic_uncheck_radio))
 
+                    when (type) {
+                        0 -> filterTagList.remove(filterChildList[position].id)
+                        1 -> filterZoneList.remove(filterChildList[position].id)
+                        2 -> filterSpaceList.remove(filterChildList[position].id)
+                    }
                 }
-                Log.e("filterSpaceList", filterSpaceList.toString())
             }
         }
     }
 
-    fun getMultiplePositionList() {
-        when (type) {
-            0 -> filterTagList = selectedChildPositionList
-            1 -> filterZoneList = selectedChildPositionList
-            2 -> filterSpaceList = selectedChildPositionList
-            else -> {
-                filterTagList
-            }
-        }
-
+    fun getMultiplePositionList(): ArrayList<Int> {
+        return selectedChildPositionList
     }
 }

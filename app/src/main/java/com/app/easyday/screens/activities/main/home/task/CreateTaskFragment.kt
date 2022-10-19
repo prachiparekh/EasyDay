@@ -76,7 +76,6 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             textT.isVisible = true
             edit.isVisible = true
         }
-        delete.isVisible = selectedUriList.isNotEmpty()
     }
 
     override fun initUi() {
@@ -115,8 +114,6 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
             }
         )
 
-
-
         pagerPhotos.apply {
             adapter = mediaAdapter?.apply { submitList(selectedUriList) }
         }
@@ -130,7 +127,7 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
 
         drawableList.add(requireContext().resources.getDrawable(R.drawable.ic_priority))
         drawableList.add(requireContext().resources.getDrawable(R.drawable.ic_tag))
-        drawableList.add(requireContext().resources.getDrawable(R.drawable.ic_flag))
+        drawableList.add(requireContext().resources.getDrawable(R.drawable.ic_flg))
         drawableList.add(requireContext().resources.getDrawable(R.drawable.ic_buliding))
         drawableList.add(requireContext().resources.getDrawable(R.drawable.ic_zone))
         drawableList.add(requireContext().resources.getDrawable(R.drawable.ic_calender))
@@ -328,6 +325,8 @@ class CreateTaskFragment : BaseFragment<CreateTaskViewModel>(), FilterTypeInterf
         selectedPriority = childPosition
     }
 
+    override fun onFilterMultipleChildClick() {
+    }
 
     override fun onFilterFlagClick(redFlag: Boolean) {
         if (redFlag)

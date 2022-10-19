@@ -19,7 +19,6 @@ import com.app.easyday.app.sources.local.interfaces.TaskFilterApplyInterface
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.app.easyday.app.sources.remote.model.ProjectRespModel
 import com.app.easyday.screens.activities.main.dashboard.DashboardFragmentDirections
-import com.app.easyday.screens.activities.main.home.filter.FilterFragment
 import com.app.easyday.screens.base.BaseFragment
 import com.app.easyday.screens.dialogs.FilterBottomSheetDialog
 import com.app.easyday.screens.dialogs.ProjectListDialog
@@ -42,7 +41,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
     companion object {
         const val TAG = "HomeFragment"
         var selectedProjectID: Int? = null
-        var selectedColor: String? = null
     }
 
     private lateinit var queue: FancyShowCaseQueue
@@ -130,10 +128,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
                     )
                 )
 
-                if (selectedProjectID == null) {
+                if (selectedProjectID == null)
                     selectedProjectID = projectList[0].id
-                    selectedColor=projectList[0].assignColor
-                }
                 val mProject = projectList.find { it.id == selectedProjectID }
                 activeProject.text = mProject?.projectName
                 TextViewCompat.setCompoundDrawableTintList(
@@ -219,15 +215,12 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             )
             selectedProjectID = projectList[projectPosition].id
             activeProject.text = projectList[projectPosition].projectName
-            selectedColor=projectList[projectPosition].assignColor
+
             selectedProjectID?.let { viewModel.getAllTask(it) }
         }
-
-
     }
 
     override fun setFilter() {
-        selectedProjectID?.let { viewModel.getFilterTask(it) }
         filterDialog?.dismiss()
     }
 
