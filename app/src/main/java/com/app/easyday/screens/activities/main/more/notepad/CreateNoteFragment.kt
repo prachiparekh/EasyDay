@@ -32,7 +32,6 @@ class CreateNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().window?.statusBarColor = resources.getColor(R.color.navy_blue)
-
     }
 
     private var mRTManager: RTManager? = null

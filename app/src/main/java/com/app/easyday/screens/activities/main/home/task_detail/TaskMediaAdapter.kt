@@ -1,4 +1,4 @@
-package com.app.easyday.screens.activities.main.home
+package com.app.easyday.screens.activities.main.home.task_detail
 
 import android.content.Context
 import android.util.Log

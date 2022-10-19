@@ -6,7 +6,6 @@ import com.app.easyday.app.sources.remote.model.AttributeResponse
 import com.app.easyday.app.sources.remote.model.ProjectParticipantsModel
 import com.app.easyday.navigation.SingleLiveEvent
 import com.app.easyday.screens.activities.main.home.HomeFragment.Companion.selectedProjectID
-import com.app.easyday.screens.activities.main.home.task.CreateTaskViewModel
 import com.app.easyday.screens.base.BaseViewModel
 import com.app.easyday.utils.DeviceUtils
 import dagger.hilt.android.lifecycle.HiltViewModel

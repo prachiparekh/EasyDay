@@ -19,7 +19,7 @@ import com.app.easyday.app.sources.local.interfaces.TaskFilterApplyInterface
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.app.easyday.app.sources.remote.model.ProjectRespModel
 import com.app.easyday.screens.activities.main.dashboard.DashboardFragmentDirections
-import com.app.easyday.screens.activities.main.home.filter.FilterFragment
+import com.app.easyday.screens.activities.main.home.task_detail.TaskAdapter
 import com.app.easyday.screens.base.BaseFragment
 import com.app.easyday.screens.dialogs.FilterBottomSheetDialog
 import com.app.easyday.screens.dialogs.ProjectListDialog
@@ -97,6 +97,13 @@ class HomeFragment : BaseFragment<HomeViewModel>(),
             nav.navigate(action)
         }
 
+        search.setOnClickListener {
+            val action = DashboardFragmentDirections.dashboardToSearch()
+            val nav: NavController = Navigation.findNavController(requireView())
+            if (nav.currentDestination != null && nav.currentDestination?.id == R.id.dashboardFragment) {
+                nav.navigate(action)
+            }
+        }
 
     }
 

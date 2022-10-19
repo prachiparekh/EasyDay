@@ -8,6 +8,7 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.DeleteLogoutProfileInterface
@@ -71,6 +72,7 @@ class MoreFragment : Fragment(), OnClickListener, DeleteLogoutProfileInterface {
         binding?.profileLL?.setOnClickListener(this)
         binding?.privacyLL?.setOnClickListener(this)
         binding?.logoutLL?.setOnClickListener(this)
+        binding?.notepadLL?.setOnClickListener(this)
 
         return binding?.root
     }
@@ -89,6 +91,13 @@ class MoreFragment : Fragment(), OnClickListener, DeleteLogoutProfileInterface {
                 val dialog = DeleteUserDialog("LOGOUT", this)
                 if (!dialog.isAdded) {
                     dialog.show(childFragmentManager, "LOGOUT")
+                }
+            }
+            R.id.notepadLL->{
+                val action = DashboardFragmentDirections.dashboardToNotepad()
+                val nav: NavController = Navigation.findNavController(requireView())
+                if (nav.currentDestination != null && nav.currentDestination?.id == R.id.dashboardFragment) {
+                    nav.navigate(action)
                 }
             }
 

@@ -1,4 +1,4 @@
-package com.app.easyday.screens.activities.main.home.task
+package com.app.easyday.screens.activities.main.home.create_task
 
 import android.content.Context
 import android.graphics.Bitmap

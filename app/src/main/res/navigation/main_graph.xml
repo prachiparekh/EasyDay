@@ -42,6 +42,22 @@
             app:popEnterAnim="@anim/slide_in_from_the_left"
             app:popExitAnim="@anim/slide_out_to_the_right" />
 
+        <action
+            android:id="@+id/dashboard_to_notepad"
+            app:destination="@id/notepadFragment"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right" />
+
+        <action
+            android:id="@+id/dashboard_to_search"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in_from_the_right"
+            app:exitAnim="@anim/slide_out_to_the_left"
+            app:popEnterAnim="@anim/slide_in_from_the_left"
+            app:popExitAnim="@anim/slide_out_to_the_right" />
+
     </fragment>
     <fragment
         android:id="@+id/addProjectFragment"
@@ -100,7 +116,7 @@
     </fragment>
     <fragment
         android:id="@+id/createTaskFragment"
-        android:name="com.app.easyday.screens.activities.main.home.task.CreateTaskFragment"
+        android:name="com.app.easyday.screens.activities.main.home.create_task.CreateTaskFragment"
         android:label="fragment_create_task"
         tools:layout="@layout/fragment_create_task" >
         <action
@@ -113,7 +129,7 @@
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.app.easyday.screens.activities.main.home.task.CameraFragment"
+        android:name="com.app.easyday.screens.activities.main.home.create_task.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" >
 
@@ -179,5 +195,10 @@
         android:name="com.app.easyday.screens.activities.main.more.notepad.CreateNoteFragment"
         android:label="fragment_create_note"
         tools:layout="@layout/fragment_create_note" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.app.easyday.screens.activities.main.home.search_task.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
 
 </navigation>

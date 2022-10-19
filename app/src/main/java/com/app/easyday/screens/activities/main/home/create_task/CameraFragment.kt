@@ -1,4 +1,4 @@
-package com.app.easyday.screens.activities.main.home.task
+package com.app.easyday.screens.activities.main.home.create_task
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -57,9 +57,7 @@ import com.theartofdev.edmodo.cropper.CropImage.getPickImageResultUri
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.BufferedOutputStream
 import java.io.File
-import java.io.FileOutputStream
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Executor
 import kotlin.math.abs

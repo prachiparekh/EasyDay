@@ -1,4 +1,4 @@
-package com.app.easyday.screens.activities.main.home
+package com.app.easyday.screens.activities.main.home.task_detail
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,9 +9,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.easyday.R
-import com.app.easyday.app.sources.remote.model.AttributeResponse
 import com.app.easyday.app.sources.remote.model.TaskAttributeResponse
-import com.app.easyday.screens.dialogs.adapters.TagsAdapter
 
 class TaskTagAdapter (
     private val context: Context,

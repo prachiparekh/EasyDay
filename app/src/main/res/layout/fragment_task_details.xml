@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
-    tools:context=".screens.activities.main.home.TaskDetailsFragment">
+    tools:context=".screens.activities.main.home.task_detail.TaskDetailsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

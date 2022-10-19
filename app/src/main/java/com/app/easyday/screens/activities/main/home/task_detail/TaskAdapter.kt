@@ -1,4 +1,4 @@
-package com.app.easyday.screens.activities.main.home
+package com.app.easyday.screens.activities.main.home.task_detail
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TableLayout
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -22,7 +21,6 @@ import com.app.easyday.app.sources.remote.model.TaskResponse
 import com.app.easyday.screens.activities.main.home.HomeFragment.Companion.selectedColor
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*

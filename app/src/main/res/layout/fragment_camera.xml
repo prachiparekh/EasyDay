@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:background="@android:color/black"
-        tools:context=".screens.activities.main.home.task.CameraFragment">
+        tools:context=".screens.activities.main.home.create_task.CameraFragment">
 
         <androidx.camera.view.PreviewView
             android:id="@+id/viewFinder"

@@ -48,7 +48,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- <androidx.constraintlayout.widget.ConstraintLayout
+         <androidx.constraintlayout.widget.ConstraintLayout
              android:id="@+id/emptyState"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
@@ -76,16 +76,9 @@
                  app:layout_constraintEnd_toEndOf="parent"
                  app:layout_constraintStart_toStartOf="parent"
                  app:layout_constraintTop_toBottomOf="@id/emptyImg" />
-         </androidx.constraintlayout.widget.ConstraintLayout>-->
+         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <WebView
-            android:id="@+id/mWebview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topCL" />
+
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/createNote"

@@ -7,12 +7,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import com.app.easyday.R
 import com.app.easyday.app.sources.local.interfaces.FilterCloseInterface
 import com.app.easyday.app.sources.local.interfaces.AssigneeInterface
 import com.app.easyday.app.sources.local.model.ContactModel
 import com.app.easyday.databinding.AddAssigneeLayoutBinding
+import com.app.easyday.screens.activities.main.home.project.AddParticipantsFragment
 import com.app.easyday.screens.activities.main.home.project.adapter.ParticipentAdapter
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -44,6 +46,22 @@ class AsigneeSelectionBottomSheetDialog(
             closeInterface.onCloseClick()
             dismiss()
         }
+
+        binding?.mSearch?.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isEmpty())
+                    binding?.searchImageView?.visibility = View.VISIBLE
+                else
+                    binding?.searchImageView?.visibility = View.INVISIBLE
+                adapter?.filter?.filter(newText)
+                return true
+            }
+        })
 
         binding?.cta?.setOnClickListener {
             val assigneeList=ArrayList<Int>()

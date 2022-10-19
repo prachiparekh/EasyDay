@@ -96,6 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/_20sdp"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <HorizontalScrollView
@@ -132,6 +133,15 @@
                         android:background="@null"
                         android:src="@drawable/ic_note_heading2" />
 
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/toolbar_check"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:background="@null"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_checkbox" />
+
                     <com.onegravity.rteditor.toolbar.RTToolbarImageButton
                         android:id="@+id/toolbar_bullet"
                         style="?attr/rte_ToolbarButton"
@@ -167,30 +177,15 @@
                         android:background="@null"
                         android:src="@drawable/ic_note_redo" />
 
-                    <include layout="@layout/rte_toolbar_divider" />
-
-
-
-                  <!--  <Spinner
-                        android:id="@+id/toolbar_fontsize"
-                        style="?attr/rte_ToolbarSpinner"
-                        android:background="?attr/rte_icToolbarFontSize" />-->
-
-                    <Spinner
-                        android:id="@+id/toolbar_fontcolor"
-                        style="?attr/rte_ToolbarSpinner"
-                        android:background="?attr/rte_icToolbarFontColor" />
-
-                    <Spinner
-                        android:id="@+id/toolbar_bgcolor"
-                        style="?attr/rte_ToolbarSpinner"
-                        android:background="?attr/rte_icToolbarBGColor" />
+                    <include layout="@layout/rte_toolbar_divider"
+                        android:visibility="gone"/>
 
                 </com.onegravity.rteditor.toolbar.HorizontalRTToolbar>
 
             </HorizontalScrollView>
 
-            <include layout="@layout/rte_toolbar_paragraph" />
+            <include layout="@layout/rte_toolbar_paragraph"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

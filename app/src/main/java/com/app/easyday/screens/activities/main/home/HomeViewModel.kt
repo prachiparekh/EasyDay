@@ -35,9 +35,7 @@ class HomeViewModel @Inject constructor(
     }
 
     sealed class ACTION {
-
         class showError(val message: String) : ACTION()
-
     }
 
 

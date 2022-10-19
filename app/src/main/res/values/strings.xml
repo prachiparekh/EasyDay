@@ -193,4 +193,6 @@
     <string name="user_role">user</string>
     <string name="task_title_required">Task title is required !</string>
     <string name="assign">Assign</string>
+    <string name="recent_searches">Recent Searches</string>
+
 </resources>
