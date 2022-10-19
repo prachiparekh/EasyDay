@@ -160,9 +160,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':imageeditorlib')
 
-//    DotsIndicator
-    implementation "com.tbuonomo:dotsindicator:4.3"
-
 //      RTEditor
     implementation("com.1gravity:android-rteditor:1.7.8")
 

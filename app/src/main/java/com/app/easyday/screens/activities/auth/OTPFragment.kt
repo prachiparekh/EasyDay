@@ -5,13 +5,13 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
 import androidx.navigation.Navigation
@@ -113,27 +113,29 @@ class OTPFragment : BaseFragment<OTPViewModel>() {
 
     override fun setObservers() {
         isOTPComplete.observe(viewLifecycleOwner) { it ->
-            if (it) {
-                val deviceID: String = Settings.Secure.getString(
-                    requireContext().contentResolver,
-                    Settings.Secure.ANDROID_ID
-                )
+            if (viewLifecycleOwner.lifecycle.currentState == Lifecycle.State.RESUMED) {
+                if (it) {
+                    val deviceID: String = Settings.Secure.getString(
+                        requireContext().contentResolver,
+                        Settings.Secure.ANDROID_ID
+                    )
 
-                val fullOTP = tv1.text.toString() +
-                        tv2.text.toString() +
-                        tv3.text.toString() +
-                        tv4.text.toString() +
-                        tv5.text.toString() +
-                        tv6.text.toString()
-                mPhoneNumber?.let { it1 ->
-                    mCountryCode?.let { it2 ->
-                        mViewModel?.verifyOTP(
-                            it1, fullOTP,
-                            it2, deviceID, android.os.Build.MODEL
-                        )
+                    val fullOTP = tv1.text.toString() +
+                            tv2.text.toString() +
+                            tv3.text.toString() +
+                            tv4.text.toString() +
+                            tv5.text.toString() +
+                            tv6.text.toString()
+                    mPhoneNumber?.let { it1 ->
+                        mCountryCode?.let { it2 ->
+                            mViewModel?.verifyOTP(
+                                it1, fullOTP,
+                                it2, deviceID, android.os.Build.MODEL
+                            )
+                        }
                     }
-                }
 
+                }
             }
         }
 

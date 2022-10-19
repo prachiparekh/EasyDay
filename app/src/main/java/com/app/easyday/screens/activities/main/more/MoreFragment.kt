@@ -14,6 +14,7 @@ import com.app.easyday.app.sources.local.interfaces.DeleteLogoutProfileInterface
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.app.easyday.databinding.FragmentMoreBinding
 import com.app.easyday.screens.activities.auth.AuthActivity
+import com.app.easyday.screens.activities.main.dashboard.DashboardFragment.Companion.selectedTabID
 import com.app.easyday.screens.activities.main.dashboard.DashboardFragmentDirections
 import com.app.easyday.screens.activities.main.home.HomeViewModel.Companion.userModel
 import com.app.easyday.screens.dialogs.DeleteUserDialog
@@ -25,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MoreFragment : Fragment(), OnClickListener,DeleteLogoutProfileInterface {
+class MoreFragment : Fragment(), OnClickListener, DeleteLogoutProfileInterface {
 
     companion object {
         const val TAG = "MoreFragment"
@@ -103,8 +104,10 @@ class MoreFragment : Fragment(), OnClickListener,DeleteLogoutProfileInterface {
     }
 
     override fun OnLogoutClick() {
+        selectedTabID=R.id.home
         AppPreferencesDelegates.get().token = null.toString()
         requireContext().startActivity(Intent(requireContext(), AuthActivity::class.java))
+        requireActivity().finish()
     }
 
 

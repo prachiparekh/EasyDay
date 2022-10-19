@@ -12,6 +12,7 @@ import com.app.easyday.R
 import com.app.easyday.app.sources.local.model.OnboardingItem
 import com.app.easyday.app.sources.local.prefrences.AppPreferencesDelegates
 import com.app.easyday.screens.activities.auth.AuthActivity
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_on_boarding.*
@@ -42,7 +43,9 @@ class OnBoardingActivity : AppCompatActivity() {
 
         pager.currentItem = 0
 
-        dots_indicator.attachTo(pager)
+        TabLayoutMediator(dots_layout, pager) { tab, position ->
+
+        }.attach()
         pager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageScrolled(
                 position: Int,

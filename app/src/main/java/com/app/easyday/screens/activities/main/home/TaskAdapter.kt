@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TableLayout
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -19,6 +20,8 @@ import com.app.easyday.R
 import com.app.easyday.app.sources.remote.model.TaskAttributeResponse
 import com.app.easyday.app.sources.remote.model.TaskResponse
 import com.app.easyday.screens.activities.main.home.HomeFragment.Companion.selectedColor
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -50,7 +53,7 @@ class TaskAdapter(
         val mDate = itemView.findViewById<TextView>(R.id.mDate)
         val mDescription = itemView.findViewById<TextView>(R.id.mDescription)
         val tagRV = itemView.findViewById<RecyclerView>(R.id.tagRV)
-        val dots_indicator = itemView.findViewById<DotsIndicator>(R.id.dots_indicator)
+        val dots_indicator = itemView.findViewById<TabLayout>(R.id.dots_layout)
         val flag = itemView.findViewById<ImageView>(R.id.flag)
         val priority = itemView.findViewById<ImageView>(R.id.priority)
         val projectIcon = itemView.findViewById<ImageView>(R.id.projectIcon)
@@ -108,7 +111,11 @@ class TaskAdapter(
                 adapter = mediaAdapter.apply { submitList(item.taskMedia) }
             }
 
-            dots_indicator.attachTo(mediaPager)
+            TabLayoutMediator(dots_indicator, mediaPager) { tab, position ->
+
+            }.attach()
+
+//            dots_indicator.setupWithViewPager(mediaPager)
 
             tagRV.adapter = TaskTagAdapter(
                 context,

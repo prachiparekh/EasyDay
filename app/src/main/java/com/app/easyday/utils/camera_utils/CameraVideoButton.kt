@@ -149,7 +149,7 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        val detectedUp = event!!.action == MotionEvent.ACTION_UP
+        val detectedUp = event?.action == MotionEvent.ACTION_UP
         return if (!gestureDetector.onTouchEvent(event) && detectedUp && enableVideoRecording) {
             onLongPressEnd()
             return true

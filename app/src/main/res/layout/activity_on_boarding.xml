@@ -14,35 +14,52 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"  />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+ <!--   <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
         android:id="@+id/dots_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
         app:dotsColor="#A3A3A3"
         app:dotsCornerRadius="8dp"
         app:dotsSize="@dimen/_7sdp"
         app:dotsSpacing="@dimen/_5sdp"
         app:dotsWidthFactor="2.5"
-        app:selectedDotColor="@color/white"
-        app:progressMode="true"
-        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@id/title1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:progressMode="true"
+        app:selectedDotColor="@color/white" />-->
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/dots_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/title1"
-        />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:tabBackground="@drawable/tab_selector_boarding"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        app:tabPaddingEnd="@dimen/_10sdp"
+        app:tabPaddingStart="@dimen/_10sdp" />
 
     <TextView
         android:id="@+id/title1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:fontFamily="@font/dm_sans_700"
         android:gravity="center"
-        android:textSize="@dimen/_25sdp"
         android:text="@string/boarding_title1"
         android:textColor="@color/white"
-        android:fontFamily="@font/dm_sans_700"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:textSize="@dimen/_25sdp"
         app:layout_constraintBottom_toTopOf="@id/subTitle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -51,11 +68,11 @@
         android:id="@+id/subTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:fontFamily="@font/dm_sans_regular"
         android:gravity="center"
         android:text="@string/boarding_text"
         android:textColor="@color/white"
-        android:fontFamily="@font/dm_sans_regular"
-        android:layout_marginBottom="@dimen/_20sdp"
         app:layout_constraintBottom_toTopOf="@id/cta"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

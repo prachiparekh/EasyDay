@@ -1,5 +1,6 @@
 package com.app.easyday.screens.activities.main.dashboard
 
+import android.util.Log
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -52,6 +53,8 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
 
     private fun openChildFragment(selectedItemID: Int) {
 
+        Log.e("selectedItemID", selectedItemID.toString())
+
         var fragment: Fragment? = null
         var tag: String? = null
 
@@ -74,6 +77,7 @@ class DashboardFragment : BaseFragment<DashboardViewModel>() {
             }
         }
 
+        Log.e("tag", tag.toString())
         if (fragment != null) {
             childFragmentManager.beginTransaction()
                 .replace(R.id.childContent, fragment)
